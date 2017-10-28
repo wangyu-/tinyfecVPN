@@ -4,7 +4,7 @@
 
 ![image](/images/tinyFecVPN.PNG)
 
-TinyFecVPN使用UDPSpeeder作为lib，用FEC来对抗网络的丢包，可以改善你的网络连接(TCP/UDP/ICMP)在高延迟高丢包环境下的表现。TinyFecVPN和UDPspeeder功能类似，只不过TinyFecVPN工作方式是VPN，UDPspeeder工作方式是
+TinyFecVPN使用UDPSpeeder作为lib，用FEC来对抗网络的丢包，可以改善你的网络连接(TCP/UDP/ICMP)在高延迟高丢包环境下的表现。TinyFecVPN和UDPspeeder功能类似，只不过TinyFecVPN工作方式是VPN，UDPspeeder工作方式是UDP tunnel. 
 
 #### 效果
 测试环境是一个有100ms RTT 和10%丢包的网络(借用了UDPspeeder的测试结果)。
@@ -12,21 +12,6 @@ TinyFecVPN使用UDPSpeeder作为lib，用FEC来对抗网络的丢包，可以改
 ![](/images/en/ping_compare.PNG)
 
 ![](/images/en/scp_compare.PNG)
-
-# 简明操作说明
-
-
-### 环境要求
-
-Linux主机，可以是桌面版，可以是android手机/平板，可以是openwrt路由器，也可以是树莓派。
-
-在windows和mac上配合虚拟机可以稳定使用（tinyFecVPN跑在Linux里，其他应用照常跑在window里，桥接模式测试可用），可以使用[这个](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20170918.0/lede-17.01.2-x86_virtual_machine_image_with_udp2raw_pre_installed.zip)虚拟机镜像，大小只有7.5mb，免去在虚拟机里装系统的麻烦；虚拟机自带ssh server，可以scp拷贝文件，可以ssh进去，可以复制粘贴，root密码123456。
-
-android需要通过terminal运行。
-
-
-###### 注意
-在使用虚拟机时，建议手动指定桥接到哪个网卡，不要设置成自动。否则可能会桥接到错误的网卡。
 
 #### 原理简介
 
@@ -36,37 +21,51 @@ android需要通过terminal运行。
 
 https://github.com/wangyu-/UDPspeeder/
 
-# Getting Started
+# 简明操作说明
 
-### Installing
+### 环境要求
 
-Download binary release from https://github.com/wangyu-/tinyFecVPN/releases
+Linux主机，可以是桌面版，可以是android手机/平板，可以是openwrt路由器，也可以是树莓派。
+
+在windows和mac上配合虚拟机可以稳定使用（tinyFecVPN跑在Linux里，其他应用照常跑在window里，桥接模式测试可用），可以使用[这个](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20170918.0/lede-17.01.2-x86_virtual_machine_image_with_udp2raw_pre_installed.zip)虚拟机镜像，大小只有7.5mb，免去在虚拟机里装系统的麻烦；虚拟机自带ssh server，可以scp拷贝文件，可以ssh进去，可以复制粘贴，root密码123456。
+
+android需要通过terminal运行。
+
+###### 注意
+在使用虚拟机时，建议手动指定桥接到哪个网卡，不要设置成自动。否则可能会桥接到错误的网卡。
+
+# 简明操作说明
+
+### 安装
 
 下载编译好的二进制文件，解压到本地和服务器的任意目录。
 
+https://github.com/wangyu-/tinyFecVPN/releases
+
 ### Running
 
-Assume your server ip is 44.55.66.77, you have a service listening on udp/tcp port 0.0.0.0:7777.
+假设你有一个server，ip为44.55.66.77，有一个服务监听tcp/udp 0.0.0.0:7777。
 
 ```
-# Run at server side:
+# 在server端运行:
 ./tinyvpn -s -l0.0.0.0:4096 -f20:10 -k "passwd"
 
-# Run at client side
+# 在client端运行：
 ./tinyvpn -c r44.55.66.77:4096 -f20:10 -k "passwd"
+
 ```
 
-Now,use 10.0.0.1:7777 to connect to your service,all traffic is speeded-up by FEC.
+现在，只要在客户端使用10.0.0.1:7777就可以连上你的服务了,来回的流量都会被加速。
 
-##### Note
+###### 备注:
 
-`-f20:10` means sending 10 redundant packets for every 20 original packets.
+`-f20:10` 表示对每20个原始数据发送10个冗余包。`-f20:10` 和`-f 20:10`都是可以的，空格可以省略，对于所有的单字节option都是如此。对于双字节option，例如后面的`--mode 0`和`--mtu 1200`，空格不可以省略。
 
-`-k` enables simple XOR encryption
+`-k` 指定一个字符串，server/client间所有收发的包都会被异或，改变协议特征，防止UDPspeeder的协议被运营商针对。
 
-# Advanced Topic
+# 进阶操作说明
 
-### Usage
+### 命令选项
 ```
 tinyFecVPN
 git version: becd952db3    build date: Oct 28 2017 07:36:09
@@ -114,28 +113,29 @@ log and help options:
     --disable-color                       disable log color
     -h,--help                             print this help message
 ```
-### FEC Options
+### 跟UDPspeeder共用的选项
 
-The program supports all options of UDPspeeder,check UDPspeeder repo for details:
+TinyFecVPN支持UDPspeeder的所有选项，具体请看UDPspeeder的repo：
 
 https://github.com/wangyu-/UDPspeeder
 
-### Addtional Options
+### tinyFecVPN的新增选项
 
 ##### `--tun-dev`
 
-Specify a tun device name to use. Example: --tun-dev tun100.
+指定tun设备的名字. 例如: --tun-dev tun100.
 
-If not set,tinyFecVPN will randomly chose a name,such as tun987.
+如果不指定,tinyFecVPN会创建一个随机名字的tun设备，比如tun987.
 
 ##### `--sub-net`
 
-Specify the sub-net of VPN. Example: --sub-net 10.10.10.0, in this way,server IP will be 10.10.10.1,client IP will be 10.10.10.2.
+指定VPN的子网。 例如: 对于--sub-net 10.10.10.0, server的IP会被设置成10.10.10.1,client的IP会被设置成10.10.10.2 .
 
-The last number of option should be zero, for exmaple 10.10.10.123 is invalild, and will be corrected automatically to 10.10.10.0.
+子网中的最后一个数字应该是0, 比如10.10.10.123是不符合规范的, 会被程序自动纠正成10.10.10.0.
 
-### Restriction
+### 限制
 
-There is currently an intended restriction at server side.You cant use tinyFecVPN to access a third server directly. So,as a connection speed-up tool,when used alone,it only allows you to speed-up your connection to your server.You cant use it to bypass network firewalls directly.
+目前，server端的代码里有一个人为限制，作为一个加速器，tinyFecVPN只允许访问server上的服务，不能直接用来科学上网。即使你开启了ipforward和 MASQUERADE也不行，直接透过tinyFecVPN访问第三方服务器的包会被识别出来丢掉。
 
-To bypass this restriction,you have to disable it by modifying source code,and re-compile by yourself.
+绕过这个限制的方法有：1. 你在server搭个代理，比如socks5，透过tinyFecVPN访问这个代理。  2. 自己找到相关限制的代码，修改代码，自己编译一个无限制版的（不要传播）。
+
