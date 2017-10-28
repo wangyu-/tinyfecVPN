@@ -21,6 +21,14 @@ Linux host (including desktop Linux,Android phone/tablet, OpenWRT router, or Ras
 
 For Windows and MacOS You can run TinyFecVPN inside [this](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20170918.0/lede-17.01.2-x86_virtual_machine_image_with_udp2raw_pre_installed.zip) 7.5mb virtual machine image.
 
+# How does it work
+
+TinyFecVPN uses FEC(Forward Error Correction) to reduce packet loss rate, at the cost of addtional bandwidth. The algorithm for FEC is called Reed-Solomon.
+
+Check UDPspeeder repo for details:
+
+https://github.com/wangyu-/UDPspeeder/
+
 # Getting Started
 
 ### Installing
@@ -117,7 +125,7 @@ Specify the sub-net of VPN. Example: --sub-net 10.10.10.0, in this way,server IP
 
 The last number of option should be zero, for exmaple 10.10.10.123 is invalild, and will be corrected automatically to 10.10.10.0.
 
-##### Restriction
+### Restriction
 
 There is currently an intended restriction at server side.You cant use tinyFecVPN to access a third server directly. So,as a connection speed-up tool,when used alone,it only allows you to speed-up your connection to your server.You cant use it to bypass network firewalls directly.
 
