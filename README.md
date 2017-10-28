@@ -21,6 +21,14 @@ Linux host (including desktop Linux,Android phone/tablet, OpenWRT router, or Ras
 
 For Windows and MacOS You can run TinyFecVPN inside [this](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20170918.0/lede-17.01.2-x86_virtual_machine_image_with_udp2raw_pre_installed.zip) 7.5mb virtual machine image.
 
+# How does it work
+
+TinyFecVPN uses FEC(Forward Error Correction) to reduce packet loss rate, at the cost of addtional bandwidth. The algorithm for FEC is called Reed-Solomon.
+
+Check UDPspeeder repo for details:
+
+https://github.com/wangyu-/UDPspeeder/
+
 # Getting Started
 
 ### Installing
@@ -49,6 +57,54 @@ Now,use 10.0.0.1:7777 to connect to your service,all traffic is speeded-up by FE
 
 # Advanced Topic
 
+### Usage
+```
+tinyFecVPN
+git version: becd952db3    build date: Oct 28 2017 07:36:09
+repository: https://github.com/wangyu-/tinyFecVPN/
+
+usage:
+    run as client: ./this_program -c -r server_ip:server_port  [options]
+    run as server: ./this_program -s -l server_listen_ip:server_port  [options]
+
+common options, must be same on both sides:
+    -k,--key              <string>        key for simple xor encryption. if not set, xor is disabled
+main options:
+    --sub-net             <number>        specify sub-net, for example: 192.168.1.0 , default: 10.112.0.0
+    --tun-dev             <number>        sepcify tun device name, for example: tun10, default: a random name such as tun987
+    -f,--fec              x:y             forward error correction, send y redundant packets for every x packets
+    --timeout             <number>        how long could a packet be held in queue before doing fec, unit: ms, default: 8ms
+    --mode                <number>        fec-mode,available values: 0, 1; 0 cost less bandwidth, 1 cost less latency(default)
+    --report              <number>        turn on send/recv report, and set a period for reporting, unit: s
+advanced options:
+    --mtu                 <number>        mtu. for mode 0, the program will split packet to segment smaller than mtu_value.
+                                          for mode 1, no packet will be split, the program just check if the mtu is exceed.
+                                          default value: 1250
+    -j,--jitter           <number>        simulated jitter. randomly delay first packet for 0~<number> ms, default value: 0.
+                                          do not use if you dont know what it means.
+    -i,--interval         <number>        scatter each fec group to a interval of <number> ms, to protect burst packet loss.
+                                          default value: 0. do not use if you dont know what it means.
+    --random-drop         <number>        simulate packet loss, unit: 0.01%. default value: 0
+    --disable-obscure     <number>        disable obscure, to save a bit bandwidth and cpu
+developer options:
+    --fifo                <string>        use a fifo(named pipe) for sending commands to the running program, so that you
+                                          can change fec encode parameters dynamically, check readme.md in repository for
+                                          supported commands.
+    -j ,--jitter          jmin:jmax       similiar to -j above, but create jitter randomly between jmin and jmax
+    -i,--interval         imin:imax       similiar to -i above, but scatter randomly between imin and imax
+    -q,--queue-len        <number>        max fec queue len, only for mode 0
+    --decode-buf          <number>        size of buffer of fec decoder,u nit: packet, default: 2000
+    --fix-latency         <number>        try to stabilize latency, only for mode 0
+    --delay-capacity      <number>        max number of delayed packets
+    --disable-fec         <number>        completely disable fec, turn the program into a normal udp tunnel
+    --sock-buf            <number>        buf size for socket, >=10 and <=10240, unit: kbyte, default: 1024
+log and help options:
+    --log-level           <number>        0: never    1: fatal   2: error   3: warn
+                                          4: info (default)      5: debug   6: trace
+    --log-position                        enable file name, function name, line number in log
+    --disable-color                       disable log color
+    -h,--help                             print this help message
+```
 ### FEC Options
 
 The program supports all options of UDPspeeder,check UDPspeeder repo for details:
@@ -69,8 +125,8 @@ Specify the sub-net of VPN. Example: --sub-net 10.10.10.0, in this way,server IP
 
 The last number of option should be zero, for exmaple 10.10.10.123 is invalild, and will be corrected automatically to 10.10.10.0.
 
-##### Restriction
+### Restriction
 
-There is currently an intended restriction at client side.You cant use tinyFecVPN to access a third server directly.So,as a connection speed-up tool,when used alone,it only allows you to speed-up your connection to your server.You cant use it to bypass network firewalls directly.
+There is currently an intended restriction at server side.You cant use tinyFecVPN to access a third server directly. So,as a connection speed-up tool,when used alone,it only allows you to speed-up your connection to your server.You cant use it to bypass network firewalls directly.
 
 To bypass this restriction,you have to disable it by modifying source code,and re-compile by yourself.
