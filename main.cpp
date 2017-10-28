@@ -30,7 +30,7 @@ static void print_help()
 	printf("    -k,--key              <string>        key for simple xor encryption. if not set, xor is disabled\n");
 
 	printf("main options:\n");
-	printf("    --sub-net             <number>        specify sub-net, for example: 192.168.1.0 , default: 10.112.0.0\n");
+	printf("    --sub-net             <number>        specify sub-net, for example: 192.168.1.0 , default: 10.22.22.0\n");
 	printf("    --tun-dev             <number>        sepcify tun device name, for example: tun10, default: a random name such as tun987\n");
 	printf("    -f,--fec              x:y             forward error correction, send y redundant packets for every x packets\n");
 	printf("    --timeout             <number>        how long could a packet be held in queue before doing fec, unit: ms, default: 8ms\n");
