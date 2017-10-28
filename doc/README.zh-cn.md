@@ -1,6 +1,6 @@
 # tinyFecVPN
 
-集成了加速器功能的一个轻量级VPN
+集成了加速器功能的轻量级VPN
 
 ![image](/images/tinyFecVPN.PNG)
 
