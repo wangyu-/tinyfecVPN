@@ -14,7 +14,7 @@ Tested on a link with 100ms latency and 10% packet loss at both direction(borrow
 ![](https://raw.githubusercontent.com/wangyu-/UDPspeeder/master/images/en/ping_compare_mode1.png)
 
 ### SCP Copy Speed
-![](/https://raw.githubusercontent.com/wangyu-/UDPspeeder/master/images/en/scp_compare2.PNG)
+![](https://raw.githubusercontent.com/wangyu-/UDPspeeder/master/images/en/scp_compare2.PNG)
 
 # Supported Platforms
 Linux host (including desktop Linux,Android phone/tablet, OpenWRT router, or Raspberry PI).
