@@ -139,11 +139,11 @@ https://github.com/wangyu-/UDPspeeder
 
 ### 假设tinyFecVPN client运行在路由器/虚拟机里，假设tinyFecVPN Server运行在VPS上，现在VPS上有个服务同时监听在TCP和UDP的0.0.0.0:443，我怎么在本地windows上访问到这个服务？(假设tinyFecVPN server的ip是 10.112.0.1)
 
-### 通用方法
+##### 通用方法
 
 在windows上把网关设置成路由器/虚拟机的IP,在路由器/虚拟机上开启ipforward MASQUERADE, 然后在本地访问10.112.0.1:443.这种方法的优点是，配置一次，所有在10.112.0.1上的端口在本地都可以访问到。
 
-### 简单方法
+##### 简单方法
 假设虚拟机的ip是192.168.1.105
 
 ```
