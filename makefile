@@ -18,7 +18,7 @@ TARGETS=amd64 arm mips24kc_be x86  mips24kc_le
 
 TAR=${NAME}_binaries.tar.gz `echo ${TARGETS}|sed -r 's/([^ ]+)/tinyvpn_\1/g'`
 
-all:git_version init
+all:git_version
 	rm -f ${NAME}
 	${cc_local}   -o ${NAME}      ${INCLUDE}  ${SOURCES} ${FLAGS} -lrt -ggdb -static -O3
 debug: git_version
