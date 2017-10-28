@@ -50,14 +50,14 @@ https://github.com/wangyu-/tinyFecVPN/releases
 
 ```
 # 在server端运行:
-./tinyvpn -s -l0.0.0.0:4096 -f20:10 -k "passwd"
+./tinyvpn -s -l0.0.0.0:4096 -f20:10 -k "passwd" --sub-net 10.22.22.0
 
 # 在client端运行：
-./tinyvpn -c r44.55.66.77:4096 -f20:10 -k "passwd"
+./tinyvpn -c r44.55.66.77:4096 -f20:10 -k "passwd" --sub-net 10.22.22.0
 
 ```
 
-现在，只要在客户端使用10.0.0.1:7777就可以连上你的服务了,来回的流量都会被加速。
+现在，只要在客户端使用10.22.22.1:7777就可以连上你的服务了,来回的流量都会被加速。
 
 ###### 备注:
 
@@ -80,7 +80,7 @@ usage:
 common options, must be same on both sides:
     -k,--key              <string>        key for simple xor encryption. if not set, xor is disabled
 main options:
-    --sub-net             <number>        specify sub-net, for example: 192.168.1.0 , default: 10.112.0.0
+    --sub-net             <number>        specify sub-net, for example: 192.168.1.0 , default: 10.22.22.0
     --tun-dev             <number>        sepcify tun device name, for example: tun10, default: a random name such as tun987
     -f,--fec              x:y             forward error correction, send y redundant packets for every x packets
     --timeout             <number>        how long could a packet be held in queue before doing fec, unit: ms, default: 8ms
@@ -135,9 +135,50 @@ https://github.com/wangyu-/UDPspeeder
 
 子网中的最后一个数字应该是0, 比如10.10.10.123是不符合规范的, 会被程序自动纠正成10.10.10.0.
 
-### 限制
+# 使用经验
 
-目前，server端的代码里有一个人为限制，作为一个加速器，tinyFecVPN只允许访问server上的服务，不能直接用来科学上网。即使你开启了ipforward和 MASQUERADE也不行，代码里有额外处理，直接透过tinyFecVPN访问第三方服务器的包会被丢掉。
+#### 假设tinyFecVPN client 运行在本地的linux上，现在VPS上有个服务监听在TCP和UDP的0.0.0.0:443，我怎么在本地linux上访问到这个服务？(假设tinyFecVPN server分配的ip是 10.22.22.1)
+
+直接访问10.22.22.1:443即可。
+
+#### 假设tinyFecVPN client运行在路由器/虚拟机里，假设tinyFecVPN Server运行在VPS上，现在VPS上有个服务监听在TCP和UDP的0.0.0.0:443，我怎么在本地windows上访问到这个服务？(假设tinyFecVPN server的ip是 10.22.22.1)
+
+###### 通用方法（有难度）
+
+在windows上把网关设置成路由器/虚拟机的IP,在路由器/虚拟机上开启ipforward MASQUERADE, 然后在本地直接访问10.22.22.1:443.这种方法的优点是，配置一次，所有在10.22.22.1上的端口在本地都可以访问到。
+
+###### 简单方法（推荐）
+假设路由器/虚拟机的ip是192.168.1.105
+
+在路由器/虚拟机中运行如下命令(socat在我提供的虚拟机里已经安装好了)：
+
+```
+socat UDP-LISTEN:443,fork,reuseaddr UDP:10.22.22.1:443
+socat TCP-LISTEN:443,fork,reuseaddr TCP:10.22.22.1:443
+```
+
+然后你只需要在本地windows访问192.168.1.105:443就相当于访问VPS上的443端口了。这种方法也有优点：只要配置一次，所有在192.168.1.\*这个子网上的机器都能访问到VPS上的443端口了。
+
+#### 假设tinyFecVPN client 运行在本地的linux上,假设 tinyFecVPN Server运行在VPS A上。现在另一台VPS B(假设ip是123.123.123.123)上面有个服务监听在123.123.123.123:443，我怎么在本地的linux上，透过tinyFecVPN访问到这个服务？
+
+在VPS A上运行：
+
+```
+socat UDP-LISTEN:443,fork,reuseaddr UDP:123.123.123.123:443
+socat TCP-LISTEN:443,fork,reuseaddr TCP:123.123.123.123:443
+```
+
+然后，VPS B上的443端口就被映射到10.22.22.1:443了。这样，在linux上访问10.22.22.1:443就相当于访问123.123.123.123:443了。
+
+#### 假设tinyFecVPN client运行在路由器/虚拟机里，假设 tinyFecVPN Server运行在VPS A上。现在另一台VPS B(假设ip是123.123.123.123)上面有个服务监听在123.123.123.123:443，我怎么在本地的windows上，透过tinyFecVPN访问到这个服务？
+
+结合前两种情况,就可以了。既在路由器/虚拟机中运行socat，又在VPS中运行socat，就可以把这个端口映射到本地了。
+
+# 限制
+
+目前，server端的代码里有一个人为限制，作为一个加速器，tinyFecVPN只允许(直接)访问server上的服务，不能(直接)用来科学上网。即使你开启了ipforward和 MASQUERADE也不行，代码里有额外处理，直接透过tinyFecVPN访问第三方服务器的包会被丢掉，效果如图：
+
+![image](/images/restriction.PNG)
 
 绕过这个限制的方法有：1. 在server搭个代理，比如socks5，透过tinyFecVPN访问这个代理，用代理访问第三方服务器。  2. 自己找到相关限制的代码，修改代码，编译一个自用的无限制版（不要传播）。
 
