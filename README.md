@@ -48,7 +48,7 @@ Assume your server ip is 44.55.66.77, you have a service listening on udp/tcp po
 ./tinyvpn -c r44.55.66.77:4096 -f20:10 -k "passwd"
 ```
 
-Now,use 10.0.0.1:7777 to connect to your service,all traffic is speeded-up by FEC.
+Now,use 10.112.0.1:7777 to connect to your service,all traffic is speeded-up by FEC.
 
 ##### Note
 
