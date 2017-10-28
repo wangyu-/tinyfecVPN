@@ -22,13 +22,39 @@ Linux host (including desktop Linux,Android phone/tablet, OpenWRT router, or Ras
 
 For Windows and MacOS You can run TinyFecVPN inside [this](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20170918.0/lede-17.01.2-x86_virtual_machine_image_with_udp2raw_pre_installed.zip) 7.5mb virtual machine image.
 
-# How does it work
+
+
+
+# How doest it work
 
 TinyFecVPN uses FEC(Forward Error Correction) to reduce packet loss rate, at the cost of addtional bandwidth. The algorithm for FEC is called Reed-Solomon.
 
-Check UDPspeeder repo for details:
+![](/images/FEC.PNG)
+
+For more details,check:
 
 https://github.com/wangyu-/UDPspeeder/
+
+# Performance Test(throughput)
+
+Server is Vulr VPS in japan，CPU: single core 2.4GHz,ram: 512mb. Client is Bandwagonhost VPS in USA，CPU: single core 2.0GHZ,ram: 96mb。
+
+### Test command
+
+```
+Server side：
+./tinyvpn_amd64 -s -l 0.0.0.0:5533 --mode 0
+iperf3 -s
+
+Client side：
+./tinyvpn_amd64 -c -r 45.76.100.53:5533 --mode 0
+iperf3 -c 10.22.22.1 -P10
+```
+
+### Test result
+
+![image](/images/performance2.PNG)
+
 
 # Getting Started
 
@@ -38,17 +64,17 @@ Download binary release from https://github.com/wangyu-/tinyFecVPN/releases
 
 ### Running
 
-Assume your server ip is 44.55.66.77, you have a service listening on udp/tcp port 0.0.0.0:7777.
+Assume your server ip is 44.55.66.77, you have a service listening on udp/tcp port 0.0.0.0:7777. 
 
 ```
 # Run at server side:
-./tinyvpn -s -l0.0.0.0:4096 -f20:10 -k "passwd"
+./tinyvpn -s -l0.0.0.0:4096 -f20:10 -k "passwd" --sub-net 10.22.22.0
 
 # Run at client side
-./tinyvpn -c r44.55.66.77:4096 -f20:10 -k "passwd"
+./tinyvpn -c r44.55.66.77:4096 -f20:10 -k "passwd" --sub-net 10.22.22.0
 ```
 
-Now,use 10.0.0.1:7777 to connect to your service,all traffic is speeded-up by FEC.
+Now,use 10.22.22.1:7777 to connect to your service,all traffic is speeded-up by FEC. If you ping 10.22.22.1, you will get ping reply.
 
 ##### Note
 
@@ -71,7 +97,7 @@ usage:
 common options, must be same on both sides:
     -k,--key              <string>        key for simple xor encryption. if not set, xor is disabled
 main options:
-    --sub-net             <number>        specify sub-net, for example: 192.168.1.0 , default: 10.112.0.0
+    --sub-net             <number>        specify sub-net, for example: 192.168.1.0 , default: 10.22.22.0
     --tun-dev             <number>        sepcify tun device name, for example: tun10, default: a random name such as tun987
     -f,--fec              x:y             forward error correction, send y redundant packets for every x packets
     --timeout             <number>        how long could a packet be held in queue before doing fec, unit: ms, default: 8ms
