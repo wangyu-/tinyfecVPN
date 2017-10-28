@@ -176,7 +176,7 @@ socat TCP-LISTEN:443,fork,reuseaddr TCP:123.123.123.123:443
 
 # 限制
 
-目前，server端的代码里有一个人为限制，作为一个加速器，tinyFecVPN只允许访问server上的服务，不能直接用来科学上网。即使你开启了ipforward和 MASQUERADE也不行，代码里有额外处理，直接透过tinyFecVPN访问第三方服务器的包会被丢掉，效果如图：
+目前，server端的代码里有一个人为限制，作为一个加速器，tinyFecVPN只允许(直接)访问server上的服务，不能(直接)用来科学上网。即使你开启了ipforward和 MASQUERADE也不行，代码里有额外处理，直接透过tinyFecVPN访问第三方服务器的包会被丢掉，效果如图：
 
 ![image](/images/restriction.PNG)
 
