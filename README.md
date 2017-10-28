@@ -6,6 +6,21 @@ A tiny VPN with Build-in FEC Support.
 
 TinyFecVPN use UDPSpeeder as lib.Supports all FEC features of UDPspeeder. It can improve quality of all network traffic(TCP/UDP/ICMP) as a single program.
 
+
+# Efficacy
+Tested on a link with 100ms latency and 10% packet loss at both direction(borrowed UDPspeeder 's result,they behave almost the same)
+
+### Ping Packet Loss
+![](https://raw.githubusercontent.com/wangyu-/UDPspeeder/master/images/en/ping_compare_mode1.png)
+
+### SCP Copy Speed
+![](/https://raw.githubusercontent.com/wangyu-/UDPspeeder/master/images/en/scp_compare2.PNG)
+
+# Supported Platforms
+Linux host (including desktop Linux,Android phone/tablet, OpenWRT router, or Raspberry PI).
+
+For Windows and MacOS You can run TinyFecVPN inside [this](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20170918.0/lede-17.01.2-x86_virtual_machine_image_with_udp2raw_pre_installed.zip) 7.5mb virtual machine image.
+
 # Getting Started
 
 ### Installing
