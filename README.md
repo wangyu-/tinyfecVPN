@@ -11,10 +11,10 @@ TinyFecVPN use UDPSpeeder as lib.Supports all FEC features of UDPspeeder. It can
 Tested on a link with 100ms latency and 10% packet loss at both direction(borrowed UDPspeeder 's result,they behave almost the same)
 
 ### Ping Packet Loss
-![](https://raw.githubusercontent.com/wangyu-/UDPspeeder/master/images/en/ping_compare_mode1.png)
+![](/images/en/ping_compare.PNG)
 
 ### SCP Copy Speed
-![](https://raw.githubusercontent.com/wangyu-/UDPspeeder/master/images/en/scp_compare2.PNG)
+![](/images/en/scp_compare.PNG)
 
 # Supported Platforms
 Linux host (including desktop Linux,Android phone/tablet, OpenWRT router, or Raspberry PI).
