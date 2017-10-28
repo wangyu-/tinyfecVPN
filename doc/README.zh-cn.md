@@ -135,7 +135,7 @@ https://github.com/wangyu-/UDPspeeder
 
 ### 限制
 
-目前，server端的代码里有一个人为限制，作为一个加速器，tinyFecVPN只允许访问server上的服务，不能直接用来科学上网。即使你开启了ipforward和 MASQUERADE也不行，直接透过tinyFecVPN访问第三方服务器的包会被识别出来丢掉。
+目前，server端的代码里有一个人为限制，作为一个加速器，tinyFecVPN只允许访问server上的服务，不能直接用来科学上网。即使你开启了ipforward和 MASQUERADE也不行，代码里有额外处理，直接透过tinyFecVPN访问第三方服务器的包会被丢掉。
 
-绕过这个限制的方法有：1. 你在server搭个代理，比如socks5，透过tinyFecVPN访问这个代理。  2. 自己找到相关限制的代码，修改代码，自己编译一个无限制版的（不要传播）。
+绕过这个限制的方法有：1. 在server搭个代理，比如socks5，透过tinyFecVPN访问这个代理。  2. 自己找到相关限制的代码，修改代码，自己编译一个无限制版的（不要传播）。
 
