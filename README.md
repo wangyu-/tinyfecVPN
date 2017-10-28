@@ -8,7 +8,7 @@ TinyFecVPN use UDPSpeeder as lib.Supports all FEC features of UDPspeeder. It can
 
 
 # Efficacy
-Tested on a link with 100ms latency and 10% packet loss at both direction(borrowed UDPspeeder 's result,they behave almost the same)
+Tested on a link with 100ms latency and 10% packet loss at both direction(borrowed UDPspeeder's result)
 
 ### Ping Packet Loss
 ![](/images/en/ping_compare.PNG)
