@@ -119,6 +119,24 @@ int from_fec_to_normal2(conn_info_t & conn_info,dest_t &dest,char * data,int len
 	for(int i=0;i<out_n;i++)
 	{
 		delay_send(out_delay[i],dest,out_arr[i],out_len[i]);
+
+#ifndef NORES
+		char * tmp_data=out_arr[i];
+		int tmp_len=out_len[i];
+		if(tmp_len>=20)
+		{
+			u32_t dest_ip=htonl(read_u32(tmp_data+16));
+			//printf("%s\n",my_ntoa(dest_ip));
+			if(  ( ntohl(sub_net_uint32)&0xFFFFFF00 ) !=  ( ntohl (dest_ip) &0xFFFFFF00) )
+			{
+				string sub=my_ntoa(dest_ip);
+				string dst=my_ntoa( htonl( ntohl (sub_net_uint32) &0xFFFFFF00)   );
+				mylog(log_warn,"[restriction]packet's dest ip [%s] not in subnet [%s],dropped\n", sub.c_str(), dst.c_str());
+				continue;
+			}
+		}
+#endif
+
 	}
 
 	return 0;
@@ -293,17 +311,6 @@ int tun_dev_client_event_loop()
 					mylog(log_warn,"read from tun_fd return %d,errno=%s\n",len,strerror(errno));
 					continue;
 				}
-				if(len>=20)
-				{
-					u32_t dest_ip=htonl(read_u32(data+16));
-					if(  ( ntohl(sub_net_uint32)&0xFFFFFF00 ) !=  ( ntohl (dest_ip) &0xFFFFFF00) )
-					{
-						string sub=my_ntoa(dest_ip);
-						string dst=my_ntoa( htonl( ntohl (dest_ip) &0xFFFFFF00)   );
-						mylog(log_warn,"packet's dest ip [%s] not in subnet [%s],dropped\n", sub.c_str(), dst.c_str());
-						continue;
-					}
-				}
 
 				mylog(log_trace,"Received packet from tun,len: %d\n",len);
 
@@ -340,8 +347,17 @@ int tun_dev_client_event_loop()
 
 				if(header==header_reject)
 				{
-					mylog(log_fatal,"server restarted or switched to handle another client,exited\n");
-					myexit(-1);
+					if(keep_reconnect==0)
+					{
+						mylog(log_fatal,"server restarted or switched to handle another client,exited\n");
+						myexit(-1);
+					}
+					else
+					{
+						if(got_feed_back==1)
+							mylog(log_warn,"server restarted or switched to handle another client,but keep-reconnect enable,trying to reconnect\n");
+						got_feed_back=0;
+					}
 					continue;
 				}
 				else if(header==header_normal)
@@ -597,7 +613,7 @@ int tun_dev_server_event_loop()
 					}
 					else if(header==header_normal)
 					{
-						mylog(log_info,"rejected connection from %s:%d\n", inet_ntoa(udp_new_addr_in.sin_addr),ntohs(udp_new_addr_in.sin_port));
+						mylog(log_debug,"rejected connection from %s:%d\n", inet_ntoa(udp_new_addr_in.sin_addr),ntohs(udp_new_addr_in.sin_port));
 
 
 						len=1;
