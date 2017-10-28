@@ -1,4 +1,4 @@
-# UDPspeeder
+# tinyFecVPN
 
 A tiny VPN with Build-in FEC Support.
 
