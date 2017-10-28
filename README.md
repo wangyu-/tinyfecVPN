@@ -8,13 +8,13 @@ TinyFecVPN use UDPSpeeder as lib.Supports all FEC features of UDPspeeder. It can
 
 
 # Efficacy
-Tested on a link with 100ms latency and 10% packet loss at both direction(borrowed UDPspeeder 's result,they behave almost the same)
+Tested on a link with 100ms latency and 10% packet loss at both direction(borrowed UDPspeeder's result)
 
 ### Ping Packet Loss
-![](https://raw.githubusercontent.com/wangyu-/UDPspeeder/master/images/en/ping_compare_mode1.png)
+![](/images/en/ping_compare.PNG)
 
 ### SCP Copy Speed
-![](https://raw.githubusercontent.com/wangyu-/UDPspeeder/master/images/en/scp_compare2.PNG)
+![](/images/en/scp_compare.PNG)
 
 # Supported Platforms
 Linux host (including desktop Linux,Android phone/tablet, OpenWRT router, or Raspberry PI).
@@ -43,9 +43,9 @@ Now,use 10.0.0.1:7777 to connect to your service,all traffic is speeded-up by FE
 
 ##### Note
 
--f20:10 means sending 10 redundant packets for every 20 original packets.
+`-f20:10` means sending 10 redundant packets for every 20 original packets.
 
--k enables simple XOR encryption
+`-k` enables simple XOR encryption
 
 # Advanced Topic
 
@@ -57,13 +57,13 @@ https://github.com/wangyu-/UDPspeeder
 
 ### Addtional Options
 
-##### --tun-dev
+##### `--tun-dev`
 
 Specify a tun device name to use. Example: --tun-dev tun100.
 
 If not set,tinyFecVPN will randomly chose a name,such as tun987.
 
-##### --sub-net
+##### `--sub-net`
 
 Specify the sub-net of VPN. Example: --sub-net 10.10.10.0, in this way,server IP will be 10.10.10.1,client IP will be 10.10.10.2.
 
