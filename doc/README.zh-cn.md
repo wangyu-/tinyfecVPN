@@ -146,11 +146,11 @@ https://github.com/wangyu-/UDPspeeder
 
 因为iptables很多人都不会配，即使是对熟练的人也容易出错。这里推荐一种免iptables的方法，基本上可以应对任何情况。
 
-###### 假设tinyFecVPN client 运行在本地的linux上，现在VPS上有个服务监听在TCP和UDP的0.0.0.0:443，我怎么在本地linux上访问到这个服务？(假设tinyFecVPN server分配的ip是 10.22.22.1)
+##### 假设tinyFecVPN client 运行在本地的linux上，现在VPS上有个服务监听在TCP和UDP的0.0.0.0:443，我怎么在本地linux上访问到这个服务？(假设tinyFecVPN server分配的ip是 10.22.22.1)
 
 直接访问10.22.22.1:443即可。
 
-###### 假设tinyFecVPN client运行在路由器/虚拟机里，假设tinyFecVPN Server运行在VPS上，现在VPS上有个服务监听在TCP和UDP的0.0.0.0:443，我怎么在本地windows上访问到这个服务？
+##### 假设tinyFecVPN client运行在路由器/虚拟机里，假设tinyFecVPN Server运行在VPS上，现在VPS上有个服务监听在TCP和UDP的0.0.0.0:443，我怎么在本地windows上访问到这个服务？
 
 假设tinyFecVPN server分配的ip是 10.22.22.1，路由器/虚拟机的ip是192.168.1.105
 
@@ -163,7 +163,7 @@ socat TCP-LISTEN:443,fork,reuseaddr TCP:10.22.22.1:443
 
 然后你只需要在本地windows访问192.168.1.105:443就相当于访问VPS上的443端口了。
 
-###### 假设tinyFecVPN client 运行在本地的linux上,假设 tinyFecVPN Server运行在VPS A上。现在另一台VPS B(假设ip是123.123.123.123)上面有个服务监听在123.123.123.123:443，我怎么在本地的linux上，透过tinyFecVPN访问到这个服务？
+##### 假设tinyFecVPN client 运行在本地的linux上,假设 tinyFecVPN Server运行在VPS A上。现在另一台VPS B(假设ip是123.123.123.123)上面有个服务监听在123.123.123.123:443，我怎么在本地的linux上，透过tinyFecVPN访问到这个服务？
 
 在VPS A上运行：
 
@@ -174,7 +174,7 @@ socat TCP-LISTEN:443,fork,reuseaddr TCP:123.123.123.123:443
 
 然后，VPS B上的443端口就被映射到10.22.22.1:443了。这样，在linux上访问10.22.22.1:443就相当于访问123.123.123.123:443了。
 
-###### 假设tinyFecVPN client运行在路由器/虚拟机里，假设 tinyFecVPN Server运行在VPS A上。现在另一台VPS B(假设ip是123.123.123.123)上面有个服务监听在123.123.123.123:443，我怎么在本地的windows上，透过tinyFecVPN访问到这个服务？
+##### 假设tinyFecVPN client运行在路由器/虚拟机里，假设 tinyFecVPN Server运行在VPS A上。现在另一台VPS B(假设ip是123.123.123.123)上面有个服务监听在123.123.123.123:443，我怎么在本地的windows上，透过tinyFecVPN访问到这个服务？
 
 结合前两种情况,就可以了。既在路由器/虚拟机中运行socat，又在VPS中运行socat，就可以把这个端口映射到本地了。
 
