@@ -137,7 +137,7 @@ https://github.com/wangyu-/UDPspeeder
 
 # 使用经验
 
-### 假设tinyFecVPN client运行在路由器/虚拟机里，假设tinyFecVPN Server运行在VPS上，现在VPS上有个服务同时监听在TCP/UDP 0.0.0.0:443，我怎么在本地windows上访问到这个服务？(假设tinyFecVPN server的ip是 10.112.0.1)
+### 假设tinyFecVPN client运行在路由器/虚拟机里，假设tinyFecVPN Server运行在VPS上，现在VPS上有个服务同时监听在TCP和UDP的0.0.0.0:443，我怎么在本地windows上访问到这个服务？(假设tinyFecVPN server的ip是 10.112.0.1)
 
 ### 通用方法
 
@@ -151,7 +151,7 @@ socat UDP-LISTEN:443,fork,reuseaddr UDP:10.112.0.1:443
 socat TCP-LISTEN:443,fork,reuseaddr TCP:10.112.0.1:443
 ```
 
-然后你只需要在本地访问192.168.1.105:443就相当于访问服务器上的443端口了。
+然后你只需要在本地访问192.168.1.105:443就相当于访问服务器上的443端口了。这种方法也有优点：只要配置一次，所有在102.168.1.\*这个子网上的机器都能访问到服务器上的443端口了。
 
 
 # 限制
