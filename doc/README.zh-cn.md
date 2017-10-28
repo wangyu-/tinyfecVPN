@@ -50,14 +50,14 @@ https://github.com/wangyu-/tinyFecVPN/releases
 
 ```
 # 在server端运行:
-./tinyvpn -s -l0.0.0.0:4096 -f20:10 -k "passwd"
+./tinyvpn -s -l0.0.0.0:4096 -f20:10 -k "passwd" --sub-net 10.22.22.0
 
 # 在client端运行：
-./tinyvpn -c r44.55.66.77:4096 -f20:10 -k "passwd"
+./tinyvpn -c r44.55.66.77:4096 -f20:10 -k "passwd" --sub-net 10.22.22.0
 
 ```
 
-现在，只要在客户端使用10.112.0.1:7777就可以连上你的服务了,来回的流量都会被加速。
+现在，只要在客户端使用10.22.22.1:7777就可以连上你的服务了,来回的流量都会被加速。
 
 ###### 备注:
 
