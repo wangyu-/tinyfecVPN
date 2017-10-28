@@ -57,7 +57,7 @@ https://github.com/wangyu-/tinyFecVPN/releases
 
 ```
 
-现在，只要在客户端使用10.22.22.1:7777就可以连上你的服务了,来回的流量都会被加速。
+现在，只要在客户端使用10.22.22.1:7777就可以连上你的服务了,来回的流量都会被加速。去ping 10.22.22.1也会得到回复。
 
 ###### 备注:
 
@@ -136,19 +136,23 @@ https://github.com/wangyu-/UDPspeeder
 子网中的最后一个数字应该是0, 比如10.10.10.123是不符合规范的, 会被程序自动纠正成10.10.10.0.
 
 # 使用经验
+### 不能正常连通
+
+绝大多数情况，都是因为配置了不规范的iptables造成的。不能正常连通，请清空两端的iptables后重试。清空后记得用iptable-save检查，确保确实是清空了的。
+
+还有一部分情况是因为你要访问的服务没有bind在0.0.0.0，请用netstat -nlp检查服务器的bind情况。
+
+### 透过tinyFecVPN免改iptables加速网络
+
+因为iptables很多人都不会配，即使是对熟练的人也容易出错。这里推荐一种免iptables的方法，基本上可以应对任何情况。
 
 #### 假设tinyFecVPN client 运行在本地的linux上，现在VPS上有个服务监听在TCP和UDP的0.0.0.0:443，我怎么在本地linux上访问到这个服务？(假设tinyFecVPN server分配的ip是 10.22.22.1)
 
 直接访问10.22.22.1:443即可。
 
-#### 假设tinyFecVPN client运行在路由器/虚拟机里，假设tinyFecVPN Server运行在VPS上，现在VPS上有个服务监听在TCP和UDP的0.0.0.0:443，我怎么在本地windows上访问到这个服务？(假设tinyFecVPN server的ip是 10.22.22.1)
+#### 假设tinyFecVPN client运行在路由器/虚拟机里，假设tinyFecVPN Server运行在VPS上，现在VPS上有个服务监听在TCP和UDP的0.0.0.0:443，我怎么在本地windows上访问到这个服务？
 
-###### 通用方法（有难度）
-
-在windows上把网关设置成路由器/虚拟机的IP,在路由器/虚拟机上开启ipforward MASQUERADE, 然后在本地直接访问10.22.22.1:443.这种方法的优点是，配置一次，所有在10.22.22.1上的端口在本地都可以访问到。
-
-###### 简单方法（推荐）
-假设路由器/虚拟机的ip是192.168.1.105
+假设tinyFecVPN server分配的ip是 10.22.22.1，路由器/虚拟机的ip是192.168.1.105
 
 在路由器/虚拟机中运行如下命令(socat在我提供的虚拟机里已经安装好了)：
 
@@ -157,7 +161,7 @@ socat UDP-LISTEN:443,fork,reuseaddr UDP:10.22.22.1:443
 socat TCP-LISTEN:443,fork,reuseaddr TCP:10.22.22.1:443
 ```
 
-然后你只需要在本地windows访问192.168.1.105:443就相当于访问VPS上的443端口了。这种方法也有优点：只要配置一次，所有在192.168.1.\*这个子网上的机器都能访问到VPS上的443端口了。
+然后你只需要在本地windows访问192.168.1.105:443就相当于访问VPS上的443端口了。
 
 #### 假设tinyFecVPN client 运行在本地的linux上,假设 tinyFecVPN Server运行在VPS A上。现在另一台VPS B(假设ip是123.123.123.123)上面有个服务监听在123.123.123.123:443，我怎么在本地的linux上，透过tinyFecVPN访问到这个服务？
 
