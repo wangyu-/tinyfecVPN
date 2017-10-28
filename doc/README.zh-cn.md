@@ -144,7 +144,7 @@ https://github.com/wangyu-/UDPspeeder
 
 ### 透过tinyFecVPN免改iptables加速网络
 
-因为iptables很多人都不会配，即使是对熟练的人也容易出错。这里推荐一种免iptables的方法，基本上可以应对任何情况。
+因为iptables很多人都不会配，即使是对熟练的人也容易出错。这里推荐一种免iptables的方法，基本上可以应对任何情况，推荐给新手用。如果你可以熟练配置iptables和路由规则，可以跳过这节。
 
 ##### 假设tinyFecVPN client 运行在本地的linux上，现在VPS上有个服务监听在TCP和UDP的0.0.0.0:443，我怎么在本地linux上访问到这个服务？(假设tinyFecVPN server分配的ip是 10.22.22.1)
 
