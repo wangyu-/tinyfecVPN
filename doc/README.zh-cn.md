@@ -141,11 +141,11 @@ https://github.com/wangyu-/UDPspeeder
 
 直接访问10.112.0.1:443即可。
 
-#### 假设tinyFecVPN client运行在路由器/虚拟机里，假设tinyFecVPN Server运行在VPS上，现在VPS上有个服务监听在TCP和UDP的0.0.0.0:443，我怎么在本地windows上访问到这个服务？(假设tinyFecVPN server的ip是 10.112.0.1)
+#### 假设tinyFecVPN client运行在路由器/虚拟机里，假设tinyFecVPN Server运行在VPS上，现在VPS上有个服务监听在TCP和UDP的0.0.0.0:443，我怎么在本地windows上访问到这个服务？(假设tinyFecVPN server的ip是 10.22.22.1)
 
 ###### 通用方法（有难度）
 
-在windows上把网关设置成路由器/虚拟机的IP,在路由器/虚拟机上开启ipforward MASQUERADE, 然后在本地访问10.112.0.1:443.这种方法的优点是，配置一次，所有在10.112.0.1上的端口在本地都可以访问到。
+在windows上把网关设置成路由器/虚拟机的IP,在路由器/虚拟机上开启ipforward MASQUERADE, 然后在本地访问10.22.22.1:443.这种方法的优点是，配置一次，所有在10.22.22.1上的端口在本地都可以访问到。
 
 ###### 简单方法（推荐）
 假设路由器/虚拟机的ip是192.168.1.105
@@ -153,8 +153,8 @@ https://github.com/wangyu-/UDPspeeder
 在路由器/虚拟机中运行如下命令(socat在我提供的虚拟机里已经安装好了)：
 
 ```
-socat UDP-LISTEN:443,fork,reuseaddr UDP:10.112.0.1:443
-socat TCP-LISTEN:443,fork,reuseaddr TCP:10.112.0.1:443
+socat UDP-LISTEN:443,fork,reuseaddr UDP:10.22.22.1:443
+socat TCP-LISTEN:443,fork,reuseaddr TCP:10.22.22.1.1:443
 ```
 
 然后你只需要在本地windows访问192.168.1.105:443就相当于访问VPS上的443端口了。这种方法也有优点：只要配置一次，所有在192.168.1.\*这个子网上的机器都能访问到VPS上的443端口了。
@@ -168,7 +168,7 @@ socat UDP-LISTEN:443,fork,reuseaddr UDP:123.123.123.123:443
 socat TCP-LISTEN:443,fork,reuseaddr TCP:123.123.123.123:443
 ```
 
-然后，VPS B上的443端口就被映射到10.112.0.1:443了。这样，访问10.112.0.1:443就相当于访问123.123.123.123:443了。
+然后，VPS B上的443端口就被映射到10.22.22.1:443了。这样，访问10.22.22.1:443就相当于访问123.123.123.123:443了。
 
 #### 假设tinyFecVPN client运行在路由器/虚拟机里，假设 tinyFecVPN Server运行在VPS A上。现在另一台VPS B(假设ip是123.123.123.123)上面有个服务监听在123.123.123.123:443，我怎么在本地的windows上，透过tinyFecVPN访问到这个服务？
 
