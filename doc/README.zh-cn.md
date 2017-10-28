@@ -1,10 +1,10 @@
 # tinyFecVPN
 
-集成了加速器功能的轻量级VPN
+集成了加速器功能的轻量级VPN，可以加速全流量(TCP/UDP/ICMP)。
 
 ![image](/images/tinyFecVPN.PNG)
 
-TinyFecVPN使用UDPSpeeder作为lib，用FEC来对抗网络的丢包，可以改善你的网络连接(TCP/UDP/ICMP)在高延迟高丢包环境下的表现。TinyFecVPN和UDPspeeder功能类似，只不过TinyFecVPN工作方式是VPN，UDPspeeder工作方式是UDP tunnel. 
+TinyFecVPN使用了和UDPSpeeder相同的lib，用FEC来对抗网络的丢包，改善你的网络在高延迟高丢包环境下的表现。TinyFecVPN和UDPspeeder功能类似，只不过TinyFecVPN工作方式是VPN，UDPspeeder工作方式是UDP tunnel. 
 
 #### 效果
 测试环境是一个有100ms RTT 和10%丢包的网络(借用了UDPspeeder的测试结果)。
@@ -30,6 +30,8 @@ Linux主机，可以是桌面版，可以是android手机/平板，可以是open
 在windows和mac上配合虚拟机可以稳定使用（tinyFecVPN跑在Linux里，其他应用照常跑在window里，桥接模式测试可用），可以使用[这个](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20170918.0/lede-17.01.2-x86_virtual_machine_image_with_udp2raw_pre_installed.zip)虚拟机镜像，大小只有7.5mb，免去在虚拟机里装系统的麻烦；虚拟机自带ssh server，可以scp拷贝文件，可以ssh进去，可以复制粘贴，root密码123456。
 
 android需要通过terminal运行。
+
+需要root或者cap_net_admin权限（因为需要创建tun设备）。
 
 ###### 注意
 在使用虚拟机时，建议手动指定桥接到哪个网卡，不要设置成自动。否则可能会桥接到错误的网卡。
@@ -59,7 +61,7 @@ https://github.com/wangyu-/tinyFecVPN/releases
 
 ###### 备注:
 
-`-f20:10` 表示对每20个原始数据发送10个冗余包。`-f20:10` 和`-f 20:10`都是可以的，空格可以省略，对于所有的单字节option都是如此。对于双字节option，例如后面的`--mode 0`和`--mtu 1200`，空格不可以省略。
+`-f20:10` 表示对每20个原始数据发送10个冗余包。`-f20:10` 和`-f 20:10`都是可以的，空格可以省略，对于所有的单字节option都是如此。对于双字节option，例如`--mode 0`和`--mtu 1200`，空格不可以省略。
 
 `-k` 指定一个字符串，server/client间所有收发的包都会被异或，改变协议特征，防止UDPspeeder的协议被运营商针对。
 
