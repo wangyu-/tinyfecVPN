@@ -72,7 +72,7 @@ static void print_help()
 
 int main(int argc, char *argv[])
 {
-	//working_mode=tunnel_mode;
+	working_mode=tun_dev_mode;
 
 	assert(sizeof(u64_t)==8);
 	assert(sizeof(i64_t)==8);
