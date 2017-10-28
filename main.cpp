@@ -17,23 +17,26 @@ static void print_help()
 	char git_version_buf[100]={0};
 	strncpy(git_version_buf,gitversion,10);
 
-	printf("UDPspeeder V2\n");
+	printf("tinyFecVPN\n");
 	printf("git version: %s    ",git_version_buf);
 	printf("build date: %s %s\n",__DATE__,__TIME__);
-	printf("repository: https://github.com/wangyu-/UDPspeeder\n");
+	printf("repository: https://github.com/wangyu-/tinyFecVPN/\n");
 	printf("\n");
 	printf("usage:\n");
-	printf("    run as client: ./this_program -c -l local_listen_ip:local_port -r server_ip:server_port  [options]\n");
-	printf("    run as server: ./this_program -s -l server_listen_ip:server_port -r remote_ip:remote_port  [options]\n");
+	printf("    run as client: ./this_program -c -r server_ip:server_port  [options]\n");
+	printf("    run as server: ./this_program -s -l server_listen_ip:server_port  [options]\n");
 	printf("\n");
 	printf("common options, must be same on both sides:\n");
 	printf("    -k,--key              <string>        key for simple xor encryption. if not set, xor is disabled\n");
 
 	printf("main options:\n");
+	printf("    --sub-net             <number>        specify sub-net, for example: 192.168.1.0 , default: 10.112.0.0\n");
+	printf("    --tun-dev             <number>        sepcify tun device name, for example: tun10, default: a random name such as tun987\n");
 	printf("    -f,--fec              x:y             forward error correction, send y redundant packets for every x packets\n");
 	printf("    --timeout             <number>        how long could a packet be held in queue before doing fec, unit: ms, default: 8ms\n");
 	printf("    --mode                <number>        fec-mode,available values: 0, 1; 0 cost less bandwidth, 1 cost less latency(default)\n");
 	printf("    --report              <number>        turn on send/recv report, and set a period for reporting, unit: s\n");
+
 
 	printf("advanced options:\n");
 	printf("    --mtu                 <number>        mtu. for mode 0, the program will split packet to segment smaller than mtu_value.\n");
