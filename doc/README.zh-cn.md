@@ -135,6 +135,26 @@ https://github.com/wangyu-/UDPspeeder
 
 子网中的最后一个数字应该是0, 比如10.10.10.123是不符合规范的, 会被程序自动纠正成10.10.10.0.
 
+### 使用经验
+
+##### 假设tinyFecVPN client运行在路由器/虚拟机里，假设tinyFecVPN Server运行在VPS上，现在VPS上有个服务同时监听在TCP/UDP 0.0.0.0:443，我怎么在本地windows上访问到这个服务？(假设tinyFecVPN server的ip是 10.112.0.1)
+
+###### 通用方法
+
+在windows上把网关设置成路由器/虚拟机的IP,在路由器/虚拟机上开启ipforward MASQUERADE, 然后在本地访问10.112.0.1:443.这种方法的优点是，配置一次，所有在10.112.0.1上的端口在本地都可以访问到。
+
+###### 简单方法
+假设虚拟机的ip是192.168.1.105
+
+```
+socat UDP-LISTEN:443,fork,reuseaddr UDP:10.112.0.1:443
+socat TCP-LISTEN:443,fork,reuseaddr TCP:10.112.0.1:443
+
+```
+
+然后你只需要在本地访问192.168.1.105:443就相当于访问服务器上的443端口了。
+
+
 ### 限制
 
 目前，server端的代码里有一个人为限制，作为一个加速器，tinyFecVPN只允许访问server上的服务，不能直接用来科学上网。即使你开启了ipforward和 MASQUERADE也不行，代码里有额外处理，直接透过tinyFecVPN访问第三方服务器的包会被丢掉，效果如图：
