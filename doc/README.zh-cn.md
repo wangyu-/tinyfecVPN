@@ -42,7 +42,7 @@ android需要通过terminal运行。
 
 https://github.com/wangyu-/tinyFecVPN/releases
 
-### Running
+### 运行
 
 假设你有一个server，ip为44.55.66.77，有一个服务监听tcp/udp 0.0.0.0:7777。
 
