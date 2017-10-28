@@ -8,15 +8,15 @@ cc_arm= /toolchains/arm-2014.05/bin/arm-none-linux-gnueabi-g++
 #cc_bcm2708=/home/wangyu/raspberry/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/bin/arm-linux-gnueabihf-g++ 
 FLAGS= -std=c++11   -Wall -Wextra -Wno-unused-variable -Wno-unused-parameter -Wno-missing-field-initializers -ggdb -I. -IUDPspeeder 
 
-SOURCES=`ls UDPspeeder/*.cpp UDPspeeder/lib/*.c|grep -v main.cpp` main.cpp
+SOURCES=`ls UDPspeeder/*.cpp UDPspeeder/lib/*.c|grep -v main.cpp|grep -v tunnel.cpp` main.cpp
 
 #INCLUDE= -I.  -IUDPspeeder
 
-NAME=tiny
+NAME=tinyvpn
 
 TARGETS=amd64 arm mips24kc_be x86  mips24kc_le
 
-TAR=${NAME}_binaries.tar.gz `echo ${TARGETS}|sed -r 's/([^ ]+)/tiny_\1/g'`
+TAR=${NAME}_binaries.tar.gz `echo ${TARGETS}|sed -r 's/([^ ]+)/tinyvpn_\1/g'`
 
 all:git_version
 	rm -f ${NAME}
@@ -27,6 +27,10 @@ debug: git_version
 debug2: git_version
 	rm -f ${NAME}
 	${cc_local}   -o ${NAME}          -I. ${SOURCES} ${FLAGS} -lrt -Wformat-nonliteral -ggdb
+
+sub:
+	git submodule init
+	git submodule update
 
 mips24kc_be: git_version
 	${cc_mips24kc_be}  -o ${NAME}_$@   -I. ${SOURCES} ${FLAGS} -lrt -lgcc_eh -static -O3
