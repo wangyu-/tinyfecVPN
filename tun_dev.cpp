@@ -121,18 +121,21 @@ int from_fec_to_normal2(conn_info_t & conn_info,dest_t &dest,char * data,int len
 		delay_send(out_delay[i],dest,out_arr[i],out_len[i]);
 
 #ifndef NORES
-		char * tmp_data=out_arr[i];
-		int tmp_len=out_len[i];
-		if(tmp_len>=20)
+		if(client_or_server==server_mode)
 		{
-			u32_t dest_ip=htonl(read_u32(tmp_data+16));
-			//printf("%s\n",my_ntoa(dest_ip));
-			if(  ( ntohl(sub_net_uint32)&0xFFFFFF00 ) !=  ( ntohl (dest_ip) &0xFFFFFF00) )
+			char * tmp_data=out_arr[i];
+			int tmp_len=out_len[i];
+			if(tmp_len>=20)
 			{
-				string sub=my_ntoa(dest_ip);
-				string dst=my_ntoa( htonl( ntohl (sub_net_uint32) &0xFFFFFF00)   );
-				mylog(log_warn,"[restriction]packet's dest ip [%s] not in subnet [%s],dropped\n", sub.c_str(), dst.c_str());
-				continue;
+				u32_t dest_ip=htonl(read_u32(tmp_data+16));
+				//printf("%s\n",my_ntoa(dest_ip));
+				if(  ( ntohl(sub_net_uint32)&0xFFFFFF00 ) !=  ( ntohl (dest_ip) &0xFFFFFF00) )
+				{
+					string sub=my_ntoa(dest_ip);
+					string dst=my_ntoa( htonl( ntohl (sub_net_uint32) &0xFFFFFF00)   );
+					mylog(log_warn,"[restriction]packet's dest ip [%s] not in subnet [%s],dropped\n", sub.c_str(), dst.c_str());
+					continue;
+				}
 			}
 		}
 #endif
