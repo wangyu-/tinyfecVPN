@@ -4,12 +4,12 @@ A tiny VPN with Build-in FEC Support.
 
 ![image](/images/tinyFecVPN.PNG)
 
-TinyFecVPN use UDPSpeeder as lib.Supports all FEC features of UDPspeeder. It can improve quality of all network traffic(TCP/UDP/ICMP) as a single program.
+TinyFecVPN use UDPspeeder as lib. Supports all FEC features of UDPspeeder. It can improve quality of all network traffic(TCP/UDP/ICMP) as a single program. TinyFecVPN works at VPN mode,while UDPspeeder works at UDP tunnel mode.
 
 [简体中文](/doc/README.zh-cn.md)(内容更丰富)
 
 # Efficacy
-Tested on a link with 100ms latency and 10% packet loss at both direction(borrowed UDPspeeder's result)
+Tested on a link with 100ms roundtrip and 10% packet loss at both direction(borrowed UDPspeeder's result)
 
 ### Ping Packet Loss
 ![](/images/en/ping_compare.PNG)
@@ -125,6 +125,14 @@ If not set,tinyFecVPN will randomly chose a name,such as tun987.
 Specify the sub-net of VPN. Example: --sub-net 10.10.10.0, in this way,server IP will be 10.10.10.1,client IP will be 10.10.10.2.
 
 The last number of option should be zero, for exmaple 10.10.10.123 is invalild, and will be corrected automatically to 10.10.10.0.
+
+##### `--keep-reconnect`
+
+Only works at client side.
+
+TinyFecVPN only handles one client at same time,the connection of a new client will kick old client,after being kicked,old client will just exit by default.
+
+If `--keep-reconnect` is enabled , the client will try to get connection back after being kicked.
 
 ### Restriction
 
