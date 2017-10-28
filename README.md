@@ -38,7 +38,7 @@ Download binary release from https://github.com/wangyu-/tinyFecVPN/releases
 
 ### Running
 
-Assume your server ip is 44.55.66.77, you have a service listening on udp/tcp port 0.0.0.0:7777.
+Assume your server ip is 44.55.66.77, you have a service listening on udp/tcp port 0.0.0.0:7777. 
 
 ```
 # Run at server side:
@@ -48,7 +48,7 @@ Assume your server ip is 44.55.66.77, you have a service listening on udp/tcp po
 ./tinyvpn -c r44.55.66.77:4096 -f20:10 -k "passwd" --sub-net 10.22.22.0
 ```
 
-Now,use 10.22.22.1:7777 to connect to your service,all traffic is speeded-up by FEC.
+Now,use 10.22.22.1:7777 to connect to your service,all traffic is speeded-up by FEC. If you ping 10.22.22.1, you will get ping reply.
 
 ##### Note
 
