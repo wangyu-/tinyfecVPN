@@ -4,7 +4,7 @@ A tiny VPN with Build-in FEC Support.
 
 ![image](/images/tinyFecVPN.PNG)
 
-TinyFecVPN use UDPspeeder as lib. Supports all FEC features of UDPspeeder. It can improve quality of all network traffic(TCP/UDP/ICMP) as a single program. TinyFecVPN works at VPN mode,while UDPspeeder works at UDP tunnel mode.
+TinyFecVPN use same lib as UDPspeeder. Supports all FEC features of UDPspeeder. It can improve quality of all network traffic(TCP/UDP/ICMP) as a single program. TinyFecVPN works at VPN mode,while UDPspeeder works at UDP tunnel mode.
 
 [简体中文](/doc/README.zh-cn.md)(内容更丰富)
 
