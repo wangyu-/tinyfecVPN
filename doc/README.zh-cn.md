@@ -203,6 +203,15 @@ socat TCP-LISTEN:443,fork,reuseaddr TCP:123.123.123.123:443
 
 结合前两种情况,就可以了。既在路由器/虚拟机中运行socat，又在VPS中运行socat，就可以把这个端口映射到本地了。
 
+### 重启client或server后不断线
+用下面这个命令，建立一个持久型的tun设备，叫tun100
+```
+ip tuntap add tun100 mode tun
+```
+
+然后在tinyFecVPN里用`--dev-tun tun100`使用这个持久型tun设备。
+
+
 ### 其他使用经验
 
 请看UDPspeeder的使用经验一节。UDPspeeder的几乎所有经验在这里都是适用的。
