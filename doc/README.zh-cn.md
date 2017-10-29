@@ -25,25 +25,6 @@ TinyFecVPN使用了和UDPSpeeder相同的lib，用FEC来对抗网络的丢包，
 
 https://github.com/wangyu-/UDPspeeder/
 
-# 性能测试(侧重吞吐量)
-
-server 在 vulr 日本，CPU2.4GHz,内存 512mb。client 在搬瓦工美国，CPU 2.0GHZ,内存 96mb。在网路间额外模拟了10%的丢包，用于加重FEC的负担。
-
-### 测试命令
-
-```
-在server端：
-./tinyvpn_amd64 -s -l 0.0.0.0:5533 --mode 0
-iperf3 -s
-在client端：
-./tinyvpn_amd64 -c -r 45.76.100.53:5533 --mode 0
-iperf3 -c 10.22.22.1 -P10
-```
-
-### 测试结果
-
-![image](/images/performance2.PNG)
-
 # 简明操作说明
 
 ### 环境要求
@@ -87,6 +68,27 @@ https://github.com/wangyu-/tinyFecVPN/releases
 `-f20:10` 表示对每20个原始数据发送10个冗余包。`-f20:10` 和`-f 20:10`都是可以的，空格可以省略，对于所有的单字节option都是如此。对于双字节option，例如`--mode 0`和`--mtu 1200`，空格不可以省略。
 
 `-k` 指定一个字符串，server/client间所有收发的包都会被异或，改变协议特征，防止UDPspeeder的协议被运营商针对。
+
+
+# 性能测试(侧重吞吐量)
+
+server 在 vulr 日本，CPU2.4GHz,内存 512mb。client 在搬瓦工美国，CPU 2.0GHZ,内存 96mb。在网路间额外模拟了10%的丢包，用于加重FEC的负担。
+
+### 测试命令
+
+```
+在server端：
+./tinyvpn_amd64 -s -l 0.0.0.0:5533 --mode 0
+iperf3 -s
+在client端：
+./tinyvpn_amd64 -c -r 45.76.100.53:5533 --mode 0
+iperf3 -c 10.22.22.1 -P10
+```
+
+### 测试结果
+
+![image](/images/performance2.PNG)
+
 
 # 进阶操作说明
 
