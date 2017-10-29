@@ -42,10 +42,11 @@ Server is Vulr VPS in japan，CPU: single core 2.4GHz,ram: 512mb. Client is Band
 ### Test command
 
 ```
-server side：
+Server side：
 ./tinyvpn_amd64 -s -l 0.0.0.0:5533 --mode 0
 iperf3 -s
-client side：
+
+Client side：
 ./tinyvpn_amd64 -c -r 45.76.100.53:5533 --mode 0
 iperf3 -c 10.22.22.1 -P10
 ```
