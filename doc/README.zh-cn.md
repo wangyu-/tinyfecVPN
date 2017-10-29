@@ -57,7 +57,7 @@ https://github.com/wangyu-/tinyFecVPN/releases
 ./tinyvpn -s -l0.0.0.0:4096 -f20:10 -k "passwd" --sub-net 10.22.22.0
 
 # 在client端运行：
-./tinyvpn -c r44.55.66.77:4096 -f20:10 -k "passwd" --sub-net 10.22.22.0
+./tinyvpn -c -r44.55.66.77:4096 -f20:10 -k "passwd" --sub-net 10.22.22.0
 
 ```
 
