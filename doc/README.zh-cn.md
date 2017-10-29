@@ -2,7 +2,7 @@
 
 集成了加速器功能的轻量级VPN，可以加速全流量(TCP/UDP/ICMP)。
 
-![image](/images/tinyFecVPN.PNG)
+![image](/images/tinyFecVPNcn.PNG)
 
 TinyFecVPN使用了和UDPSpeeder相同的lib，用FEC来对抗网络的丢包，改善你的网络在高延迟高丢包环境下的表现。TinyFecVPN和UDPspeeder功能类似，只不过TinyFecVPN工作方式是VPN，UDPspeeder工作方式是UDP tunnel. 
 
