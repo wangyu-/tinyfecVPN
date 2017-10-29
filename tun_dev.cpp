@@ -118,7 +118,6 @@ int from_fec_to_normal2(conn_info_t & conn_info,dest_t &dest,char * data,int len
 
 	for(int i=0;i<out_n;i++)
 	{
-		delay_send(out_delay[i],dest,out_arr[i],out_len[i]);
 
 #ifndef NORES
 		if(client_or_server==server_mode)
@@ -139,6 +138,7 @@ int from_fec_to_normal2(conn_info_t & conn_info,dest_t &dest,char * data,int len
 			}
 		}
 #endif
+		delay_send(out_delay[i],dest,out_arr[i],out_len[i]);
 
 	}
 
