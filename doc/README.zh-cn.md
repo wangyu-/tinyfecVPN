@@ -167,6 +167,8 @@ iperf3 -c 10.22.22.1 -P10
 
 还有一部分情况是因为你要访问的服务没有bind在0.0.0.0，请用netstat -nlp检查服务器的bind情况。
 
+也有可能是你的udp被本地运营商屏蔽了，在前面串个udp2raw可以解决。
+
 ### 报错open /dev/net/tun failed
 可能是你没有root或cap_net_admin权限。
 
@@ -217,6 +219,10 @@ ip tuntap add tun100 mode tun
 ```
 
 然后在tinyFecVPN里用`--dev-tun tun100`使用这个持久型tun设备。
+
+### 加密
+
+tinyFecVPN是一个极轻量的VPN，比l2tp还轻量，只自带了简单的xor加密。如果你需要AES加密，可以在前面串个udp2raw，这样同时还能获得防重放攻击的能力。
 
 
 ### 其他使用经验
