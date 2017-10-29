@@ -69,27 +69,6 @@ https://github.com/wangyu-/tinyFecVPN/releases
 
 `-k` 指定一个字符串，server/client间所有收发的包都会被异或，改变协议特征，防止UDPspeeder的协议被运营商针对。
 
-
-# 性能测试(侧重吞吐量)
-
-server 在 vulr 日本，CPU2.4GHz,内存 512mb。client 在搬瓦工美国，CPU 2.0GHZ,内存 96mb。在网路间额外模拟了10%的丢包，用于加重FEC的负担。
-
-### 测试命令
-
-```
-在server端：
-./tinyvpn_amd64 -s -l 0.0.0.0:5533 --mode 0
-iperf3 -s
-在client端：
-./tinyvpn_amd64 -c -r 45.76.100.53:5533 --mode 0
-iperf3 -c 10.22.22.1 -P10
-```
-
-### 测试结果
-
-![image](/images/performance2.PNG)
-
-
 # 进阶操作说明
 
 ### 命令选项
@@ -159,6 +138,25 @@ https://github.com/wangyu-/UDPspeeder
 指定VPN的子网。 例如: 对于--sub-net 10.10.10.0, server的IP会被设置成10.10.10.1,client的IP会被设置成10.10.10.2 .
 
 子网中的最后一个数字应该是0, 比如10.10.10.123是不符合规范的, 会被程序自动纠正成10.10.10.0.
+
+# 性能测试(侧重吞吐量)
+
+server 在 vulr 日本，CPU2.4GHz,内存 512mb。client 在搬瓦工美国，CPU 2.0GHZ,内存 96mb。在网路间额外模拟了10%的丢包，用于加重FEC的负担。
+
+### 测试命令
+
+```
+在server端：
+./tinyvpn_amd64 -s -l 0.0.0.0:5533 --mode 0
+iperf3 -s
+在client端：
+./tinyvpn_amd64 -c -r 45.76.100.53:5533 --mode 0
+iperf3 -c 10.22.22.1 -P10
+```
+
+### 测试结果
+
+![image](/images/performance2.PNG)
 
 # 使用经验
 ### 不能正常连通
