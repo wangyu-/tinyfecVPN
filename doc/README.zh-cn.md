@@ -167,6 +167,11 @@ iperf3 -c 10.22.22.1 -P10
 
 还有一部分情况是因为你要访问的服务没有bind在0.0.0.0，请用netstat -nlp检查服务器的bind情况。
 
+### 报错open /dev/net/tun failed
+可能是你没有root或cap_net_admin权限。
+
+也可能是你的设备上面没有这个文件。例如对于lede或openwrt，用opkg安装kmod-tun，安装后会自动出现。
+
 ### 透过tinyFecVPN免改iptables加速网络
 
 因为iptables很多人都不会配，即使是对熟练的人也容易出错。这里推荐一种免iptables的方法，基本上可以应对任何情况，推荐给新手用。如果你可以熟练配置iptables和路由规则，可以跳过这节。
