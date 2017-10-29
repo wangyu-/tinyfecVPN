@@ -10,6 +10,9 @@
 #include "log.h"
 #include "misc.h"
 
+my_time_t last_keep_alive_time=0;
+
+int keep_alive_interval=1000;//1000ms
 
 int get_tun_fd(char * dev_name)
 {
@@ -72,6 +75,7 @@ int set_if(char *if_name,u32_t local_ip,u32_t remote_ip,int mtu)
 const char header_normal=1;
 const char header_new_connect=2;
 const char header_reject=3;
+const char header_keep_alive=4;
 
 int put_header(char header,char * data,int &len)
 {
@@ -144,7 +148,22 @@ int from_fec_to_normal2(conn_info_t & conn_info,dest_t &dest,char * data,int len
 
 	return 0;
 }
+int keep_alive(dest_t & dest)
+{
+	if(get_current_time()-last_keep_alive_time>u64_t(keep_alive_interval))
+	{
+		last_keep_alive_time=get_current_time();
+		char data[buf_len];int len;
+		data[0]=header_keep_alive;
+		int len=1;
 
+		assert(dest.cook==1);
+		//do_cook(data,len);
+
+		delay_send(0,dest,data,len);
+	}
+	return 0;
+}
 int tun_dev_client_event_loop()
 {
 	char data[buf_len];
@@ -277,6 +296,7 @@ int tun_dev_client_event_loop()
 				read(conn_info.timer.get_timer_fd(), &value, 8);
 				mylog(log_trace,"events[idx].data.u64==(u64_t)conn_info.timer.get_timer_fd()\n");
 				conn_info.stat.report_as_client();
+				if(got_feed_back) keep_alive(udp_dest);
 			}
 
 			else if(events[idx].data.u64==conn_info.fec_encode_manager.get_timer_fd64())
@@ -345,6 +365,12 @@ int tun_dev_client_event_loop()
 				if(get_header(header,data,len)!=0)
 				{
 					mylog(log_warn,"get_header failed\n");
+					continue;
+				}
+
+				if(header==keep_alive)
+				{
+					mylog(log_debug,"got keep_alive packet\n");
 					continue;
 				}
 
@@ -541,6 +567,7 @@ int tun_dev_server_event_loop()
 					continue;
 				}
 				conn_info.stat.report_as_server(udp_dest.inner.fd_ip_port.ip_port);
+				keep_alive(udp_dest);
 			}
 			else if(events[idx].data.u64==conn_info.fec_encode_manager.get_timer_fd64())
 			{
@@ -595,6 +622,12 @@ int tun_dev_server_event_loop()
 
 				if((udp_dest.inner.fd_ip_port.ip_port.ip==udp_new_addr_in.sin_addr.s_addr) && (udp_dest.inner.fd_ip_port.ip_port.port==ntohs(udp_new_addr_in.sin_port)))
 				{
+					if(header==keep_alive)
+					{
+						mylog(log_debug,"got keep_alive packet\n");
+						continue;
+					}
+
 					if(header!=header_new_connect&& header!=header_normal)
 					{
 						mylog(log_warn,"invalid header\n");
@@ -603,6 +636,12 @@ int tun_dev_server_event_loop()
 				}
 				else
 				{
+					if(header==keep_alive)
+					{
+						mylog(log_debug,"got keep_alive packet from unexpected client\n");
+						continue;
+					}
+
 					if(header==header_new_connect)
 					{
 						mylog(log_info,"new connection from %s:%d \n", inet_ntoa(udp_new_addr_in.sin_addr),
