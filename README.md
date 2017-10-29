@@ -22,13 +22,38 @@ Linux host (including desktop Linux,Android phone/tablet, OpenWRT router, or Ras
 
 For Windows and MacOS You can run TinyFecVPN inside [this](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20170918.0/lede-17.01.2-x86_virtual_machine_image_with_udp2raw_pre_installed.zip) 7.5mb virtual machine image.
 
-# How does it work
+
+
+
+# How doest it work
 
 TinyFecVPN uses FEC(Forward Error Correction) to reduce packet loss rate, at the cost of addtional bandwidth. The algorithm for FEC is called Reed-Solomon.
 
-Check UDPspeeder repo for details:
+![](/images/FEC.PNG)
+
+For more details,check:
 
 https://github.com/wangyu-/UDPspeeder/
+
+# Performance Test(throughput)
+
+Server is vulr in japan，CPU: single core 2.4GHz,ram: 512mb. Client is bandwagonhost VPS in USA，CPU: single core 2.0GHZ,ram: 96mb。
+
+### Test command
+
+```
+在server端：
+./tinyvpn_amd64 -s -l 0.0.0.0:5533 --mode 0
+iperf3 -s
+在client端：
+./tinyvpn_amd64 -c -r 45.76.100.53:5533 --mode 0
+iperf3 -c 10.22.22.1 -P10
+```
+
+### Test result
+
+![image](/images/performance2.PNG)
+
 
 # Getting Started
 
