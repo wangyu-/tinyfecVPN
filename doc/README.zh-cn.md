@@ -152,7 +152,7 @@ server 在 vulr 日本，CPU2.4GHz,内存 512mb。client 在搬瓦工美国，CP
 ./tinyvpn_amd64 -s -l 0.0.0.0:5533 --mode 0
 iperf3 -s
 在client端：
-./tinyvpn_amd64 -c -r 45.76.100.53:5533 --mode 0
+./tinyvpn_amd64 -c -r 44.55.66.77:5533 --mode 0
 iperf3 -c 10.22.22.1 -P10
 ```
 
