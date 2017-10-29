@@ -13,13 +13,36 @@ TinyFecVPN使用了和UDPSpeeder相同的lib，用FEC来对抗网络的丢包，
 
 ![](/images/en/scp_compare.PNG)
 
-#### 原理简介
+# 原理简介
 
 主要原理是通过冗余数据来对抗网络的丢包，发送冗余数据的方式支持FEC(Forward Error Correction)和多倍发包，其中FEC算法是Reed-Solomon。
+
+原理图：
+
+![](/images/FEC.PNG)
 
 细节请看UDPspeeder的repo，这里不再重复：
 
 https://github.com/wangyu-/UDPspeeder/
+
+# 性能测试(侧重vpn的吞吐量)
+
+server 在 vulr 日本，CPU2.4GHz,内存 512mb。client 在搬瓦工美国，CPU 2.0GHZ,内存 96mb。在网路间额外模拟了10%的丢包，用于加重FEC的负担。
+
+### 测试命令
+
+```
+在server端：
+./tinyvpn_amd64 -s -l 0.0.0.0:5533 --mode 0
+iperf3 -s
+在client端：
+./tinyvpn_amd64 -c -r 45.76.100.53:5533 --mode 0
+iperf3 -c 10.22.22.1 -P10
+```
+
+### 测试结果
+
+![image](/images/performance2.PNG)
 
 # 简明操作说明
 
