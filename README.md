@@ -37,15 +37,15 @@ https://github.com/wangyu-/UDPspeeder/
 
 # Performance Test(throughput)
 
-Server is vulr in japan，CPU: single core 2.4GHz,ram: 512mb. Client is bandwagonhost VPS in USA，CPU: single core 2.0GHZ,ram: 96mb。
+Server is Vulr VPS in japan，CPU: single core 2.4GHz,ram: 512mb. Client is Bandwagonhost VPS in USA，CPU: single core 2.0GHZ,ram: 96mb。
 
 ### Test command
 
 ```
-在server端：
+server side：
 ./tinyvpn_amd64 -s -l 0.0.0.0:5533 --mode 0
 iperf3 -s
-在client端：
+client side：
 ./tinyvpn_amd64 -c -r 45.76.100.53:5533 --mode 0
 iperf3 -c 10.22.22.1 -P10
 ```
