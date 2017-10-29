@@ -201,6 +201,12 @@ socat TCP-LISTEN:443,fork,reuseaddr TCP:123.123.123.123:443
 
 结合前两种情况,就可以了。既在路由器/虚拟机中运行socat，又在VPS中运行socat，就可以把这个端口映射到本地了。
 
+### 其他使用经验
+
+请看UDPspeeder的使用经验一节。UDPspeeder的几乎所有经验在这里都是适用的。
+
+https://github.com/wangyu-/UDPspeeder/blob/master/doc/README.zh-cn.md#使用经验
+
 # 限制
 
 目前，server端的代码里有一个人为限制，作为一个加速器，tinyFecVPN只允许(直接)访问server上的服务，不能(直接)用来科学上网。即使你开启了ipforward和 MASQUERADE也不行，代码里有额外处理，直接透过tinyFecVPN访问第三方服务器的包会被丢掉，效果如图：
