@@ -29,7 +29,7 @@ https://github.com/wangyu-/UDPspeeder/
 
 ### 环境要求
 
-Linux主机，可以是桌面版，可以是android手机/平板，可以是openwrt路由器，也可以是树莓派。
+Linux主机，可以是桌面版，<del>可以是android手机/平板</del>，可以是openwrt路由器，也可以是树莓派。(android暂时有问题)
 
 在windows和mac上配合虚拟机可以稳定使用（tinyFecVPN跑在Linux里，其他应用照常跑在window里，桥接模式测试可用），可以使用[这个](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20170918.0/lede-17.01.2-x86_virtual_machine_image_with_udp2raw_pre_installed.zip)虚拟机镜像，大小只有7.5mb，免去在虚拟机里装系统的麻烦；虚拟机自带ssh server，可以scp拷贝文件，可以ssh进去，可以复制粘贴，root密码123456。
 
@@ -167,6 +167,15 @@ iperf3 -c 10.22.22.1 -P10
 
 还有一部分情况是因为你要访问的服务没有bind在0.0.0.0，请用netstat -nlp检查服务器的bind情况。
 
+也有可能是你的udp被本地运营商屏蔽了，在前面串个udp2raw可以解决。
+
+### 报错open /dev/net/tun failed
+可能是你没有root或cap_net_admin权限。
+
+也可能是你的设备上面没有这个文件。例如对于lede或openwrt，用opkg安装kmod-tun，安装后会自动出现。 你也可以用包管理器安装个openvpn，因为openvpn依赖kmod-tun，这个设备也会自动被包管理器配好。
+
+绝大多数linux发行版上都是默认建好了/dev/net/tun的，一般只会在lede/openwrt等嵌入式发行版上遇到此问题。在我提供的虚拟机里，也是自带/dev/net/tun的。
+
 ### 透过tinyFecVPN免改iptables加速网络
 
 因为iptables很多人都不会配，即使是对熟练的人也容易出错。这里推荐一种免iptables的方法，基本上可以应对任何情况，推荐给新手用。如果你可以熟练配置iptables和路由规则，可以跳过这节。
@@ -210,6 +219,10 @@ ip tuntap add tun100 mode tun
 ```
 
 然后在tinyFecVPN里用`--dev-tun tun100`使用这个持久型tun设备。
+
+### 加密
+
+tinyFecVPN是一个极轻量的VPN，比l2tp还轻量，只自带了简单的xor加密。如果你需要AES加密，可以在前面串个udp2raw，这样同时还能获得防重放攻击的能力。
 
 
 ### 其他使用经验
