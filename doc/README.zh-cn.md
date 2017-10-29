@@ -25,7 +25,7 @@ TinyFecVPN使用了和UDPSpeeder相同的lib，用FEC来对抗网络的丢包，
 
 https://github.com/wangyu-/UDPspeeder/
 
-# 性能测试(侧重vpn的吞吐量)
+# 性能测试(吞吐量)
 
 server 在 vulr 日本，CPU2.4GHz,内存 512mb。client 在搬瓦工美国，CPU 2.0GHZ,内存 96mb。在网路间额外模拟了10%的丢包，用于加重FEC的负担。
 
