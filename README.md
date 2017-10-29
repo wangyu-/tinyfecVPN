@@ -8,6 +8,10 @@ TinyFecVPN use same lib as UDPspeeder. Supports all FEC features of UDPspeeder. 
 
 [简体中文](/doc/README.zh-cn.md)(内容更丰富)
 
+UDPspeeder 's repo:
+
+https://github.com/wangyu-/UDPspeeder
+
 # Efficacy
 Tested on a link with 100ms roundtrip and 10% packet loss at both direction(borrowed UDPspeeder's result)
 
