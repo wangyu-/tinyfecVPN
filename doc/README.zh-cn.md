@@ -69,6 +69,8 @@ https://github.com/wangyu-/tinyFecVPN/releases
 
 `-k` 指定一个字符串，server/client间所有收发的包都会被异或，改变协议特征，防止UDPspeeder的协议被运营商针对。
 
+如果需要更省流量，或者更高吞吐率，请加上`--mode 0`。默认参数是`--mode 1`，倾向于更低的延迟。
+
 # 进阶操作说明
 
 ### 命令选项
