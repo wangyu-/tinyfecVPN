@@ -1,6 +1,6 @@
 # tinyFecVPN
 
-A tiny VPN with Build-in FEC Support.
+A Lightweight High-Performance VPN with Build-in Forward Error Correction Support.
 
 ![image](/images/tinyFecVPN.PNG)
 
