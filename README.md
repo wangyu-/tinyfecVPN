@@ -157,7 +157,7 @@ The last number of option should be zero, for exmaple 10.10.10.123 is invalild, 
 
 Only works at client side.
 
-TinyFecVPN only handles one client at same time,the connection of a new client will kick old client,after being kicked,old client will just exit by default.
+TinyFecVPN server only handles one client at same time,the connection of a new client will kick old client,after being kicked,old client will just exit by default.
 
 If `--keep-reconnect` is enabled , the client will try to get connection back after being kicked.
 
