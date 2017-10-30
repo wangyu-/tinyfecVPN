@@ -36,27 +36,6 @@ For more details,check:
 
 https://github.com/wangyu-/UDPspeeder/
 
-# Performance Test(throughput)
-
-Server is Vulr VPS in japan，CPU: single core 2.4GHz,ram: 512mb. Client is Bandwagonhost VPS in USA，CPU: single core 2.0GHZ,ram: 96mb。
-
-### Test command
-
-```
-Server side：
-./tinyvpn_amd64 -s -l 0.0.0.0:5533 --mode 0
-iperf3 -s
-
-Client side：
-./tinyvpn_amd64 -c -r 44.55.66.77:5533 --mode 0
-iperf3 -c 10.22.22.1 -P10
-```
-
-### Test result
-
-![image](/images/performance2.PNG)
-
-
 # Getting Started
 
 ### Installing
@@ -163,7 +142,30 @@ TinyFecVPN server only handles one client at same time,the connection of a new c
 
 If `--keep-reconnect` is enabled , the client will try to get connection back after being kicked.
 
-### Restriction
+
+# Performance Test(throughput)
+
+Server is Vulr VPS in japan，CPU: single core 2.4GHz,ram: 512mb. Client is Bandwagonhost VPS in USA，CPU: single core 2.0GHZ,ram: 96mb。
+
+### Test command
+
+```
+Server side：
+./tinyvpn_amd64 -s -l 0.0.0.0:5533 --mode 0
+iperf3 -s
+
+Client side：
+./tinyvpn_amd64 -c -r 44.55.66.77:5533 --mode 0
+iperf3 -c 10.22.22.1 -P10
+```
+
+### Test result
+
+![image](/images/performance2.PNG)
+
+
+
+# Restriction
 
 There is currently an intended restriction at server side.You cant use tinyFecVPN to access a third server directly. So,as a connection speed-up tool,when used alone,it only allows you to speed-up your connection to your server.You cant use it to bypass network firewalls directly.
 
