@@ -141,6 +141,14 @@ https://github.com/wangyu-/UDPspeeder
 
 子网中的最后一个数字应该是0, 比如10.10.10.123是不符合规范的, 会被程序自动纠正成10.10.10.0.
 
+##### `--keep-reconnect`
+
+Only works at client side.
+
+TinyFecVPN server only handles one client at same time,the connection of a new client will kick old client,after being kicked,old client will just exit by default.
+
+If --keep-reconnect is enabled , the client will try to get connection back after being kicked.
+
 # 性能测试(侧重吞吐量)
 
 server 在 vulr 日本，CPU2.4GHz,内存 512mb。client 在搬瓦工美国，CPU 2.0GHZ,内存 96mb。在网路间额外模拟了10%的丢包，用于加重FEC的负担。
