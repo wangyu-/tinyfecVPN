@@ -67,7 +67,7 @@ https://github.com/wangyu-/tinyFecVPN/releases
 
 `-f20:10` 表示对每20个原始数据发送10个冗余包。`-f20:10` 和`-f 20:10`都是可以的，空格可以省略，对于所有的单字节option都是如此。对于双字节option，例如`--mode 0`和`--mtu 1200`，空格不可以省略。
 
-`-k` 指定一个字符串，server/client间所有收发的包都会被异或，改变协议特征，防止UDPspeeder的协议被运营商针对。
+`-k` 开启简单的异或加密。
 
 如果需要更省流量，或者更高吞吐率，请加上`--mode 0`。默认参数是`--mode 1`，倾向于更低的延迟。
 
@@ -141,6 +141,14 @@ https://github.com/wangyu-/UDPspeeder
 
 子网中的最后一个数字应该是0, 比如10.10.10.123是不符合规范的, 会被程序自动纠正成10.10.10.0.
 
+##### `--keep-reconnect`
+
+Only works at client side.
+
+TinyFecVPN server only handles one client at same time,the connection of a new client will kick old client,after being kicked,old client will just exit by default.
+
+If --keep-reconnect is enabled , the client will try to get connection back after being kicked.
+
 # 性能测试(侧重吞吐量)
 
 server 在 vulr 日本，CPU2.4GHz,内存 512mb。client 在搬瓦工美国，CPU 2.0GHZ,内存 96mb。在网路间额外模拟了10%的丢包，用于加重FEC的负担。
@@ -152,7 +160,7 @@ server 在 vulr 日本，CPU2.4GHz,内存 512mb。client 在搬瓦工美国，CP
 ./tinyvpn_amd64 -s -l 0.0.0.0:5533 --mode 0
 iperf3 -s
 在client端：
-./tinyvpn_amd64 -c -r 45.76.100.53:5533 --mode 0
+./tinyvpn_amd64 -c -r 44.55.66.77:5533 --mode 0
 iperf3 -c 10.22.22.1 -P10
 ```
 

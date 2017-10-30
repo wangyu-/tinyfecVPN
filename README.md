@@ -1,10 +1,10 @@
 # tinyFecVPN
 
-A tiny VPN with Build-in FEC Support.
+A Lightweight High-Performance VPN with Build-in Forward Error Correction Support.
 
 ![image](/images/tinyFecVPN.PNG)
 
-TinyFecVPN use same lib as UDPspeeder. Supports all FEC features of UDPspeeder. It can improve quality of all network traffic(TCP/UDP/ICMP) as a single program. TinyFecVPN works at VPN mode,while UDPspeeder works at UDP tunnel mode.
+TinyFecVPN Improves your Network Quality on a High-Latency Lossy Link by using Forward Error Correction. It uses same lib as UDPspeeder, supports all FEC features of UDPspeeder. TinyFecVPN works at VPN mode,while UDPspeeder works at UDP tunnel mode.
 
 [简体中文](/doc/README.zh-cn.md)(内容更丰富)
 
@@ -25,9 +25,6 @@ Tested on a link with 100ms roundtrip and 10% packet loss at both direction(borr
 Linux host (including desktop Linux,<del>Android phone/tablet</del>, OpenWRT router, or Raspberry PI).
 
 For Windows and MacOS You can run TinyFecVPN inside [this](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20170918.0/lede-17.01.2-x86_virtual_machine_image_with_udp2raw_pre_installed.zip) 7.5mb virtual machine image.
-
-
-
 
 # How doest it work
 
@@ -51,7 +48,7 @@ Server side：
 iperf3 -s
 
 Client side：
-./tinyvpn_amd64 -c -r 45.76.100.53:5533 --mode 0
+./tinyvpn_amd64 -c -r 44.55.66.77:5533 --mode 0
 iperf3 -c 10.22.22.1 -P10
 ```
 
@@ -160,7 +157,7 @@ The last number of option should be zero, for exmaple 10.10.10.123 is invalild, 
 
 Only works at client side.
 
-TinyFecVPN only handles one client at same time,the connection of a new client will kick old client,after being kicked,old client will just exit by default.
+TinyFecVPN server only handles one client at same time,the connection of a new client will kick old client,after being kicked,old client will just exit by default.
 
 If `--keep-reconnect` is enabled , the client will try to get connection back after being kicked.
 
