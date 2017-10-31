@@ -83,7 +83,7 @@ https://github.com/wangyu-/tinyFecVPN/releases
 
 `-k` 开启简单的异或加密。
 
-如果需要更省流量，或者更高吞吐率，请加上`--mode 0`。默认参数是`--mode 1`，倾向于更低的延迟。
+<del>如果需要更省流量，或者更高吞吐率，请加上`--mode 0`。默认参数是`--mode 1`，倾向于更低的延迟。</del> 现在默认参数是mode 0。
 
 # 进阶操作说明
 
