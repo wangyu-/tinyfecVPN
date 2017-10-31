@@ -14,7 +14,7 @@ udp2raw的repo:
 
 https://github.com/wangyu-/udp2raw-tunnel
 
-如果你不想用tinyFecVPN代替现有的VPN，你可以尝试UDPspeeder，UDPspeeder可以跟任意基于UDP的VPN一起用，赋予VPN FEC的能力。
+如果你目前已经在使用某个VPN而又不想换成tinyFecVPN，你可以尝试UDPspeeder，UDPspeeder可以跟任意基于UDP的VPN一起用，赋予后者FEC的能力。
 
 UDPspeeder的repo:
 
