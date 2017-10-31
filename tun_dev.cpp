@@ -10,6 +10,12 @@
 #include "log.h"
 #include "misc.h"
 
+#include <netinet/tcp.h>   //Provides declarations for tcp header
+#include <netinet/udp.h>
+#include <netinet/ip.h>    //Provides declarations for ip header
+#include <netinet/if_ether.h>
+
+
 my_time_t last_keep_alive_time=0;
 
 int keep_alive_interval=1000;//1000ms
@@ -145,6 +151,163 @@ int from_fec_to_normal2(conn_info_t & conn_info,dest_t &dest,char * data,int len
 		delay_send(out_delay[i],dest,out_arr[i],out_len[i]);
 
 	}
+
+	return 0;
+}
+int mssfix(char * s,int len)
+{
+	if(len<20)
+	{
+		mylog(log_debug,"packet from tun len=%d <20\n",len);
+		return -1;
+	}
+	iphdr *  iph;
+	iph = (struct iphdr *) s;
+	if(iph->protocol!=IPPROTO_TCP)
+	{
+		//mylog(log_trace,"not tcp");
+		return 0;
+	}
+
+    if (!(iph->ihl > 0 && iph->ihl <=60)) {
+    	mylog(log_debug,"iph ihl error ihl= %u\n",(u32_t)iph->ihl);
+        return -1;
+    }
+    int ip_len=ntohs(iph->tot_len);
+    int ip_hdr_len=iph->ihl*4;
+    if(len<ip_hdr_len)
+    {
+    	mylog(log_debug,"len<ip_hdr_len,%d %d\n",len,ip_hdr_len);
+    	return -1;
+    }
+    if(len<ip_len)
+    {
+    	mylog(log_debug,"len<ip_len,%d %d\n",len,ip_len);
+    	return -1;
+    }
+    if(ip_hdr_len>ip_len)
+    {
+    	mylog(log_debug,"ip_hdr_len<ip_len,%d %d\n",ip_hdr_len,ip_len);
+    	return -1;
+    }
+
+    if( ( ntohs(iph->frag_off) &(short)(0x1FFF) ) !=0 )
+    {
+    	//not first segment
+
+    	//printf("line=%d %x  %x \n",__LINE__,(u32_t)ntohs(iph->frag_off),u32_t( ntohs(iph->frag_off) &0xFFF8));
+    	return 0;
+    }
+    if( ( ntohs(iph->frag_off) &(short)(0x80FF) )  !=0 )
+    {
+    	//not whole segment
+      	//printf("line=%d   \n",__LINE__);
+    	return 0;
+    }
+
+    char * tcp_begin=s+ip_hdr_len;
+    int tcp_len=ip_len-ip_hdr_len;
+
+    if(tcp_len<20)
+    {
+    	mylog(log_debug,"tcp_len<20,%d\n",tcp_len);
+    	return -1;
+    }
+
+    tcphdr * tcph=(struct tcphdr*)tcp_begin;
+
+    if(int(tcph->syn)==0)  //fast fail
+    {
+    	mylog(log_trace,"tcph->syn==0\n");
+    	return 0;
+    }
+
+    int tcp_hdr_len = tcph->doff*4;
+
+    if(tcp_len<tcp_hdr_len)
+    {
+    	mylog(log_debug,"tcp_len <tcp_hdr_len, %d %d\n",tcp_len,tcp_hdr_len);
+    	return -1;
+    }
+
+    /*
+    if(tcp_hdr_len==20)
+    {
+    	//printf("line=%d\n",__LINE__);
+    	mylog(log_trace,"no tcp option\n");
+    	return 0;
+    }*/
+
+    char *ptr=tcp_begin+20;
+    char *option_end=tcp_begin+tcp_hdr_len;
+    while(ptr<option_end)
+    {
+    	if(*ptr==0)
+    	{
+    		return  0;
+    	}
+    	else if(*ptr==1)
+    	{
+    		ptr++;
+    	}
+    	else if(*ptr==2)
+    	{
+    		if(ptr+1>=option_end)
+    		{
+    			mylog(log_debug,"invaild option ptr+1==option_end,for mss\n");
+    			return -1;
+    		}
+    		if(*(ptr+1)!=4)
+    		{
+    			mylog(log_debug,"invaild mss len\n");
+    			return -1;
+    		}
+    		if(ptr+3>=option_end)
+    		{
+    			mylog(log_debug,"ptr+4>option_end for mss\n");
+    			return -1;
+    		}
+    		int mss= read_u16(ptr+2);//uint8_t(ptr[2])*256+uint8_t(ptr[3]);
+    		int new_mss=mss;
+    		if(new_mss>g_fec_mtu-40)
+    		{
+    			new_mss=g_fec_mtu-40;
+    		}
+    		write_u16(ptr+2,(unsigned short)new_mss);
+
+    	    pseudo_header psh;
+
+    	    psh.source_address =iph->saddr;
+    	    psh.dest_address = iph->daddr;
+    	    psh.placeholder = 0;
+    	    psh.protocol = iph->protocol;
+    	    psh.tcp_length = htons(tcp_len);
+
+
+    	    tcph->check=0;
+    	    tcph->check=tcp_csum(psh,(unsigned short *)tcph,tcp_len);
+
+    		mylog(log_debug,"mss=%d  syn=%d ack=%d, changed mss to %d \n",mss,(int)tcph->syn,(int)tcph->ack,new_mss);
+
+    		//printf("test=%x\n",u32_t(1));
+    		//printf("frag=%x\n",u32_t( ntohs(iph->frag_off) ));
+
+    		return 0;
+    	}
+    	else
+    	{
+    		if(ptr+1>=option_end)
+    		{
+    			mylog(log_debug,"invaild option ptr+1==option_end\n");
+    			return -1;
+    		}
+    		else
+    		{
+    			//omit check
+    			ptr+=*(ptr+1);
+    		}
+    	}
+    }
 
 	return 0;
 }
@@ -334,6 +497,8 @@ int tun_dev_client_event_loop()
 					mylog(log_warn,"read from tun_fd return %d,errno=%s\n",len,strerror(errno));
 					continue;
 				}
+
+				mssfix(data,len);
 
 				mylog(log_trace,"Received packet from tun,len: %d\n",len);
 
@@ -693,6 +858,8 @@ int tun_dev_server_event_loop()
 					mylog(log_warn,"read from tun_fd return %d,errno=%s\n",len,strerror(errno));
 					continue;
 				}
+
+				mssfix(data,len);
 
 				mylog(log_trace,"Received packet from tun,len: %d\n",len);
 
