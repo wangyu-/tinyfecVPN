@@ -8,17 +8,17 @@ TinyFecVPN使用了和UDPSpeeder相同的lib，用FEC来对抗网络的丢包，
 
 ##### 提示
 
+UDPspeeder的repo:
+
+https://github.com/wangyu-/UDPspeeder
+
+##### 提示2
+
 对于某些运营商，UDPspeeder跟tinyFecVPN配合可以达到更好的速度，udp2raw负责把UDP伪装成TCP，来绕过运营商的UDP限速。
 
 udp2raw的repo:
 
 https://github.com/wangyu-/udp2raw-tunnel
-
-如果你目前已经在使用某个VPN而又不想换成tinyFecVPN，你可以尝试UDPspeeder，UDPspeeder可以跟任意基于UDP的VPN一起用，赋予后者FEC的能力。
-
-UDPspeeder的repo:
-
-https://github.com/wangyu-/UDPspeeder
 
 #### 效果
 测试环境是一个有100ms RTT 和10%丢包的网络(借用了UDPspeeder的测试结果)。
