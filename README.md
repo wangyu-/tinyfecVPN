@@ -12,6 +12,13 @@ UDPspeeder's repo:
 
 https://github.com/wangyu-/UDPspeeder
 
+##### Hint
+You can use udp2raw with tinyFecVPN together to get better speed on some ISP with UDP QoS(UDP throttling).
+
+udp2raw's repo：
+
+https://github.com/wangyu-/udp2raw-tunnel
+
 # Efficacy
 Tested on a link with 100ms roundtrip and 10% packet loss at both direction(borrowed UDPspeeder's result)
 
