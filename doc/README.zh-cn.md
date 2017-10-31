@@ -199,6 +199,11 @@ iperf3 -c 10.22.22.1 -P10
 
 绝大多数linux发行版上都是默认建好了/dev/net/tun的，一般只会在lede/openwrt等嵌入式发行版上遇到此问题。在我提供的虚拟机里，也是自带/dev/net/tun的。
 
+
+### 报错 [WARN]message too long len=xxx fec_mtu=xxxx,ignored 
+
+这应该是你指定了--mode 1。--mode 1现在需要配合iptables的tcpmss用，如果不知道tcpmss，请暂时先用mode 0，就不会有问题了。之后我会写个教程说一下mode 1怎么用。
+
 ### 透过tinyFecVPN免改iptables加速网络
 
 因为iptables很多人都不会配，即使是对熟练的人也容易出错。这里推荐一种免iptables的方法，基本上可以应对任何情况，推荐给新手用。如果你可以熟练配置iptables和路由规则，可以跳过这节。
