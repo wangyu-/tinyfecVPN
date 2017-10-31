@@ -180,7 +180,7 @@ int tun_dev_client_event_loop()
 	assert(new_connected_socket(remote_fd,remote_ip_uint32,remote_port)==0);
 	remote_fd64=fd_manager.create(remote_fd);
 
-	assert(set_if(tun_dev,htonl((ntohl(sub_net_uint32)&0xFFFFFF00)|2),htonl((ntohl(sub_net_uint32)&0xFFFFFF00 )|1),g_fec_mtu)==0);
+	assert(set_if(tun_dev,htonl((ntohl(sub_net_uint32)&0xFFFFFF00)|2),htonl((ntohl(sub_net_uint32)&0xFFFFFF00 )|1),1500)==0);
 
 	epoll_fd = epoll_create1(0);
 	assert(epoll_fd>0);
@@ -449,7 +449,7 @@ int tun_dev_server_event_loop()
 	assert(tun_fd>0);
 
 	assert(new_listen_socket(local_listen_fd,local_ip_uint32,local_port)==0);
-	assert(set_if(tun_dev,htonl((ntohl(sub_net_uint32)&0xFFFFFF00)|1),htonl((ntohl(sub_net_uint32)&0xFFFFFF00 )|2),g_fec_mtu)==0);
+	assert(set_if(tun_dev,htonl((ntohl(sub_net_uint32)&0xFFFFFF00)|1),htonl((ntohl(sub_net_uint32)&0xFFFFFF00 )|2),1500)==0);
 
 	epoll_fd = epoll_create1(0);
 	assert(epoll_fd>0);
