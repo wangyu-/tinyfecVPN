@@ -8,11 +8,13 @@ TinyFecVPN Improves your Network Quality on a High-Latency Lossy Link by using F
 
 [简体中文](/doc/README.zh-cn.md)(内容更丰富)
 
+##### Note
+You can also try UDPspeeder,a UDP tunnel which can grant any current UDP-based VPN the ablity of FEC.
+
 UDPspeeder's repo:
 
 https://github.com/wangyu-/UDPspeeder
 
-##### Hint
 You can use udp2raw with tinyFecVPN together to get better speed on some ISP with UDP QoS(UDP throttling).
 
 udp2raw's repo：
