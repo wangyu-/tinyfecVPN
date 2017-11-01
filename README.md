@@ -1,10 +1,14 @@
 # tinyFecVPN
 
-A Lightweight High-Performance VPN with Build-in Forward Error Correction Support.
+A Lightweight High-Performance VPN with Build-in Forward Error Correction Support(or A Network Improving Tool which works at VPN mode). Improves your Network Quality on a High-latency Lossy Link. 
 
-![image](/images/tinyFecVPN.PNG)
+![image](/images/tinyFecVPN3.PNG)
 
-TinyFecVPN Improves your Network Quality on a High-Latency Lossy Link by using Forward Error Correction. It uses same lib as UDPspeeder, supports all FEC features of UDPspeeder. TinyFecVPN works at VPN mode,while UDPspeeder works at UDP tunnel mode.
+TinyFecVPN uses Forward Error Correction(Reed-Solomon code) to reduce packet loss rate, at the cost of additional bandwidth usage. 
+
+Assume your local network to your server is lossy. Just establish a VPN connection to your server with tinyFecVPN, access your server via this VPN connection, then your connection quality will be significantly improved. With well-tuned parameters , you can easily reduce  IP or UDP/ICMP packet-loss-rate to less than 0.01% . Besides reducing packet-loss-rate, tinyFecVPN can also significantly improve your TCP latency and TCP single-thread download speed.
+
+TinyFecVPN uses same lib as [UDPspeeder](https://github.com/wangyu-/UDPspeeder), supports all FEC features of UDPspeeder. TinyFecVPN works at VPN mode,while UDPspeeder works at UDP tunnel mode.
 
 [简体中文](/doc/README.zh-cn.md)(内容更丰富)
 
@@ -22,28 +26,41 @@ udp2raw's repo：
 https://github.com/wangyu-/udp2raw-tunnel
 
 # Efficacy
-Tested on a link with 100ms roundtrip and 10% packet loss at both direction(borrowed UDPspeeder's result)
+Tested on a link with 100ms roundtrip and 10% packet loss at both direction. You can easily reproduce the test result by yourself.
 
 ### Ping Packet Loss
-![](/images/en/ping_compare.PNG)
+![](/images/en/ping_compare2.PNG)
 
 ### SCP Copy Speed
-![](/images/en/scp_compare.PNG)
+![](/images/en/scp_compare2.PNG)
 
 # Supported Platforms
-Linux host (including desktop Linux,<del>Android phone/tablet</del>, OpenWRT router, or Raspberry PI).
+Linux host (including desktop Linux,<del>Android phone/tablet</del>, OpenWRT router, or Raspberry PI).Binaries for `amd64` `x86` `mips_be` `mips_le` `arm` are provided.
 
-For Windows and MacOS You can run TinyFecVPN inside [this](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20170918.0/lede-17.01.2-x86_virtual_machine_image_with_udp2raw_pre_installed.zip) 7.5mb virtual machine image.
+For Windows and MacOS, You can run TinyFecVPN inside [this](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20170918.0/lede-17.01.2-x86_virtual_machine_image_with_udp2raw_pre_installed.zip) 7.5mb virtual machine image.
+
+Need root or at least CAP_NET_ADMIN permission to run, for creating tun device.
 
 # How doest it work
 
-TinyFecVPN uses FEC(Forward Error Correction) to reduce packet loss rate, at the cost of addtional bandwidth. The algorithm for FEC is called Reed-Solomon.
+TinyFecVPN uses FEC(Forward Error Correction) to reduce packet loss rate, at the cost of additional bandwidth usage. The algorithm for FEC is called Reed-Solomon.
 
 ![](/images/FEC.PNG)
 
-For more details,check:
+### Reed-Solomon
 
-https://github.com/wangyu-/UDPspeeder/
+`
+In coding theory, the Reed–Solomon code belongs to the class of non-binary cyclic error-correcting codes. The Reed–Solomon code is based on univariate polynomials over finite fields.
+`
+
+`
+It is able to detect and correct multiple symbol errors. By adding t check symbols to the data, a Reed–Solomon code can detect any combination of up to t erroneous symbols, or correct up to ⌊t/2⌋ symbols. As an erasure code, it can correct up to t known erasures, or it can detect and correct combinations of errors and erasures. Reed–Solomon codes are also suitable as multiple-burst bit-error correcting codes, since a sequence of b + 1 consecutive bit errors can affect at most two symbols of size b. The choice of t is up to the designer of the code, and may be selected within wide limits.
+`
+
+![](/images/en/rs.png)
+
+Check wikipedia for more info, https://en.wikipedia.org/wiki/Reed–Solomon_error_correction
+
 
 # Getting Started
 
@@ -53,17 +70,17 @@ Download binary release from https://github.com/wangyu-/tinyFecVPN/releases
 
 ### Running
 
-Assume your server ip is 44.55.66.77, you have a service listening on udp/tcp port 0.0.0.0:7777. 
+Assume your server ip is `44.55.66.77`, you have a service listening on udp/tcp port `0.0.0.0:7777`. 
 
 ```
 # Run at server side:
 ./tinyvpn -s -l0.0.0.0:4096 -f20:10 -k "passwd" --sub-net 10.22.22.0
 
 # Run at client side
-./tinyvpn -c r44.55.66.77:4096 -f20:10 -k "passwd" --sub-net 10.22.22.0
+./tinyvpn -c -r44.55.66.77:4096 -f20:10 -k "passwd" --sub-net 10.22.22.0
 ```
 
-Now,use 10.22.22.1:7777 to connect to your service,all traffic is speeded-up by FEC. If you ping 10.22.22.1, you will get ping reply.
+Now, use `10.22.22.1:7777` to connect to your service,all traffic will be improved by FEC. If you ping `10.22.22.1`, you will get ping reply.
 
 ##### Note
 
@@ -92,7 +109,7 @@ main options:
     --timeout             <number>        how long could a packet be held in queue before doing fec, unit: ms, default: 8ms
     --mode                <number>        fec-mode,available values: 0, 1; 0 cost less bandwidth, 1 cost less latency;default: 0)
     --report              <number>        turn on send/recv report, and set a period for reporting, unit: s
-    --re-connect                          re-connect after lost connection,only for client.
+    --keep-reconnect                      re-connect after lost connection,only for client.
 advanced options:
     --mtu                 <number>        mtu. for mode 0, the program will split packet to segment smaller than mtu_value.
                                           for mode 1, no packet will be split, the program just check if the mtu is exceed.
@@ -136,15 +153,15 @@ https://github.com/wangyu-/UDPspeeder
 
 ##### `--tun-dev`
 
-Specify a tun device name to use. Example: --tun-dev tun100.
+Specify a tun device name to use. Example: `--tun-dev tun100`.
 
-If not set,tinyFecVPN will randomly chose a name,such as tun987.
+If not set,tinyFecVPN will randomly chose a name,such as `tun987`.
 
 ##### `--sub-net`
 
-Specify the sub-net of VPN. Example: --sub-net 10.10.10.0, in this way,server IP will be 10.10.10.1,client IP will be 10.10.10.2.
+Specify the sub-net of VPN. Example: `--sub-net 10.10.10.0`, in this way,server IP will be `10.10.10.1`,client IP will be `10.10.10.2`.
 
-The last number of option should be zero, for exmaple 10.10.10.123 is invalild, and will be corrected automatically to 10.10.10.0.
+The last number of option should be zero, for exmaple `10.10.10.123` is invalild, and will be corrected automatically to `10.10.10.0`.
 
 ##### `--keep-reconnect`
 
@@ -154,20 +171,19 @@ TinyFecVPN server only handles one client at same time,the connection of a new c
 
 If `--keep-reconnect` is enabled , the client will try to get connection back after being kicked.
 
-
 # Performance Test(throughput)
 
-Server is Vulr VPS in japan，CPU: single core 2.4GHz,ram: 512mb. Client is Bandwagonhost VPS in USA，CPU: single core 2.0GHZ,ram: 96mb。
+Server is a Vulr VPS in japan，CPU: single core 2.4GHz,ram: 512mb. Client is a Bandwagonhost VPS in USA，CPU: single core 2.0GHZ,ram: 96mb. To put pressure on the FEC algorithm, an additional 10% packet-loss rate was introduced at both direction.
 
 ### Test command
 
 ```
 Server side：
-./tinyvpn_amd64 -s -l 0.0.0.0:5533 --mode 0
+./tinyvpn_amd64 -s -l 0.0.0.0:5533 --mode 0 -f20:10
 iperf3 -s
 
 Client side：
-./tinyvpn_amd64 -c -r 44.55.66.77:5533 --mode 0
+./tinyvpn_amd64 -c -r 44.55.66.77:5533 --mode 0 -f20:10
 iperf3 -c 10.22.22.1 -P10
 ```
 
@@ -175,10 +191,9 @@ iperf3 -c 10.22.22.1 -P10
 
 ![image](/images/performance2.PNG)
 
+Note: the performance is mainly limited by the RS code lib.
 
+# Other
+For regulations consideration, there is currently an intended restriction at server side in the pre-released binaries. You cant use tinyFecVPN to access a third host directly. So, as a connection speed-up tool, when used alone, it only allows you to speed-up your connection to your server. You cant use it for bypassing firewalls by default.
 
-# Restriction
-
-There is currently an intended restriction at server side.You cant use tinyFecVPN to access a third server directly. So,as a connection speed-up tool,when used alone,it only allows you to speed-up your connection to your server.You cant use it to bypass network firewalls directly.
-
-To bypass this restriction,you have to disable it by modifying source code,and re-compile by yourself.
+You can easily get rid of this restriction by compiling the source code by yourself. 

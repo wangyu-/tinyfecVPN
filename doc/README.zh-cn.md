@@ -1,10 +1,12 @@
 # tinyFecVPN
 
-集成了加速器功能的轻量级VPN，可以加速全流量(TCP/UDP/ICMP)。
+工作在VPN方式的双边网络加速工具，可以加速全流量(TCP/UDP/ICMP)。
 
-![image](/images/tinyFecVPNcn.PNG)
+![image](/images/tinyFecVPNcn2.PNG)
 
-TinyFecVPN使用了和UDPSpeeder相同的lib，用FEC来对抗网络的丢包，改善你的网络在高延迟高丢包环境下的表现。TinyFecVPN和UDPspeeder功能类似，只不过TinyFecVPN工作方式是VPN，UDPspeeder工作方式是UDP tunnel. 
+假设你的本地主机到某个服务器的丢包很高，你只需要用tinyFecVPN建立一条VPN连接，然后透过此VPN来访问server，你的网路质量会得到显著改善。通过合理设置参数，可以轻易把网络丢包率降低到万分之一以下。除了可以降低丢包，还可以显著改善TCP的响应速度，提高TCP的单线程传输速度。
+
+TinyFecVPN使用了和UDPSpeeder相同的lib，功能和UDPspeeder类似，只不过TinyFecVPN工作方式是VPN，UDPspeeder工作方式是UDP tunnel. 
 
 ##### 提示
 
@@ -14,14 +16,14 @@ https://github.com/wangyu-/UDPspeeder
 
 ##### 提示2
 
-对于某些运营商，UDPspeeder跟tinyFecVPN配合可以达到更好的速度，udp2raw负责把UDP伪装成TCP，来绕过运营商的UDP限速。
+对于某些运营商，tinyFecVPN跟udp2raw配合可以达到更好的速度，udp2raw负责把UDP伪装成TCP，来绕过运营商的UDP限速。
 
 udp2raw的repo:
 
 https://github.com/wangyu-/udp2raw-tunnel
 
 #### 效果
-测试环境是一个有100ms RTT 和10%丢包的网络(借用了UDPspeeder的测试结果)。
+测试环境是一个有100ms RTT 和双向10%丢包的网络(借用了UDPspeeder的测试结果)。
 
 ![](https://raw.githubusercontent.com/wangyu-/UDPspeeder/master/images/cn/ping_compare_cn.PNG)
 
@@ -75,7 +77,7 @@ https://github.com/wangyu-/tinyFecVPN/releases
 
 ```
 
-现在，只要在客户端使用10.22.22.1:7777就可以连上你的服务了,来回的流量都会被加速。去ping 10.22.22.1也会得到回复。
+现在，只要在客户端使用10.22.22.1:7777就可以连上你的服务了,来回的流量都会被加速。执行ping 10.22.22.1也会得到回复。
 
 ###### 备注:
 
@@ -83,7 +85,7 @@ https://github.com/wangyu-/tinyFecVPN/releases
 
 `-k` 开启简单的异或加密。
 
-如果需要更低的延迟，请加上`--mode 1`，默认参数`--mode 0`倾向于更省流量/更高吞吐率。 UDPspeeder的默认参数是`--mode 1`,tinyFecVPN的默认参数是`--mode 0`，注意区别。
+如果需要更低的延迟，请加上`--mode 1`；默认的参数`--mode 0`倾向于更省流量/更高吞吐率。 UDPspeeder的默认参数是`--mode 1`, tinyFecVPN的默认参数是`--mode 0`，注意区别。 `--mode 0`不需要考虑MTU问题，而`--mode 1`需要，如果你不知道MTU是什么，建议用`--mode 0`。
 
 # 进阶操作说明
 
@@ -106,7 +108,7 @@ main options:
     --timeout             <number>        how long could a packet be held in queue before doing fec, unit: ms, default: 8ms
     --mode                <number>        fec-mode,available values: 0, 1; 0 cost less bandwidth, 1 cost less latency;default: 0)
     --report              <number>        turn on send/recv report, and set a period for reporting, unit: s
-    --re-connect                          re-connect after lost connection,only for client.
+    --keep-reconnect                      re-connect after lost connection,only for client.
 advanced options:
     --mtu                 <number>        mtu. for mode 0, the program will split packet to segment smaller than mtu_value.
                                           for mode 1, no packet will be split, the program just check if the mtu is exceed.
@@ -156,17 +158,17 @@ https://github.com/wangyu-/UDPspeeder
 
 ##### `--sub-net`
 
-指定VPN的子网。 例如: 对于--sub-net 10.10.10.0, server的IP会被设置成10.10.10.1,client的IP会被设置成10.10.10.2 .
+指定VPN的子网，格式为xxx.xxx.xxx.0。 例如: 对于--sub-net 10.10.10.0, server的IP会被设置成10.10.10.1,client的IP会被设置成10.10.10.2 .
 
 子网中的最后一个数字应该是0, 比如10.10.10.123是不符合规范的, 会被程序自动纠正成10.10.10.0.
 
 ##### `--keep-reconnect`
 
-Only works at client side.
+只对client有效
 
-TinyFecVPN server only handles one client at same time,the connection of a new client will kick old client,after being kicked,old client will just exit by default.
+TinyFecVPN server只接受一个client的连接，后连接的client会把新的挤掉。
 
-If --keep-reconnect is enabled , the client will try to get connection back after being kicked.
+如果开启了--keep-reconnect，client在连接断开或者被挤掉以后会尝试重新获得连接。
 
 # 性能测试(侧重吞吐量)
 
@@ -203,17 +205,12 @@ iperf3 -c 10.22.22.1 -P10
 
 绝大多数linux发行版上都是默认建好了/dev/net/tun的，一般只会在lede/openwrt等嵌入式发行版上遇到此问题。在我提供的虚拟机里，也是自带/dev/net/tun的。
 
-
-### 报错 [WARN]message too long len=xxx fec_mtu=xxxx,ignored 
-
-这应该是你指定了--mode 1。--mode 1现在需要配合iptables的tcpmss用，如果不知道tcpmss，请暂时先用mode 0，就不会有问题了。之后我会写个教程说一下mode 1怎么用。
-
 ### MTU 问题
-在`mode 0`下编码器会自动把数据包切分到合适的长度，所以你可以完全不用考虑MTU(不使用`-q 1`的情况下)。 
+在`--mode 0`下编码器会自动把数据包切分到合适的长度，所以你可以完全不用考虑MTU。 
 
-如果用了`--mode 1`或`--mode 0 -q 1`，编码器就不会对数据包做切分了，所以会引入MTU问题。 对于TCP，你仍然不需要关心MTU,因为tinyFecVPN会自动做mssfix；但是对于UDP，需要上层的程序来保证发送的数据不超过MTU的值(一般游戏都不会发送巨大的数据包，所以对于游戏没问题；一般那些可能会发送巨大数据包的程序都会提供调整MTU的选项，比如KCPTUN)。如果你是新手，建议用默认参数不要改，就可以保证不出MTU问题。
+如果用了`--mode 1`，编码器就不会对数据包做切分了，所以会引入MTU问题。 对于TCP，你仍然不需要关心MTU,因为tinyFecVPN会自动做mssfix；但是对于UDP，需要上层的程序来保证发送的数据不超过MTU的值(一般游戏都不会发送巨大的数据包，所以对于游戏没问题；一般那些可能会发送巨大数据包的程序都会提供调整MTU的选项，比如KCPTUN)。如果你是新手，建议用默认的--mode 0参数不要改，就可以保证不出MTU问题。
 
-如果你是开发者，对于`--mode 1`或`--mode 0 -q 1`可以尝试--tun-mtu，把设备mtu设置成和--mtu相同的值(如果没设置过就是默认的1250)，这样可以使内核对ip包分片（只适用于允许分片的数据包），达到传输巨大的UDP数据包的目的。新手不建议用。
+如果你是开发者，对于`--mode 1`可以尝试--tun-mtu，把设备mtu设置成一个较小的值，比如1200，这样可以使内核对ip包分片（只适用于没有DF标志的数据包），达到传输巨大的UDP数据包的目的。新手不建议用。
 
 
 ### 透过tinyFecVPN免改iptables加速网络
@@ -226,31 +223,29 @@ iperf3 -c 10.22.22.1 -P10
 
 ##### 假设tinyFecVPN client运行在路由器/虚拟机里，假设tinyFecVPN Server运行在VPS上，现在VPS上有个服务监听在TCP和UDP的0.0.0.0:443，我怎么在本地windows上访问到这个服务？
 
-假设tinyFecVPN server分配的ip是 10.22.22.1，路由器/虚拟机的ip是192.168.1.105
+假设tinyFecVPN server分配的ip是 10.22.22.1，路由器/虚拟机的ip是192.168.1.105。
 
-在路由器/虚拟机中运行如下命令(socat在我提供的虚拟机里已经安装好了)：
+先在路由器/虚拟机中安装 [tinyPortMapper](https://github.com/wangyu-/tinyPortMapper/releases)，然后运行如下命令：
 
 ```
-socat UDP-LISTEN:443,fork,reuseaddr UDP:10.22.22.1:443
-socat TCP-LISTEN:443,fork,reuseaddr TCP:10.22.22.1:443
+./tinymapper_x86 -l0.0.0.0:443 -r10.22.22.1:443 -t -u
 ```
 
 然后你只需要在本地windows访问192.168.1.105:443就相当于访问VPS上的443端口了。
 
 ##### 假设tinyFecVPN client 运行在本地的linux上,假设 tinyFecVPN Server运行在VPS A上。现在另一台VPS B(假设ip是123.123.123.123)上面有个服务监听在123.123.123.123:443，我怎么在本地的linux上，透过tinyFecVPN访问到这个服务？
 
-在VPS A上运行：
+在VPS A上安装 [tinyPortMapper](https://github.com/wangyu-/tinyPortMapper/releases)，然后运行如下命令：：
 
 ```
-socat UDP-LISTEN:443,fork,reuseaddr UDP:123.123.123.123:443
-socat TCP-LISTEN:443,fork,reuseaddr TCP:123.123.123.123:443
+./tinymapper_x86 -l0.0.0.0:443 -r123.123.123.123:443 -t -u
 ```
 
 然后，VPS B上的443端口就被映射到10.22.22.1:443了。这样，在linux上访问10.22.22.1:443就相当于访问123.123.123.123:443了。
 
 ##### 假设tinyFecVPN client运行在路由器/虚拟机里，假设 tinyFecVPN Server运行在VPS A上。现在另一台VPS B(假设ip是123.123.123.123)上面有个服务监听在123.123.123.123:443，我怎么在本地的windows上，透过tinyFecVPN访问到这个服务？
 
-结合前两种情况,就可以了。既在路由器/虚拟机中运行socat，又在VPS中运行socat，就可以把这个端口映射到本地了。
+结合前两种情况,就可以了。既在路由器/虚拟机中运行tinyPortMapper，又在VPS中运行tinyPortMapper，就可以把这个端口映射到本地了。
 
 ### 重启client或server后不断线
 用下面这个命令，建立一个持久型的tun设备，叫tun100
@@ -279,3 +274,8 @@ https://github.com/wangyu-/UDPspeeder/blob/master/doc/README.zh-cn.md#使用经�
 
 绕过这个限制的方法有：1. 在server搭个代理，比如socks5，透过tinyFecVPN访问这个代理，用代理访问第三方服务器。  2. 自己找到相关限制的代码，修改代码，编译一个自用的无限制版（不要传播）。
 
+# 应用实例
+
+#### 用树莓派做路由器，搭建透明代理，加速游戏主机的网络
+
+https://github.com/wangyu-/UDPspeeder/wiki/用树莓派做路由器，搭建透明代理，加速游戏主机的网络
