@@ -154,8 +154,12 @@ int from_fec_to_normal2(conn_info_t & conn_info,dest_t &dest,char * data,int len
 
 	return 0;
 }
-int mssfix(char * s,int len)
+int do_mssfix(char * s,int len)
 {
+	if(mssfix==0)
+	{
+		return 0;
+	}
 	if(len<20)
 	{
 		mylog(log_debug,"packet from tun len=%d <20\n",len);
@@ -287,7 +291,7 @@ int mssfix(char * s,int len)
     	    tcph->check=0;
     	    tcph->check=tcp_csum(psh,(unsigned short *)tcph,tcp_len);
 
-    		mylog(log_debug,"mss=%d  syn=%d ack=%d, changed mss to %d \n",mss,(int)tcph->syn,(int)tcph->ack,new_mss);
+    		mylog(log_trace,"mss=%d  syn=%d ack=%d, changed mss to %d \n",mss,(int)tcph->syn,(int)tcph->ack,new_mss);
 
     		//printf("test=%x\n",u32_t(1));
     		//printf("frag=%x\n",u32_t( ntohs(iph->frag_off) ));
@@ -343,7 +347,7 @@ int tun_dev_client_event_loop()
 	assert(new_connected_socket(remote_fd,remote_ip_uint32,remote_port)==0);
 	remote_fd64=fd_manager.create(remote_fd);
 
-	assert(set_if(tun_dev,htonl((ntohl(sub_net_uint32)&0xFFFFFF00)|2),htonl((ntohl(sub_net_uint32)&0xFFFFFF00 )|1),1500)==0);
+	assert(set_if(tun_dev,htonl((ntohl(sub_net_uint32)&0xFFFFFF00)|2),htonl((ntohl(sub_net_uint32)&0xFFFFFF00 )|1),tun_mtu)==0);
 
 	epoll_fd = epoll_create1(0);
 	assert(epoll_fd>0);
@@ -498,7 +502,7 @@ int tun_dev_client_event_loop()
 					continue;
 				}
 
-				mssfix(data,len);
+				do_mssfix(data,len);
 
 				mylog(log_trace,"Received packet from tun,len: %d\n",len);
 
@@ -614,7 +618,7 @@ int tun_dev_server_event_loop()
 	assert(tun_fd>0);
 
 	assert(new_listen_socket(local_listen_fd,local_ip_uint32,local_port)==0);
-	assert(set_if(tun_dev,htonl((ntohl(sub_net_uint32)&0xFFFFFF00)|1),htonl((ntohl(sub_net_uint32)&0xFFFFFF00 )|2),1500)==0);
+	assert(set_if(tun_dev,htonl((ntohl(sub_net_uint32)&0xFFFFFF00)|1),htonl((ntohl(sub_net_uint32)&0xFFFFFF00 )|2),tun_mtu)==0);
 
 	epoll_fd = epoll_create1(0);
 	assert(epoll_fd>0);
@@ -859,7 +863,7 @@ int tun_dev_server_event_loop()
 					continue;
 				}
 
-				mssfix(data,len);
+				do_mssfix(data,len);
 
 				mylog(log_trace,"Received packet from tun,len: %d\n",len);
 
