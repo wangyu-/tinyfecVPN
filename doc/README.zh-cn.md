@@ -126,7 +126,7 @@ developer options:
                                           supported commands.
     -j ,--jitter          jmin:jmax       similiar to -j above, but create jitter randomly between jmin and jmax
     -i,--interval         imin:imax       similiar to -i above, but scatter randomly between imin and imax
-    -q,--queue-len        <number>        max fec queue len, only for mode 0
+    f,--queue-len        <number>        max fec queue len, only for mode 0
     --decode-buf          <number>        size of buffer of fec decoder,u nit: packet, default: 2000
     --fix-latency         <number>        try to stabilize latency, only for mode 0
     --delay-capacity      <number>        max number of delayed packets
@@ -209,7 +209,7 @@ iperf3 -c 10.22.22.1 -P10
 这应该是你指定了--mode 1。--mode 1现在需要配合iptables的tcpmss用，如果不知道tcpmss，请暂时先用mode 0，就不会有问题了。之后我会写个教程说一下mode 1怎么用。
 
 ### MTU 问题
-在`mode 0`下编码器会自动把数据包切分到合适的长度，所以你可以完全不用考虑MTU(不使用`-q 1`的情况下)。 
+在`mode 0`下编码器会自动把数据包切分到合适的长度，所以你可以完全不用考虑MTU。 
 
 如果用了`--mode 1`，编码器就不会对数据包做切分了，所以会引入MTU问题。 对于TCP，你仍然不需要关心MTU,因为tinyFecVPN会自动做mssfix；但是对于UDP，需要上层的程序来保证发送的数据不超过MTU的值(一般游戏都不会发送巨大的数据包，所以对于游戏没问题；一般那些可能会发送巨大数据包的程序都会提供调整MTU的选项，比如KCPTUN)。如果你是新手，建议用默认参数不要改，就可以保证不出MTU问题。
 
