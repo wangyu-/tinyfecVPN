@@ -23,9 +23,9 @@ https://github.com/wangyu-/udp2raw-tunnel
 #### 效果
 测试环境是一个有100ms RTT 和10%丢包的网络(借用了UDPspeeder的测试结果)。
 
-![](/images/en/ping_compare.PNG)
+![](https://raw.githubusercontent.com/wangyu-/UDPspeeder/master/images/cn/ping_compare_cn.PNG)
 
-![](/images/en/scp_compare.PNG)
+![](https://github.com/wangyu-/UDPspeeder/blob/master/images/cn/scp_compare.PNG)
 
 # 原理简介
 
