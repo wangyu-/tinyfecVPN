@@ -92,7 +92,7 @@ main options:
     --timeout             <number>        how long could a packet be held in queue before doing fec, unit: ms, default: 8ms
     --mode                <number>        fec-mode,available values: 0, 1; 0 cost less bandwidth, 1 cost less latency;default: 0)
     --report              <number>        turn on send/recv report, and set a period for reporting, unit: s
-    --re-connect                          re-connect after lost connection,only for client.
+    --keep-reconnect                      re-connect after lost connection,only for client.
 advanced options:
     --mtu                 <number>        mtu. for mode 0, the program will split packet to segment smaller than mtu_value.
                                           for mode 1, no packet will be split, the program just check if the mtu is exceed.
