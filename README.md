@@ -60,7 +60,7 @@ Assume your server ip is 44.55.66.77, you have a service listening on udp/tcp po
 ./tinyvpn -s -l0.0.0.0:4096 -f20:10 -k "passwd" --sub-net 10.22.22.0
 
 # Run at client side
-./tinyvpn -c r44.55.66.77:4096 -f20:10 -k "passwd" --sub-net 10.22.22.0
+./tinyvpn -c -r44.55.66.77:4096 -f20:10 -k "passwd" --sub-net 10.22.22.0
 ```
 
 Now,use 10.22.22.1:7777 to connect to your service,all traffic is speeded-up by FEC. If you ping 10.22.22.1, you will get ping reply.
