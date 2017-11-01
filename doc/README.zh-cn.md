@@ -23,9 +23,9 @@ https://github.com/wangyu-/udp2raw-tunnel
 #### 效果
 测试环境是一个有100ms RTT 和10%丢包的网络(借用了UDPspeeder的测试结果)。
 
-![](/images/en/ping_compare.PNG)
+![](https://raw.githubusercontent.com/wangyu-/UDPspeeder/master/images/cn/ping_compare_cn.PNG)
 
-![](/images/en/scp_compare.PNG)
+![](https://github.com/wangyu-/UDPspeeder/blob/master/images/cn/scp_compare.PNG)
 
 # 原理简介
 
@@ -83,14 +83,14 @@ https://github.com/wangyu-/tinyFecVPN/releases
 
 `-k` 开启简单的异或加密。
 
-<del>如果需要更省流量，或者更高吞吐率，请加上`--mode 0`。默认参数是`--mode 1`，倾向于更低的延迟。</del> 现在默认参数是mode 0。
+如果需要更低的延迟，请加上`--mode 1`，默认参数`--mode 0`倾向于更省流量/更高吞吐率。 UDPspeeder的默认参数是`--mode 1`,tinyFecVPN的默认参数是`--mode 0`，注意区别。
 
 # 进阶操作说明
 
 ### 命令选项
 ```
 tinyFecVPN
-git version: becd952db3    build date: Oct 28 2017 07:36:09
+git version: b03df1b586    build date: Oct 31 2017 19:46:50
 repository: https://github.com/wangyu-/tinyFecVPN/
 
 usage:
@@ -100,11 +100,11 @@ usage:
 common options, must be same on both sides:
     -k,--key              <string>        key for simple xor encryption. if not set, xor is disabled
 main options:
-    --sub-net             <number>        specify sub-net, for example: 192.168.1.0 , default: 10.22.22.0
+    --sub-net             <number>        specify sub-net, for example: 192.168.1.0 , default: 10.22.22.0
     --tun-dev             <number>        sepcify tun device name, for example: tun10, default: a random name such as tun987
     -f,--fec              x:y             forward error correction, send y redundant packets for every x packets
     --timeout             <number>        how long could a packet be held in queue before doing fec, unit: ms, default: 8ms
-    --mode                <number>        fec-mode,available values: 0, 1; 0 cost less bandwidth, 1 cost less latency(default)
+    --mode                <number>        fec-mode,available values: 0, 1; 0 cost less bandwidth, 1 cost less latency;default: 0)
     --report              <number>        turn on send/recv report, and set a period for reporting, unit: s
     --re-connect                          re-connect after lost connection,only for client.
 advanced options:
@@ -118,6 +118,9 @@ advanced options:
     --random-drop         <number>        simulate packet loss, unit: 0.01%. default value: 0
     --disable-obscure     <number>        disable obscure, to save a bit bandwidth and cpu
 developer options:
+    --tun-mtu             <number >       mtu of the tun interface,most time you shouldnt change this
+    --disable-mssfix      <number >       disable mssfix for tcp connection
+    -i,--interval         imin:imax       similiar to -i above, but scatter randomly between imin and imax
     --fifo                <string>        use a fifo(named pipe) for sending commands to the running program, so that you
                                           can change fec encode parameters dynamically, check readme.md in repository for
                                           supported commands.
@@ -135,6 +138,7 @@ log and help options:
     --log-position                        enable file name, function name, line number in log
     --disable-color                       disable log color
     -h,--help                             print this help message
+
 ```
 ### 跟UDPspeeder共用的选项
 
@@ -203,6 +207,14 @@ iperf3 -c 10.22.22.1 -P10
 ### 报错 [WARN]message too long len=xxx fec_mtu=xxxx,ignored 
 
 这应该是你指定了--mode 1。--mode 1现在需要配合iptables的tcpmss用，如果不知道tcpmss，请暂时先用mode 0，就不会有问题了。之后我会写个教程说一下mode 1怎么用。
+
+### MTU 问题
+在`mode 0`下编码器会自动把数据包切分到合适的长度，所以你可以完全不用考虑MTU(不使用`-q 1`的情况下)。 
+
+如果用了`--mode 1`或`--mode 0 -q 1`，编码器就不会对数据包做切分了，所以会引入MTU问题。 对于TCP，你仍然不需要关心MTU,因为tinyFecVPN会自动做mssfix；但是对于UDP，需要上层的程序来保证发送的数据不超过MTU的值(一般游戏都不会发送巨大的数据包，所以对于游戏没问题；一般那些可能会发送巨大数据包的程序都会提供调整MTU的选项，比如KCPTUN)。如果你是新手，建议用默认参数不要改，就可以保证不出MTU问题。
+
+如果你是开发者，对于`--mode 1`或`--mode 0 -q 1`可以尝试--tun-mtu，把设备mtu设置成和--mtu相同的值(如果没设置过就是默认的1250)，这样可以使内核对ip包分片（只适用于允许分片的数据包），达到传输巨大的UDP数据包的目的。新手不建议用。
+
 
 ### 透过tinyFecVPN免改iptables加速网络
 

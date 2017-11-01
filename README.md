@@ -76,7 +76,7 @@ Now,use 10.22.22.1:7777 to connect to your service,all traffic is speeded-up by 
 ### Usage
 ```
 tinyFecVPN
-git version: becd952db3    build date: Oct 28 2017 07:36:09
+git version: b03df1b586    build date: Oct 31 2017 19:46:50
 repository: https://github.com/wangyu-/tinyFecVPN/
 
 usage:
@@ -90,10 +90,9 @@ main options:
     --tun-dev             <number>        sepcify tun device name, for example: tun10, default: a random name such as tun987
     -f,--fec              x:y             forward error correction, send y redundant packets for every x packets
     --timeout             <number>        how long could a packet be held in queue before doing fec, unit: ms, default: 8ms
-    --mode                <number>        fec-mode,available values: 0, 1; 0 cost less bandwidth, 1 cost less latency(default)
+    --mode                <number>        fec-mode,available values: 0, 1; 0 cost less bandwidth, 1 cost less latency;default: 0)
     --report              <number>        turn on send/recv report, and set a period for reporting, unit: s
     --re-connect                          re-connect after lost connection,only for client.
-
 advanced options:
     --mtu                 <number>        mtu. for mode 0, the program will split packet to segment smaller than mtu_value.
                                           for mode 1, no packet will be split, the program just check if the mtu is exceed.
@@ -105,6 +104,9 @@ advanced options:
     --random-drop         <number>        simulate packet loss, unit: 0.01%. default value: 0
     --disable-obscure     <number>        disable obscure, to save a bit bandwidth and cpu
 developer options:
+    --tun-mtu             <number >       mtu of the tun interface,most time you shouldnt change this
+    --disable-mssfix      <number >       disable mssfix for tcp connection
+    -i,--interval         imin:imax       similiar to -i above, but scatter randomly between imin and imax
     --fifo                <string>        use a fifo(named pipe) for sending commands to the running program, so that you
                                           can change fec encode parameters dynamically, check readme.md in repository for
                                           supported commands.
@@ -122,6 +124,7 @@ log and help options:
     --log-position                        enable file name, function name, line number in log
     --disable-color                       disable log color
     -h,--help                             print this help message
+
 ```
 ### FEC Options
 
