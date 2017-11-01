@@ -273,9 +273,9 @@ int do_mssfix(char * s,int len)
     		}
     		int mss= read_u16(ptr+2);//uint8_t(ptr[2])*256+uint8_t(ptr[3]);
     		int new_mss=mss;
-    		if(new_mss>g_fec_mtu-40)
+    		if(new_mss>g_fec_mtu-40-20) //minus extra 20 for safe
     		{
-    			new_mss=g_fec_mtu-40;
+    			new_mss=g_fec_mtu-40-20;
     		}
     		write_u16(ptr+2,(unsigned short)new_mss);
 
