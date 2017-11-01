@@ -106,7 +106,7 @@ main options:
     --timeout             <number>        how long could a packet be held in queue before doing fec, unit: ms, default: 8ms
     --mode                <number>        fec-mode,available values: 0, 1; 0 cost less bandwidth, 1 cost less latency;default: 0)
     --report              <number>        turn on send/recv report, and set a period for reporting, unit: s
-    --re-connect                          re-connect after lost connection,only for client.
+    --keep-reconnect                      re-connect after lost connection,only for client.
 advanced options:
     --mtu                 <number>        mtu. for mode 0, the program will split packet to segment smaller than mtu_value.
                                           for mode 1, no packet will be split, the program just check if the mtu is exceed.
@@ -211,9 +211,9 @@ iperf3 -c 10.22.22.1 -P10
 ### MTU 问题
 在`mode 0`下编码器会自动把数据包切分到合适的长度，所以你可以完全不用考虑MTU(不使用`-q 1`的情况下)。 
 
-如果用了`--mode 1`或`--mode 0 -q 1`，编码器就不会对数据包做切分了，所以会引入MTU问题。 对于TCP，你仍然不需要关心MTU,因为tinyFecVPN会自动做mssfix；但是对于UDP，需要上层的程序来保证发送的数据不超过MTU的值(一般游戏都不会发送巨大的数据包，所以对于游戏没问题；一般那些可能会发送巨大数据包的程序都会提供调整MTU的选项，比如KCPTUN)。如果你是新手，建议用默认参数不要改，就可以保证不出MTU问题。
+如果用了`--mode 1`，编码器就不会对数据包做切分了，所以会引入MTU问题。 对于TCP，你仍然不需要关心MTU,因为tinyFecVPN会自动做mssfix；但是对于UDP，需要上层的程序来保证发送的数据不超过MTU的值(一般游戏都不会发送巨大的数据包，所以对于游戏没问题；一般那些可能会发送巨大数据包的程序都会提供调整MTU的选项，比如KCPTUN)。如果你是新手，建议用默认参数不要改，就可以保证不出MTU问题。
 
-如果你是开发者，对于`--mode 1`或`--mode 0 -q 1`可以尝试--tun-mtu，把设备mtu设置成和--mtu相同的值(如果没设置过就是默认的1250)，这样可以使内核对ip包分片（只适用于允许分片的数据包），达到传输巨大的UDP数据包的目的。新手不建议用。
+如果你是开发者，对于`--mode 1`可以尝试--tun-mtu，把设备mtu设置成和--mtu相同的值(如果没设置过就是默认的1250)，这样可以使内核对ip包分片（只适用于允许分片的数据包），达到传输巨大的UDP数据包的目的。新手不建议用。
 
 
 ### 透过tinyFecVPN免改iptables加速网络
