@@ -126,7 +126,7 @@ developer options:
                                           supported commands.
     -j ,--jitter          jmin:jmax       similiar to -j above, but create jitter randomly between jmin and jmax
     -i,--interval         imin:imax       similiar to -i above, but scatter randomly between imin and imax
-    f,--queue-len        <number>        max fec queue len, only for mode 0
+    -q,--queue-len        <number>        max fec queue len, only for mode 0
     --decode-buf          <number>        size of buffer of fec decoder,u nit: packet, default: 2000
     --fix-latency         <number>        try to stabilize latency, only for mode 0
     --delay-capacity      <number>        max number of delayed packets
