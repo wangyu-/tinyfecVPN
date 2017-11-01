@@ -4,7 +4,7 @@ A Lightweight High-Performance VPN with Build-in Forward Error Correction Suppor
 
 ![image](/images/tinyFecVPN.PNG)
 
-TinyFecVPN Improves your Network Quality on a High-Latency Lossy Link by using Forward Error Correction. It uses same lib as UDPspeeder, supports all FEC features of UDPspeeder. TinyFecVPN works at VPN mode,while UDPspeeder works at UDP tunnel mode.
+TinyFecVPN Improves your Network Quality on a High-Latency Lossy Link by using Forward Error Correction,at the cost of addtional bandwidth. It uses same lib as UDPspeeder, supports all FEC features of UDPspeeder. TinyFecVPN works at VPN mode,while UDPspeeder works at UDP tunnel mode.
 
 [简体中文](/doc/README.zh-cn.md)(内容更丰富)
 
