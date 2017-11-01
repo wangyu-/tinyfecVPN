@@ -226,8 +226,8 @@ iperf3 -c 10.22.22.1 -P10
 在路由器/虚拟机中运行如下命令(socat在我提供的虚拟机里已经安装好了)：
 
 ```
-socat -d -d UDP-LISTEN:443,fork,reuseaddr UDP:10.22.22.1:443
-socat -d -d TCP-LISTEN:443,fork,reuseaddr TCP:10.22.22.1:443
+socat UDP-LISTEN:443,fork,reuseaddr UDP:10.22.22.1:443
+socat TCP-LISTEN:443,fork,reuseaddr TCP:10.22.22.1:443
 ```
 
 然后你只需要在本地windows访问192.168.1.105:443就相当于访问VPS上的443端口了。
@@ -237,8 +237,8 @@ socat -d -d TCP-LISTEN:443,fork,reuseaddr TCP:10.22.22.1:443
 在VPS A上运行：
 
 ```
-socat -d -d UDP-LISTEN:443,fork,reuseaddr UDP:123.123.123.123:443
-socat -d -d TCP-LISTEN:443,fork,reuseaddr TCP:123.123.123.123:443
+socat UDP-LISTEN:443,fork,reuseaddr UDP:123.123.123.123:443
+socat TCP-LISTEN:443,fork,reuseaddr TCP:123.123.123.123:443
 ```
 
 然后，VPS B上的443端口就被映射到10.22.22.1:443了。这样，在linux上访问10.22.22.1:443就相当于访问123.123.123.123:443了。
