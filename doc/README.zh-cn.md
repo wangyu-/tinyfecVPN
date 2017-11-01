@@ -6,6 +6,20 @@
 
 TinyFecVPN使用了和UDPSpeeder相同的lib，用FEC来对抗网络的丢包，改善你的网络在高延迟高丢包环境下的表现。TinyFecVPN和UDPspeeder功能类似，只不过TinyFecVPN工作方式是VPN，UDPspeeder工作方式是UDP tunnel. 
 
+##### 提示
+
+UDPspeeder的repo:
+
+https://github.com/wangyu-/UDPspeeder
+
+##### 提示2
+
+对于某些运营商，UDPspeeder跟tinyFecVPN配合可以达到更好的速度，udp2raw负责把UDP伪装成TCP，来绕过运营商的UDP限速。
+
+udp2raw的repo:
+
+https://github.com/wangyu-/udp2raw-tunnel
+
 #### 效果
 测试环境是一个有100ms RTT 和10%丢包的网络(借用了UDPspeeder的测试结果)。
 
@@ -69,7 +83,7 @@ https://github.com/wangyu-/tinyFecVPN/releases
 
 `-k` 开启简单的异或加密。
 
-如果需要更省流量，或者更高吞吐率，请加上`--mode 0`。默认参数是`--mode 1`，倾向于更低的延迟。
+<del>如果需要更省流量，或者更高吞吐率，请加上`--mode 0`。默认参数是`--mode 1`，倾向于更低的延迟。</del> 现在默认参数是mode 0。
 
 # 进阶操作说明
 
@@ -184,6 +198,11 @@ iperf3 -c 10.22.22.1 -P10
 也可能是你的设备上面没有这个文件。例如对于lede或openwrt，用opkg安装kmod-tun，安装后会自动出现。 你也可以用包管理器安装个openvpn，因为openvpn依赖kmod-tun，这个设备也会自动被包管理器配好。
 
 绝大多数linux发行版上都是默认建好了/dev/net/tun的，一般只会在lede/openwrt等嵌入式发行版上遇到此问题。在我提供的虚拟机里，也是自带/dev/net/tun的。
+
+
+### 报错 [WARN]message too long len=xxx fec_mtu=xxxx,ignored 
+
+这应该是你指定了--mode 1。--mode 1现在需要配合iptables的tcpmss用，如果不知道tcpmss，请暂时先用mode 0，就不会有问题了。之后我会写个教程说一下mode 1怎么用。
 
 ### 透过tinyFecVPN免改iptables加速网络
 
