@@ -36,7 +36,7 @@ static void print_help()
 	printf("    --timeout             <number>        how long could a packet be held in queue before doing fec, unit: ms, default: 8ms\n");
 	printf("    --mode                <number>        fec-mode,available values: 0, 1; 0 cost less bandwidth, 1 cost less latency;default: 0)\n");
 	printf("    --report              <number>        turn on send/recv report, and set a period for reporting, unit: s\n");
-	printf("    --re-connect                          re-connect after lost connection,only for client. \n");
+	printf("    --keep-reconnect                      re-connect after lost connection,only for client. \n");
 
 
 	printf("advanced options:\n");
