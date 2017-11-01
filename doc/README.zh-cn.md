@@ -75,7 +75,7 @@ https://github.com/wangyu-/tinyFecVPN/releases
 
 ```
 
-现在，只要在客户端使用10.22.22.1:7777就可以连上你的服务了,来回的流量都会被加速。去ping 10.22.22.1也会得到回复。
+现在，只要在客户端使用10.22.22.1:7777就可以连上你的服务了,来回的流量都会被加速。执行ping 10.22.22.1也会得到回复。
 
 ###### 备注:
 
@@ -83,7 +83,7 @@ https://github.com/wangyu-/tinyFecVPN/releases
 
 `-k` 开启简单的异或加密。
 
-如果需要更低的延迟，请加上`--mode 1`，默认参数`--mode 0`倾向于更省流量/更高吞吐率。 UDPspeeder的默认参数是`--mode 1`, tinyFecVPN的默认参数是`--mode 0`，注意区别。
+如果需要更低的延迟，请加上`--mode 1`；默认的参数`--mode 0`倾向于更省流量/更高吞吐率。 UDPspeeder的默认参数是`--mode 1`, tinyFecVPN的默认参数是`--mode 0`，注意区别。
 
 # 进阶操作说明
 
@@ -156,17 +156,17 @@ https://github.com/wangyu-/UDPspeeder
 
 ##### `--sub-net`
 
-指定VPN的子网。 例如: 对于--sub-net 10.10.10.0, server的IP会被设置成10.10.10.1,client的IP会被设置成10.10.10.2 .
+指定VPN的子网，格式为xxx.xxx.xxx.0。 例如: 对于--sub-net 10.10.10.0, server的IP会被设置成10.10.10.1,client的IP会被设置成10.10.10.2 .
 
 子网中的最后一个数字应该是0, 比如10.10.10.123是不符合规范的, 会被程序自动纠正成10.10.10.0.
 
 ##### `--keep-reconnect`
 
-Only works at client side.
+只对client有效
 
-TinyFecVPN server only handles one client at same time,the connection of a new client will kick old client,after being kicked,old client will just exit by default.
+TinyFecVPN server只接受一个client的连接，后连接的client会把新的挤掉。
 
-If --keep-reconnect is enabled , the client will try to get connection back after being kicked.
+如果开启了--keep-reconnect，client在连接断开或者被挤掉以后会尝试重新获得连接。
 
 # 性能测试(侧重吞吐量)
 
@@ -203,15 +203,10 @@ iperf3 -c 10.22.22.1 -P10
 
 绝大多数linux发行版上都是默认建好了/dev/net/tun的，一般只会在lede/openwrt等嵌入式发行版上遇到此问题。在我提供的虚拟机里，也是自带/dev/net/tun的。
 
-
-### 报错 [WARN]message too long len=xxx fec_mtu=xxxx,ignored 
-
-这应该是你指定了--mode 1。--mode 1现在需要配合iptables的tcpmss用，如果不知道tcpmss，请暂时先用mode 0，就不会有问题了。之后我会写个教程说一下mode 1怎么用。
-
 ### MTU 问题
-在`mode 0`下编码器会自动把数据包切分到合适的长度，所以你可以完全不用考虑MTU。 
+在`--mode 0`下编码器会自动把数据包切分到合适的长度，所以你可以完全不用考虑MTU。 
 
-如果用了`--mode 1`，编码器就不会对数据包做切分了，所以会引入MTU问题。 对于TCP，你仍然不需要关心MTU,因为tinyFecVPN会自动做mssfix；但是对于UDP，需要上层的程序来保证发送的数据不超过MTU的值(一般游戏都不会发送巨大的数据包，所以对于游戏没问题；一般那些可能会发送巨大数据包的程序都会提供调整MTU的选项，比如KCPTUN)。如果你是新手，建议用默认参数不要改，就可以保证不出MTU问题。
+如果用了`--mode 1`，编码器就不会对数据包做切分了，所以会引入MTU问题。 对于TCP，你仍然不需要关心MTU,因为tinyFecVPN会自动做mssfix；但是对于UDP，需要上层的程序来保证发送的数据不超过MTU的值(一般游戏都不会发送巨大的数据包，所以对于游戏没问题；一般那些可能会发送巨大数据包的程序都会提供调整MTU的选项，比如KCPTUN)。如果你是新手，建议用默认的--mode 0参数不要改，就可以保证不出MTU问题。
 
 如果你是开发者，对于`--mode 1`可以尝试--tun-mtu，把设备mtu设置成和--mtu相同的值(如果没设置过--mtu就把--tun-mtu设成默认的1250)，这样可以使内核对ip包分片（只适用于允许分片的数据包），达到传输巨大的UDP数据包的目的。新手不建议用。
 
