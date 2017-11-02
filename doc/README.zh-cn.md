@@ -14,7 +14,7 @@ https://github.com/wangyu-/UDPspeeder
 
 ##### 提示2
 
-对于某些运营商，UDPspeeder跟tinyFecVPN配合可以达到更好的速度，udp2raw负责把UDP伪装成TCP，来绕过运营商的UDP限速。
+对于某些运营商，tinyFecVPN跟udp2raw配合可以达到更好的速度，udp2raw负责把UDP伪装成TCP，来绕过运营商的UDP限速。
 
 udp2raw的repo:
 
