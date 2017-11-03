@@ -83,7 +83,7 @@ https://github.com/wangyu-/tinyFecVPN/releases
 
 `-k` 开启简单的异或加密。
 
-如果需要更低的延迟，请加上`--mode 1`；默认的参数`--mode 0`倾向于更省流量/更高吞吐率。 UDPspeeder的默认参数是`--mode 1`, tinyFecVPN的默认参数是`--mode 0`，注意区别。
+如果需要更低的延迟，请加上`--mode 1`；默认的参数`--mode 0`倾向于更省流量/更高吞吐率。 UDPspeeder的默认参数是`--mode 1`, tinyFecVPN的默认参数是`--mode 0`，注意区别。 `--mode 0`不需要考虑MTU问题，而`--mode 1`需要，如果你不知道MTU是什么，建议用`--mode 0`。
 
 # 进阶操作说明
 
