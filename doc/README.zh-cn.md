@@ -272,3 +272,8 @@ https://github.com/wangyu-/UDPspeeder/blob/master/doc/README.zh-cn.md#使用经�
 
 绕过这个限制的方法有：1. 在server搭个代理，比如socks5，透过tinyFecVPN访问这个代理，用代理访问第三方服务器。  2. 自己找到相关限制的代码，修改代码，编译一个自用的无限制版（不要传播）。
 
+# 应用实例
+
+#### 用树莓派做路由器，搭建透明代理，加速游戏主机的网络
+
+https://github.com/wangyu-/UDPspeeder/wiki/用树莓派做路由器，搭建透明代理，加速游戏主机的网络
