@@ -221,31 +221,29 @@ iperf3 -c 10.22.22.1 -P10
 
 ##### 假设tinyFecVPN client运行在路由器/虚拟机里，假设tinyFecVPN Server运行在VPS上，现在VPS上有个服务监听在TCP和UDP的0.0.0.0:443，我怎么在本地windows上访问到这个服务？
 
-假设tinyFecVPN server分配的ip是 10.22.22.1，路由器/虚拟机的ip是192.168.1.105
+假设tinyFecVPN server分配的ip是 10.22.22.1，路由器/虚拟机的ip是192.168.1.105。
 
-在路由器/虚拟机中运行如下命令(socat在我提供的虚拟机里已经安装好了)：
+先在路由器/虚拟机种安装 [tinyPortMapper](https://github.com/wangyu-/tinyPortMapper)，然后运行如下命令：
 
 ```
-socat UDP-LISTEN:443,fork,reuseaddr UDP:10.22.22.1:443
-socat TCP-LISTEN:443,fork,reuseaddr TCP:10.22.22.1:443
+./tinymapper_x86 -l0.0.0.0:443 -r10.22.22.1:443 -t -u
 ```
 
 然后你只需要在本地windows访问192.168.1.105:443就相当于访问VPS上的443端口了。
 
 ##### 假设tinyFecVPN client 运行在本地的linux上,假设 tinyFecVPN Server运行在VPS A上。现在另一台VPS B(假设ip是123.123.123.123)上面有个服务监听在123.123.123.123:443，我怎么在本地的linux上，透过tinyFecVPN访问到这个服务？
 
-在VPS A上运行：
+在VPS A上安装 [tinyPortMapper](https://github.com/wangyu-/tinyPortMapper)，然后运行如下命令：：
 
 ```
-socat UDP-LISTEN:443,fork,reuseaddr UDP:123.123.123.123:443
-socat TCP-LISTEN:443,fork,reuseaddr TCP:123.123.123.123:443
+./tinymapper_x86 -l0.0.0.0:443 -r123.123.123.123:443 -t -u
 ```
 
 然后，VPS B上的443端口就被映射到10.22.22.1:443了。这样，在linux上访问10.22.22.1:443就相当于访问123.123.123.123:443了。
 
 ##### 假设tinyFecVPN client运行在路由器/虚拟机里，假设 tinyFecVPN Server运行在VPS A上。现在另一台VPS B(假设ip是123.123.123.123)上面有个服务监听在123.123.123.123:443，我怎么在本地的windows上，透过tinyFecVPN访问到这个服务？
 
-结合前两种情况,就可以了。既在路由器/虚拟机中运行socat，又在VPS中运行socat，就可以把这个端口映射到本地了。
+结合前两种情况,就可以了。既在路由器/虚拟机中运行tinyPortMapper，又在VPS中运行tinyPortMapper，就可以把这个端口映射到本地了。
 
 ### 重启client或server后不断线
 用下面这个命令，建立一个持久型的tun设备，叫tun100
