@@ -223,7 +223,7 @@ iperf3 -c 10.22.22.1 -P10
 
 假设tinyFecVPN server分配的ip是 10.22.22.1，路由器/虚拟机的ip是192.168.1.105。
 
-先在路由器/虚拟机种安装 [tinyPortMapper](https://github.com/wangyu-/tinyPortMapper)，然后运行如下命令：
+先在路由器/虚拟机中安装 [tinyPortMapper](https://github.com/wangyu-/tinyPortMapper/releases)，然后运行如下命令：
 
 ```
 ./tinymapper_x86 -l0.0.0.0:443 -r10.22.22.1:443 -t -u
@@ -233,7 +233,7 @@ iperf3 -c 10.22.22.1 -P10
 
 ##### 假设tinyFecVPN client 运行在本地的linux上,假设 tinyFecVPN Server运行在VPS A上。现在另一台VPS B(假设ip是123.123.123.123)上面有个服务监听在123.123.123.123:443，我怎么在本地的linux上，透过tinyFecVPN访问到这个服务？
 
-在VPS A上安装 [tinyPortMapper](https://github.com/wangyu-/tinyPortMapper)，然后运行如下命令：：
+在VPS A上安装 [tinyPortMapper](https://github.com/wangyu-/tinyPortMapper/releases)，然后运行如下命令：：
 
 ```
 ./tinymapper_x86 -l0.0.0.0:443 -r123.123.123.123:443 -t -u
