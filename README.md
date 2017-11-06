@@ -173,7 +173,7 @@ If `--keep-reconnect` is enabled , the client will try to get connection back af
 
 # Performance Test(throughput)
 
-Server is Vulr VPS in japan，CPU: single core 2.4GHz,ram: 512mb. Client is Bandwagonhost VPS in USA，CPU: single core 2.0GHZ,ram: 96mb。
+Server is a Vulr VPS in japan，CPU: single core 2.4GHz,ram: 512mb. Client is a Bandwagonhost VPS in USA，CPU: single core 2.0GHZ,ram: 96mb.
 
 ### Test command
 
