@@ -68,7 +68,7 @@ Download binary release from https://github.com/wangyu-/tinyFecVPN/releases
 
 ### Running
 
-Assume your server ip is 44.55.66.77, you have a service listening on udp/tcp port 0.0.0.0:7777. 
+Assume your server ip is `44.55.66.77`, you have a service listening on udp/tcp port `0.0.0.0:7777`. 
 
 ```
 # Run at server side:
@@ -78,7 +78,7 @@ Assume your server ip is 44.55.66.77, you have a service listening on udp/tcp po
 ./tinyvpn -c -r44.55.66.77:4096 -f20:10 -k "passwd" --sub-net 10.22.22.0
 ```
 
-Now, use 10.22.22.1:7777 to connect to your service,all traffic will be improved by FEC. If you ping 10.22.22.1, you will get ping reply.
+Now, use `10.22.22.1:7777` to connect to your service,all traffic will be improved by FEC. If you ping `10.22.22.1`, you will get ping reply.
 
 ##### Note
 
@@ -151,15 +151,15 @@ https://github.com/wangyu-/UDPspeeder
 
 ##### `--tun-dev`
 
-Specify a tun device name to use. Example: --tun-dev tun100.
+Specify a tun device name to use. Example: `--tun-dev tun100`.
 
-If not set,tinyFecVPN will randomly chose a name,such as tun987.
+If not set,tinyFecVPN will randomly chose a name,such as `tun987`.
 
 ##### `--sub-net`
 
-Specify the sub-net of VPN. Example: --sub-net 10.10.10.0, in this way,server IP will be 10.10.10.1,client IP will be 10.10.10.2.
+Specify the sub-net of VPN. Example: `--sub-net 10.10.10.0`, in this way,server IP will be `10.10.10.1`,client IP will be `10.10.10.2`.
 
-The last number of option should be zero, for exmaple 10.10.10.123 is invalild, and will be corrected automatically to 10.10.10.0.
+The last number of option should be zero, for exmaple `10.10.10.123` is invalild, and will be corrected automatically to `10.10.10.0`.
 
 ##### `--keep-reconnect`
 
