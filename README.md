@@ -35,9 +35,9 @@ Tested on a link with 100ms roundtrip and 10% packet loss at both direction. You
 ![](/images/en/scp_compare2.PNG)
 
 # Supported Platforms
-Linux host (including desktop Linux,<del>Android phone/tablet</del>, OpenWRT router, or Raspberry PI).Binaries of amd64 x86 mips_be mips_le arm are provided.
+Linux host (including desktop Linux,<del>Android phone/tablet</del>, OpenWRT router, or Raspberry PI).Binaries for `amd64` `x86` `mips_be` `mips_le` `arm` are provided.
 
-For Windows and MacOS You can run TinyFecVPN inside [this](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20170918.0/lede-17.01.2-x86_virtual_machine_image_with_udp2raw_pre_installed.zip) 7.5mb virtual machine image.
+For Windows and MacOS, You can run TinyFecVPN inside [this](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20170918.0/lede-17.01.2-x86_virtual_machine_image_with_udp2raw_pre_installed.zip) 7.5mb virtual machine image.
 
 Need root or at least CAP_NET_ADMIN permission to run, for creating tun device.
 
@@ -173,17 +173,17 @@ If `--keep-reconnect` is enabled , the client will try to get connection back af
 
 # Performance Test(throughput)
 
-Server is a Vulr VPS in japan，CPU: single core 2.4GHz,ram: 512mb. Client is a Bandwagonhost VPS in USA，CPU: single core 2.0GHZ,ram: 96mb.
+Server is a Vulr VPS in japan，CPU: single core 2.4GHz,ram: 512mb. Client is a Bandwagonhost VPS in USA，CPU: single core 2.0GHZ,ram: 96mb. To put pressure on the FEC algorithm, an additional 10% packet-loss rate was introduced at both direction.
 
 ### Test command
 
 ```
 Server side：
-./tinyvpn_amd64 -s -l 0.0.0.0:5533 --mode 0
+./tinyvpn_amd64 -s -l 0.0.0.0:5533 --mode 0 -f20:10
 iperf3 -s
 
 Client side：
-./tinyvpn_amd64 -c -r 44.55.66.77:5533 --mode 0
+./tinyvpn_amd64 -c -r 44.55.66.77:5533 --mode 0 -f20:10
 iperf3 -c 10.22.22.1 -P10
 ```
 
