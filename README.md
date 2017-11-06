@@ -1,10 +1,12 @@
 # tinyFecVPN
 
-A Lightweight High-Performance VPN with Build-in Forward Error Correction Support(Reed-Solomon code), Improves your Network Quality on a High-latency Lossy Link. 
+A Lightweight High-Performance VPN with Build-in Forward Error Correction Support, A Network Improving Tool which  works at VPN mode. Improves your Network Quality on a High-latency Lossy Link. 
 
-Supports all kinds of traffic(TCP/UDP/ICMP).
+Supports all kinds of traffic(TCP/UDP/ICMP). 
 
 ![image](/images/tinyFecVPN3.PNG)
+
+TinyFecVPN uses Forward Error Correction(Reed-Solomon code) to reduce packet loss rate, at the cost of additional bandwidth usage. 
 
 Assume your local network to your server is lossy. Just establish a VPN connection to your server with tinyFecVPN, access your server via this VPN connection, then your connection quality will be significantly improved. With well-tuned parameters , you can easily reduce  IP or UDP/ICMP packet-loss-rate to less than 0.01% . Besides reducing packet-loss-rate, tinyFecVPN can also significantly improve your TCP latency and TCP single-thread download speed.
 
@@ -43,7 +45,7 @@ Need root or at least CAP_NET_ADMIN permission to run, for creating tun device.
 
 # How doest it work
 
-TinyFecVPN uses FEC(Forward Error Correction) to reduce packet loss rate, at the cost of addtional bandwidth. The algorithm for FEC is called Reed-Solomon.
+TinyFecVPN uses FEC(Forward Error Correction) to reduce packet loss rate, at the cost of additional bandwidth usage. The algorithm for FEC is called Reed-Solomon.
 
 ![](/images/FEC.PNG)
 
