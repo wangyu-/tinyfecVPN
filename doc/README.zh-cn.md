@@ -2,7 +2,7 @@
 
 工作在VPN方式的双边网络加速工具，可以加速全流量(TCP/UDP/ICMP)。
 
-![image](/images/tinyFecVPNcn.PNG)
+![image](/images/tinyFecVPNcn2.PNG)
 
 假设你的本地主机到某个服务器的丢包很高，你只需要用tinyFecVPN建立一条VPN连接，然后透过此VPN来访问server，你得网路质量会得到显著改善。通过合理设置参数，可以轻易把网络丢包率降低到万分之一以下。除了可以降低丢包，还可以显著改善TCP的响应速度，提高TCP的单线程传输速度。
 
