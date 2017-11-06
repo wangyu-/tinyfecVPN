@@ -2,8 +2,6 @@
 
 A Lightweight High-Performance VPN with Build-in Forward Error Correction Support(or A Network Improving Tool which works at VPN mode). Improves your Network Quality on a High-latency Lossy Link. 
 
-Supports all kinds of traffic(TCP/UDP/ICMP). 
-
 ![image](/images/tinyFecVPN3.PNG)
 
 TinyFecVPN uses Forward Error Correction(Reed-Solomon code) to reduce packet loss rate, at the cost of additional bandwidth usage. 
