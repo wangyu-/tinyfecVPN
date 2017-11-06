@@ -1,6 +1,6 @@
 # tinyFecVPN
 
-双边网络加速工具，工作在VPN方式，可以加速全流量(TCP/UDP/ICMP)。
+工作在VPN方式的双边网络加速工具，可以加速全流量(TCP/UDP/ICMP)。
 
 ![image](/images/tinyFecVPNcn.PNG)
 
