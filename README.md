@@ -24,7 +24,7 @@ udp2raw's repo：
 https://github.com/wangyu-/udp2raw-tunnel
 
 # Efficacy
-Tested on a link with 100ms roundtrip and 10% packet loss at both direction
+Tested on a link with 100ms roundtrip and 10% packet loss at both direction. You can easily reproduce the test result by yourself.
 
 ### Ping Packet Loss
 ![](/images/en/ping_compare2.PNG)
@@ -67,7 +67,7 @@ Assume your server ip is 44.55.66.77, you have a service listening on udp/tcp po
 ./tinyvpn -c -r44.55.66.77:4096 -f20:10 -k "passwd" --sub-net 10.22.22.0
 ```
 
-Now,use 10.22.22.1:7777 to connect to your service,all traffic is speeded-up by FEC. If you ping 10.22.22.1, you will get ping reply.
+Now, use 10.22.22.1:7777 to connect to your service,all traffic will be improved by FEC. If you ping 10.22.22.1, you will get ping reply.
 
 ##### Note
 
@@ -158,7 +158,6 @@ TinyFecVPN server only handles one client at same time,the connection of a new c
 
 If `--keep-reconnect` is enabled , the client will try to get connection back after being kicked.
 
-
 # Performance Test(throughput)
 
 Server is Vulr VPS in japan，CPU: single core 2.4GHz,ram: 512mb. Client is Bandwagonhost VPS in USA，CPU: single core 2.0GHZ,ram: 96mb。
@@ -179,10 +178,10 @@ iperf3 -c 10.22.22.1 -P10
 
 ![image](/images/performance2.PNG)
 
-
+Note: the performance is mainly limited by the RS code lib.
 
 # Restriction
 
-There is currently an intended restriction at server side.You cant use tinyFecVPN to access a third server directly. So,as a connection speed-up tool,when used alone,it only allows you to speed-up your connection to your server.You cant use it to bypass network firewalls directly.
+There is currently an intended restriction at server side(for regulation consideration). You cant use tinyFecVPN to access a third host directly. So,as a connection speed-up tool,when used alone,it only allows you to speed-up your connection to your server.You cant use it to bypass network firewalls directly.
 
-To bypass this restriction,you have to disable it by modifying source code,and re-compile by yourself.
+To bypass this restriction, you can compile the source code by yourself. 
