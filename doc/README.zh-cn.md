@@ -4,7 +4,7 @@
 
 ![image](/images/tinyFecVPNcn.PNG)
 
-假设你的本地主机到某个服务器的丢包很高，你只需要用tinyFecVPN建立一条VPN连接，然后透过此VPN来访问server，你得网路质量会得到显著改善。通过合理设置参数，可以轻易把网络丢包率降低到万分之一以下。可以显著降低丢包，改善TCP相应速度，提高TCP的单线程传输速度。
+假设你的本地主机到某个服务器的丢包很高，你只需要用tinyFecVPN建立一条VPN连接，然后透过此VPN来访问server，你得网路质量会得到显著改善。通过合理设置参数，可以轻易把网络丢包率降低到万分之一以下。除了可以降低丢包，还可以显著改善TCP的响应速度，提高TCP的单线程传输速度。
 
 TinyFecVPN使用了和UDPSpeeder相同的lib，功能和UDPspeeder类似，只不过TinyFecVPN工作方式是VPN，UDPspeeder工作方式是UDP tunnel. 
 
