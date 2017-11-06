@@ -27,10 +27,10 @@ https://github.com/wangyu-/udp2raw-tunnel
 Tested on a link with 100ms roundtrip and 10% packet loss at both direction
 
 ### Ping Packet Loss
-![](/images/en/ping_compare.PNG)
+![](/images/en/ping_compare2.PNG)
 
 ### SCP Copy Speed
-![](/images/en/scp_compare.PNG)
+![](/images/en/scp_compare2.PNG)
 
 # Supported Platforms
 Linux host (including desktop Linux,<del>Android phone/tablet</del>, OpenWRT router, or Raspberry PI).Binaries of amd64 x86 mips_be mips_le arm are provided.
