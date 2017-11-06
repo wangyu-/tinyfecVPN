@@ -196,6 +196,6 @@ iperf3 -c 10.22.22.1 -P10
 Note: the performance is mainly limited by the RS code lib.
 
 # Other
-For regulations consideration, there is currently an intended restriction at server side in the pre-released binary. You cant use tinyFecVPN to access a third host directly. So,as a connection speed-up tool,when used alone,it only allows you to speed-up your connection to your server.You cant use it to bypass network firewalls directly.
+For regulations consideration, there is currently an intended restriction at server side in the pre-released binaries. You cant use tinyFecVPN to access a third host directly. So,as a connection speed-up tool,when used alone,it only allows you to speed-up your connection to your server.You cant use it to bypass network firewalls directly.
 
 You can easily bypass this restriction by compiling the source code by yourself. 
