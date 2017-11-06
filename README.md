@@ -4,7 +4,7 @@ A Lightweight High-Performance VPN with Build-in Forward Error Correction Suppor
 
 Supports all kinds of traffic(TCP/UDP/ICMP).
 
-![image](/images/tinyFecVPN2.PNG)
+![image](/images/tinyFecVPN3.PNG)
 
 Assume your local network to your server is lossy. Just establish a VPN connection to your server with tinyFecVPN, access your server via this VPN connection, then your connection quality will be significantly improved. With well-tuned parameters , you can easily reduce packet-loss-rate to less than 0.01% . Besides reducing packet-loss-rate, tinyFecVPN can also significantly improve your TCP latency and TCP single-thread download speed.
 
