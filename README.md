@@ -6,7 +6,7 @@ Supports all kinds of traffic(TCP/UDP/ICMP).
 
 ![image](/images/tinyFecVPN3.PNG)
 
-Assume your local network to your server is lossy. Just establish a VPN connection to your server with tinyFecVPN, access your server via this VPN connection, then your connection quality will be significantly improved. With well-tuned parameters , you can easily reduce packet-loss-rate to less than 0.01% . Besides reducing IP or UDP/ICMP packet-loss-rate, tinyFecVPN can also significantly improve your TCP latency and TCP single-thread download speed.
+Assume your local network to your server is lossy. Just establish a VPN connection to your server with tinyFecVPN, access your server via this VPN connection, then your connection quality will be significantly improved. With well-tuned parameters , you can easily reduce  IP or UDP/ICMP packet-loss-rate to less than 0.01% . Besides reducing packet-loss-rate, tinyFecVPN can also significantly improve your TCP latency and TCP single-thread download speed.
 
 TinyFecVPN uses same lib as UDPspeeder, supports all FEC features of UDPspeeder. TinyFecVPN works at VPN mode,while UDPspeeder works at UDP tunnel mode.
 
