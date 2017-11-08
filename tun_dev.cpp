@@ -553,7 +553,7 @@ int tun_dev_client_event_loop()
 					else
 					{
 						if(got_feed_back==1)
-							mylog(log_warn,"server restarted or switched to handle another client,but keep-reconnect enable,trying to reconnect\n");
+							mylog(log_warn,"server restarted or switched to handle another client,but keep-reconnect enabled,trying to reconnect\n");
 						got_feed_back=0;
 					}
 					continue;
