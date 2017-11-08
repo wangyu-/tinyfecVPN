@@ -37,7 +37,7 @@ Tested on a link with 100ms roundtrip and 10% packet loss at both direction. You
 # Supported Platforms
 Linux host (including desktop Linux,<del>Android phone/tablet</del>, OpenWRT router, or Raspberry PI).Binaries for `amd64` `x86` `mips_be` `mips_le` `arm` are provided.
 
-For Windows and MacOS, You can run TinyFecVPN inside [this](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20170918.0/lede-17.01.2-x86_virtual_machine_image_with_udp2raw_pre_installed.zip) 7.5mb virtual machine image.
+For Windows and MacOS, You can run TinyFecVPN inside [this](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20171108.0/lede-17.01.2-x86_virtual_machine_image.zip) 7.5mb virtual machine image.
 
 Need root or at least CAP_NET_ADMIN permission to run, for creating tun device.
 

@@ -47,7 +47,7 @@ https://github.com/wangyu-/UDPspeeder/
 
 Linux主机，可以是桌面版，<del>可以是android手机/平板</del>，可以是openwrt路由器，也可以是树莓派。(android暂时有问题)
 
-在windows和mac上配合虚拟机可以稳定使用（tinyFecVPN跑在Linux里，其他应用照常跑在window里，桥接模式测试可用），可以使用[这个](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20170918.0/lede-17.01.2-x86_virtual_machine_image_with_udp2raw_pre_installed.zip)虚拟机镜像，大小只有7.5mb，免去在虚拟机里装系统的麻烦；虚拟机自带ssh server，可以scp拷贝文件，可以ssh进去，可以复制粘贴，root密码123456。
+在windows和mac上配合虚拟机可以稳定使用（tinyFecVPN跑在Linux里，其他应用照常跑在window里，桥接模式测试可用），可以使用[这个](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20171108.0/lede-17.01.2-x86_virtual_machine_image.zip)虚拟机镜像，大小只有7.5mb，免去在虚拟机里装系统的麻烦；虚拟机自带ssh server，可以scp拷贝文件，可以ssh进去，可以复制粘贴，root密码123456。
 
 android需要通过terminal运行。
 
@@ -81,11 +81,9 @@ https://github.com/wangyu-/tinyFecVPN/releases
 
 ###### 备注:
 
-`-f20:10` 表示对每20个原始数据发送10个冗余包。`-f20:10` 和`-f 20:10`都是可以的，空格可以省略，对于所有的单字节option都是如此。对于双字节option，例如`--mode 0`和`--mtu 1200`，空格不可以省略。
+`-f20:10`表示对每20个原始数据发送10个冗余包。`-f20:10` 和`-f 20:10`都是可以的，空格可以省略，对于所有的单字节option都是如此。对于双字节option，例如后面会提到的`--mode 0`，空格不可以省略。
 
-`-k` 开启简单的异或加密。
-
-如果需要更低的延迟，请加上`--mode 1`；默认的参数`--mode 0`倾向于更省流量/更高吞吐率。 UDPspeeder的默认参数是`--mode 1`, tinyFecVPN的默认参数是`--mode 0`，注意区别。 `--mode 0`不需要考虑MTU问题，而`--mode 1`需要，如果你不知道MTU是什么，建议用`--mode 0`。
+`-k` 指定一个字符串，开启简单的异或加密
 
 # 进阶操作说明
 
@@ -146,7 +144,7 @@ log and help options:
 
 TinyFecVPN支持UDPspeeder的所有选项，具体请看UDPspeeder的repo：
 
-https://github.com/wangyu-/UDPspeeder
+https://github.com/wangyu-/UDPspeeder/blob/master/doc/README.zh-cn.md#命令选项
 
 ### tinyFecVPN的新增选项
 
@@ -170,6 +168,10 @@ TinyFecVPN server只接受一个client的连接，后连接的client会把新的
 
 如果开启了--keep-reconnect，client在连接断开或者被挤掉以后会尝试重新获得连接。
 
+# 使用经验
+
+https://github.com/wangyu-/tinyFecVPN/wiki/使用经验
+
 # 性能测试(侧重吞吐量)
 
 server 在 vulr 日本，CPU2.4GHz,内存 512mb。client 在搬瓦工美国，CPU 2.0GHZ,内存 96mb。在网路间额外模拟了10%的丢包，用于加重FEC的负担。
@@ -189,82 +191,7 @@ iperf3 -c 10.22.22.1 -P10
 
 ![image](/images/performance2.PNG)
 
-# 使用经验
-### 不能正常连通
 
-绝大多数情况，都是因为配置了不规范的iptables造成的。不能正常连通，请清空两端的iptables后重试。清空后记得用iptable-save检查，确保确实是清空了的。
-
-还有一部分情况是因为你要访问的服务没有bind在0.0.0.0，请用netstat -nlp检查服务器的bind情况。
-
-也有可能是你的udp被本地运营商屏蔽了，在前面串个udp2raw可以解决。
-
-### 报错open /dev/net/tun failed
-可能是你没有root或cap_net_admin权限。
-
-也可能是你的设备上面没有这个文件。例如对于lede或openwrt，用opkg安装kmod-tun，安装后会自动出现。 你也可以用包管理器安装个openvpn，因为openvpn依赖kmod-tun，这个设备也会自动被包管理器配好。
-
-绝大多数linux发行版上都是默认建好了/dev/net/tun的，一般只会在lede/openwrt等嵌入式发行版上遇到此问题。在我提供的虚拟机里，也是自带/dev/net/tun的。
-
-### MTU 问题
-在`--mode 0`下编码器会自动把数据包切分到合适的长度，所以你可以完全不用考虑MTU。 
-
-如果用了`--mode 1`，编码器就不会对数据包做切分了，所以会引入MTU问题。 对于TCP，你仍然不需要关心MTU,因为tinyFecVPN会自动做mssfix；但是对于UDP，需要上层的程序来保证发送的数据不超过MTU的值(一般游戏都不会发送巨大的数据包，所以对于游戏没问题；一般那些可能会发送巨大数据包的程序都会提供调整MTU的选项，比如KCPTUN)。如果你是新手，建议用默认的--mode 0参数不要改，就可以保证不出MTU问题。
-
-如果你是开发者，对于`--mode 1`可以尝试--tun-mtu，把设备mtu设置成一个较小的值，比如1200，这样可以使内核对ip包分片（只适用于没有DF标志的数据包），达到传输巨大的UDP数据包的目的。新手不建议用。
-
-
-### 透过tinyFecVPN免改iptables加速网络
-
-因为iptables很多人都不会配，即使是对熟练的人也容易出错。这里推荐一种免iptables的方法，基本上可以应对任何情况，推荐给新手用。如果你可以熟练配置iptables和路由规则，可以跳过这节。
-
-##### 假设tinyFecVPN client 运行在本地的linux上，现在VPS上有个服务监听在TCP和UDP的0.0.0.0:443，我怎么在本地linux上访问到这个服务？(假设tinyFecVPN server分配的ip是 10.22.22.1)
-
-直接访问10.22.22.1:443即可。
-
-##### 假设tinyFecVPN client运行在路由器/虚拟机里，假设tinyFecVPN Server运行在VPS上，现在VPS上有个服务监听在TCP和UDP的0.0.0.0:443，我怎么在本地windows上访问到这个服务？
-
-假设tinyFecVPN server分配的ip是 10.22.22.1，路由器/虚拟机的ip是192.168.1.105。
-
-先在路由器/虚拟机中安装 [tinyPortMapper](https://github.com/wangyu-/tinyPortMapper/releases)，然后运行如下命令：
-
-```
-./tinymapper_x86 -l0.0.0.0:443 -r10.22.22.1:443 -t -u
-```
-
-然后你只需要在本地windows访问192.168.1.105:443就相当于访问VPS上的443端口了。
-
-##### 假设tinyFecVPN client 运行在本地的linux上,假设 tinyFecVPN Server运行在VPS A上。现在另一台VPS B(假设ip是123.123.123.123)上面有个服务监听在123.123.123.123:443，我怎么在本地的linux上，透过tinyFecVPN访问到这个服务？
-
-在VPS A上安装 [tinyPortMapper](https://github.com/wangyu-/tinyPortMapper/releases)，然后运行如下命令：：
-
-```
-./tinymapper_x86 -l0.0.0.0:443 -r123.123.123.123:443 -t -u
-```
-
-然后，VPS B上的443端口就被映射到10.22.22.1:443了。这样，在linux上访问10.22.22.1:443就相当于访问123.123.123.123:443了。
-
-##### 假设tinyFecVPN client运行在路由器/虚拟机里，假设 tinyFecVPN Server运行在VPS A上。现在另一台VPS B(假设ip是123.123.123.123)上面有个服务监听在123.123.123.123:443，我怎么在本地的windows上，透过tinyFecVPN访问到这个服务？
-
-结合前两种情况,就可以了。既在路由器/虚拟机中运行tinyPortMapper，又在VPS中运行tinyPortMapper，就可以把这个端口映射到本地了。
-
-### 重启client或server后不断线
-用下面这个命令，建立一个持久型的tun设备，叫tun100
-```
-ip tuntap add tun100 mode tun
-```
-
-然后在tinyFecVPN里用`--dev-tun tun100`使用这个持久型tun设备。
-
-### 加密
-
-tinyFecVPN是一个极轻量的VPN，比l2tp还轻量，只自带了简单的xor加密。如果你需要AES加密，可以在前面串个udp2raw，这样同时还能获得防重放攻击的能力。
-
-
-### 其他使用经验
-
-请看UDPspeeder的使用经验一节。UDPspeeder的几乎所有经验在这里都是适用的。
-
-https://github.com/wangyu-/UDPspeeder/blob/master/doc/README.zh-cn.md#使用经验
 
 # 限制
 
@@ -275,6 +202,19 @@ https://github.com/wangyu-/UDPspeeder/blob/master/doc/README.zh-cn.md#使用经�
 绕过这个限制的方法有：1. 在server搭个代理，比如socks5，透过tinyFecVPN访问这个代理，用代理访问第三方服务器。  2. 自己找到相关限制的代码，修改代码，编译一个自用的无限制版（不要传播）。
 
 # 应用实例
+
+#### 透过tinyFecVPN免改iptables加速网络
+
+https://github.com/wangyu-/tinyFecVPN/wiki/透过tinyFecVPN免改iptables加速网络
+
+#### tinyFecVPN运行在linux上，透明加速linux本机的网络
+
+https://github.com/wangyu-/tinyFecVPN/wiki/tinyFecVPN运行在linux上，透明加速linux本机的网络
+
+#### tinyFecVPN运行在虚拟机中，加速windows和局域网内其他主机的网络
+
+https://github.com/wangyu-/tinyFecVPN/wiki/tinyFecVPN运行在虚拟机中，加速windows和局域网内其他主机的网络
+
 
 #### 用树莓派做路由器，搭建透明代理，加速游戏主机的网络
 
