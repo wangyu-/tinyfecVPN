@@ -445,8 +445,8 @@ int tun_dev_client_event_loop()
 		if (nfds < 0) {  //allow zero
 			if(errno==EINTR  )
 			{
-				mylog(log_info,"epoll interrupted by signal\n");
-				myexit(0);
+				mylog(log_info,"epoll interrupted by signal,continue\n");
+				//myexit(0);
 			}
 			else
 			{
@@ -714,8 +714,8 @@ int tun_dev_server_event_loop()
 		if (nfds < 0) {  //allow zero
 			if(errno==EINTR  )
 			{
-				mylog(log_info,"epoll interrupted by signal\n");
-				myexit(0);
+				mylog(log_info,"epoll interrupted by signal,continue\n");
+				//myexit(0);
 			}
 			else
 			{
