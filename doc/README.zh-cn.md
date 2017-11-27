@@ -8,26 +8,22 @@
 
 TinyFecVPN使用了和UDPSpeeder相同的lib，功能和UDPspeeder类似，只不过TinyFecVPN工作方式是VPN，UDPspeeder工作方式是UDP tunnel. 
 
+
 ##### 提示
 
 UDPspeeder的repo:
 
 https://github.com/wangyu-/UDPspeeder
 
-##### 提示2
-
-对于某些运营商，tinyFecVPN跟udp2raw配合可以达到更好的速度，udp2raw负责把UDP伪装成TCP，来绕过运营商的UDP限速。
-
-udp2raw的repo:
-
-https://github.com/wangyu-/udp2raw-tunnel
-
 #### 效果
-测试环境是一个有100ms RTT 和双向10%丢包的网络(借用了UDPspeeder的测试结果)。
+测试环境是一个有100ms RTT 和双向10%丢包的网络。
 
 ![](https://raw.githubusercontent.com/wangyu-/UDPspeeder/master/images/cn/ping_compare_cn.PNG)
 
 ![](https://github.com/wangyu-/UDPspeeder/blob/master/images/cn/scp_compare.PNG)
+
+#### 关键词
+双边加速、全流量加速、开源加速器、游戏加速、网游加速器
 
 # 原理简介
 
@@ -40,6 +36,7 @@ https://github.com/wangyu-/udp2raw-tunnel
 细节请看UDPspeeder的repo，这里不再重复：
 
 https://github.com/wangyu-/UDPspeeder/
+
 
 # 简明操作说明
 
@@ -84,6 +81,14 @@ https://github.com/wangyu-/tinyFecVPN/releases
 `-f20:10`表示对每20个原始数据发送10个冗余包。`-f20:10` 和`-f 20:10`都是可以的，空格可以省略，对于所有的单字节option都是如此。对于双字节option，例如后面会提到的`--mode 0`，空格不可以省略。
 
 `-k` 指定一个字符串，开启简单的异或加密
+
+##### 提示
+
+对于某些运营商，tinyFecVPN跟udp2raw配合可以达到更好的速度，udp2raw负责把UDP伪装成TCP，来绕过运营商的UDP限速。
+
+udp2raw的repo:
+
+https://github.com/wangyu-/udp2raw-tunnel
 
 # 进阶操作说明
 
@@ -203,19 +208,10 @@ iperf3 -c 10.22.22.1 -P10
 
 # 应用实例
 
-#### 透过tinyFecVPN免改iptables加速网络
+[透过tinyFecVPN免改iptables加速网络](https://github.com/wangyu-/tinyFecVPN/wiki/透过tinyFecVPN免改iptables加速网络)
 
-https://github.com/wangyu-/tinyFecVPN/wiki/透过tinyFecVPN免改iptables加速网络
+[tinyFecVPN运行在linux上，透明加速linux本机的网络](https://github.com/wangyu-/tinyFecVPN/wiki/tinyFecVPN运行在linux上，透明加速linux本机的网络)
 
-#### tinyFecVPN运行在linux上，透明加速linux本机的网络
+[tinyFecVPN运行在虚拟机中，加速windows和局域网内其他主机的网络](https://github.com/wangyu-/tinyFecVPN/wiki/tinyFecVPN运行在虚拟机中，加速windows和局域网内其他主机的网络)
 
-https://github.com/wangyu-/tinyFecVPN/wiki/tinyFecVPN运行在linux上，透明加速linux本机的网络
-
-#### tinyFecVPN运行在虚拟机中，加速windows和局域网内其他主机的网络
-
-https://github.com/wangyu-/tinyFecVPN/wiki/tinyFecVPN运行在虚拟机中，加速windows和局域网内其他主机的网络
-
-
-#### 用树莓派做路由器，搭建透明代理，加速游戏主机的网络
-
-https://github.com/wangyu-/UDPspeeder/wiki/用树莓派做路由器，搭建透明代理，加速游戏主机的网络
+[用树莓派做路由器，搭建透明代理，加速游戏主机的网络](https://github.com/wangyu-/UDPspeeder/wiki/用树莓派做路由器，搭建透明代理，加速游戏主机的网络)

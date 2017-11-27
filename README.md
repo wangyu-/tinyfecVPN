@@ -1,6 +1,6 @@
 # tinyFecVPN
 
-A Lightweight High-Performance VPN with Build-in Forward Error Correction Support(or A Network Improving Tool which works at VPN mode). Improves your Network Quality on a High-latency Lossy Link. 
+A Lightweight VPN with Build-in Forward Error Correction Support(or A Network Improving Tool which works at VPN mode). Improves your Network Quality on a High-latency Lossy Link. 
 
 ![image](/images/tinyFecVPN3.PNG)
 
@@ -16,14 +16,6 @@ TinyFecVPN uses same lib as [UDPspeeder](https://github.com/wangyu-/UDPspeeder),
 UDPspeeder's repo:
 
 https://github.com/wangyu-/UDPspeeder
-
-##### Note2
-
-You can use udp2raw with tinyFecVPN together to get better speed on some ISP with UDP QoS(UDP throttling).
-
-udp2raw's repo：
-
-https://github.com/wangyu-/udp2raw-tunnel
 
 # Efficacy
 Tested on a link with 100ms roundtrip and 10% packet loss at both direction. You can easily reproduce the test result by yourself.
@@ -87,6 +79,14 @@ Now, use `10.22.22.1:7777` to connect to your service,all traffic will be improv
 `-f20:10` means sending 10 redundant packets for every 20 original packets.
 
 `-k` enables simple XOR encryption
+
+##### Note2
+
+You can use udp2raw with tinyFecVPN together to get better speed on some ISP with UDP QoS(UDP throttling).
+
+udp2raw's repo：
+
+https://github.com/wangyu-/udp2raw-tunnel
 
 # Advanced Topic
 
