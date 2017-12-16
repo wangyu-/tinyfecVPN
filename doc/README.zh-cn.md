@@ -125,7 +125,6 @@ advanced options:
 developer options:
     --tun-mtu             <number >       mtu of the tun interface,most time you shouldnt change this
     --disable-mssfix      <number >       disable mssfix for tcp connection
-    -i,--interval         imin:imax       similiar to -i above, but scatter randomly between imin and imax
     --fifo                <string>        use a fifo(named pipe) for sending commands to the running program, so that you
                                           can change fec encode parameters dynamically, check readme.md in repository for
                                           supported commands.
@@ -133,7 +132,7 @@ developer options:
     -i,--interval         imin:imax       similiar to -i above, but scatter randomly between imin and imax
     -q,--queue-len        <number>        max fec queue len, only for mode 0
     --decode-buf          <number>        size of buffer of fec decoder,u nit: packet, default: 2000
-    --fix-latency         <number>        try to stabilize latency, only for mode 0
+    --fix-latency                         try to stabilize latency, only for mode 0
     --delay-capacity      <number>        max number of delayed packets
     --disable-fec         <number>        completely disable fec, turn the program into a normal udp tunnel
     --sock-buf            <number>        buf size for socket, >=10 and <=10240, unit: kbyte, default: 1024
