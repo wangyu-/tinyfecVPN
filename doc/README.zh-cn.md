@@ -195,22 +195,19 @@ iperf3 -c 10.22.22.1 -P10
 
 ![image](/images/performance2.PNG)
 
+# Wiki
 
+Wiki上有更丰富的内容：
+
+https://github.com/wangyu-/tinyFecVPN/wiki
 
 # 限制
 
-目前，server端的代码里有一个人为限制，作为一个加速器，tinyFecVPN只允许(直接)访问server上的服务，不能(直接)用来科学上网。即使你开启了ipforward和 MASQUERADE也不行，代码里有额外处理，直接透过tinyFecVPN访问第三方服务器的包会被丢掉，效果如图：
+考虑到国内的实情，为了降低风险，[releases](https://github.com/wangyu-/tinyFecVPN/releases)中的binaries存在一点人为限制：只允许透过tinyFecVPN访问server上的服务，不能(直接)访问第三方服务器；也就是只能当加速器用，不能(直接)用来科学上网。
+
+即使开启了ipforward和MASQUERADE也不行，代码里有额外处理，直接透过tinyFecVPN访问第三方服务器的包会被丢掉，效果如图：
 
 ![image](/images/restriction.PNG)
 
-绕过这个限制的方法有：1. 在server搭个代理，比如socks5，透过tinyFecVPN访问这个代理，用代理访问第三方服务器。  2. 自己找到相关限制的代码，修改代码，编译一个自用的无限制版（不要传播）。
+如果你需要去掉这个限制，可以自己编译（只需要自己编译server端，因为限制只存在于server端）。有一个宏作为此限制的开关，需要你自己找到。
 
-# 应用实例
-
-[透过tinyFecVPN免改iptables加速网络](https://github.com/wangyu-/tinyFecVPN/wiki/透过tinyFecVPN免改iptables加速网络)
-
-[tinyFecVPN运行在linux上，透明加速linux本机的网络](https://github.com/wangyu-/tinyFecVPN/wiki/tinyFecVPN运行在linux上，透明加速linux本机的网络)
-
-[tinyFecVPN运行在虚拟机中，加速windows和局域网内其他主机的网络](https://github.com/wangyu-/tinyFecVPN/wiki/tinyFecVPN运行在虚拟机中，加速windows和局域网内其他主机的网络)
-
-[用树莓派做路由器，搭建透明代理，加速游戏主机的网络](https://github.com/wangyu-/UDPspeeder/wiki/用树莓派做路由器，搭建透明代理，加速游戏主机的网络)
