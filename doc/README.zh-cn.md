@@ -1,12 +1,12 @@
-# tinyFecVPN
+# tinyfecVPN
 
 工作在VPN方式的双边网络加速工具，可以加速全流量(TCP/UDP/ICMP)。
 
 ![image](/images/tinyFecVPNcn2.PNG)
 
-假设你的本地主机到某个服务器的丢包很高，你只需要用tinyFecVPN建立一条VPN连接，然后透过此VPN来访问server，你的网路质量会得到显著改善。通过合理设置参数，可以轻易把网络丢包率降低到万分之一以下。除了可以降低丢包，还可以显著改善TCP的响应速度，提高TCP的单线程传输速度。
+假设你的本地主机到某个服务器的丢包很高，你只需要用tinyfecVPN建立一条VPN连接，然后透过此VPN来访问server，你的网路质量会得到显著改善。通过合理设置参数，可以轻易把网络丢包率降低到万分之一以下。除了可以降低丢包，还可以显著改善TCP的响应速度，提高TCP的单线程传输速度。
 
-TinyFecVPN使用了和UDPSpeeder相同的lib，功能和UDPspeeder类似，只不过TinyFecVPN工作方式是VPN，UDPspeeder工作方式是UDP tunnel. 
+tinyfecVPN使用了和UDPSpeeder相同的lib，功能和UDPspeeder类似，只不过tinyfecVPN工作方式是VPN，UDPspeeder工作方式是UDP tunnel. 
 
 
 ##### 提示
@@ -44,7 +44,7 @@ https://github.com/wangyu-/UDPspeeder/
 
 Linux主机，可以是桌面版，<del>可以是android手机/平板</del>，可以是openwrt路由器，也可以是树莓派。(android暂时有问题)
 
-在windows和mac上配合虚拟机可以稳定使用（tinyFecVPN跑在Linux里，其他应用照常跑在window里，桥接模式测试可用），可以使用[这个](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20171108.0/lede-17.01.2-x86_virtual_machine_image.zip)虚拟机镜像，大小只有7.5mb，免去在虚拟机里装系统的麻烦；虚拟机自带ssh server，可以scp拷贝文件，可以ssh进去，可以复制粘贴，root密码123456。
+在windows和mac上配合虚拟机可以稳定使用（tinyfecVPN跑在Linux里，其他应用照常跑在window里，桥接模式测试可用），可以使用[这个](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20171108.0/lede-17.01.2-x86_virtual_machine_image.zip)虚拟机镜像，大小只有7.5mb，免去在虚拟机里装系统的麻烦；虚拟机自带ssh server，可以scp拷贝文件，可以ssh进去，可以复制粘贴，root密码123456。
 
 android需要通过terminal运行。
 
@@ -59,7 +59,7 @@ android需要通过terminal运行。
 
 下载编译好的二进制文件，解压到本地和服务器的任意目录。
 
-https://github.com/wangyu-/tinyFecVPN/releases
+https://github.com/wangyu-/tinyfecVPN/releases
 
 ### 运行
 
@@ -84,7 +84,7 @@ https://github.com/wangyu-/tinyFecVPN/releases
 
 ##### 提示
 
-对于某些运营商，tinyFecVPN跟udp2raw配合可以达到更好的速度，udp2raw负责把UDP伪装成TCP，来绕过运营商的UDP限速。
+对于某些运营商，tinyfecVPN跟udp2raw配合可以达到更好的速度，udp2raw负责把UDP伪装成TCP，来绕过运营商的UDP限速。
 
 udp2raw的repo:
 
@@ -94,9 +94,9 @@ https://github.com/wangyu-/udp2raw-tunnel
 
 ### 命令选项
 ```
-tinyFecVPN
+tinyfecVPN
 git version: b03df1b586    build date: Oct 31 2017 19:46:50
-repository: https://github.com/wangyu-/tinyFecVPN/
+repository: https://github.com/wangyu-/tinyfecVPN/
 
 usage:
     run as client: ./this_program -c -r server_ip:server_port  [options]
@@ -146,17 +146,17 @@ log and help options:
 ```
 ### 跟UDPspeeder共用的选项
 
-TinyFecVPN支持UDPspeeder的所有选项，具体请看UDPspeeder的repo：
+tinyfecVPN支持UDPspeeder的所有选项，具体请看UDPspeeder的repo：
 
 https://github.com/wangyu-/UDPspeeder/blob/master/doc/README.zh-cn.md#命令选项
 
-### tinyFecVPN的新增选项
+### tinyfecVPN的新增选项
 
 ##### `--tun-dev`
 
 指定tun设备的名字. 例如: --tun-dev tun100.
 
-如果不指定,tinyFecVPN会创建一个随机名字的tun设备，比如tun987.
+如果不指定,tinyfecVPN会创建一个随机名字的tun设备，比如tun987.
 
 ##### `--sub-net`
 
@@ -168,13 +168,13 @@ https://github.com/wangyu-/UDPspeeder/blob/master/doc/README.zh-cn.md#命令选�
 
 只对client有效
 
-TinyFecVPN server只接受一个client的连接，后连接的client会把新的挤掉。
+tinyfecVPN server只接受一个client的连接，后连接的client会把新的挤掉。
 
 如果开启了--keep-reconnect，client在连接断开或者被挤掉以后会尝试重新获得连接。
 
 # 使用经验
 
-https://github.com/wangyu-/tinyFecVPN/wiki/使用经验
+https://github.com/wangyu-/tinyfecVPN/wiki/使用经验
 
 # 性能测试(侧重吞吐量)
 
@@ -199,13 +199,13 @@ iperf3 -c 10.22.22.1 -P10
 
 Wiki上有更丰富的内容：
 
-https://github.com/wangyu-/tinyFecVPN/wiki
+https://github.com/wangyu-/tinyfecVPN/wiki
 
 # 限制
 
-考虑到国内的实情，为了降低风险，[releases](https://github.com/wangyu-/tinyFecVPN/releases)中的binaries存在一点人为限制：只允许透过tinyFecVPN访问server上的服务，不能(直接)访问第三方服务器；也就是只能当加速器用，不能(直接)用来科学上网。
+考虑到国内的实情，为了降低风险，[releases](https://github.com/wangyu-/tinyfecVPN/releases)中的binaries存在一点人为限制：只允许透过tinyfecVPN访问server上的服务，不能(直接)访问第三方服务器；也就是只能当加速器用，不能(直接)用来科学上网。
 
-即使开启了ipforward和MASQUERADE也不行，代码里有额外处理，直接透过tinyFecVPN访问第三方服务器的包会被丢掉，效果如图：
+即使开启了ipforward和MASQUERADE也不行，代码里有额外处理，直接透过tinyfecVPN访问第三方服务器的包会被丢掉，效果如图：
 
 ![image](/images/restriction.PNG)
 
