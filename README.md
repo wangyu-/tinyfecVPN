@@ -1,14 +1,14 @@
-# tinyFecVPN
+# tinyfecVPN
 
 A Lightweight VPN with Build-in Forward Error Correction Support(or A Network Improving Tool which works at VPN mode). Improves your Network Quality on a High-latency Lossy Link. 
 
 ![image](/images/tinyFecVPN3.PNG)
 
-TinyFecVPN uses Forward Error Correction(Reed-Solomon code) to reduce packet loss rate, at the cost of additional bandwidth usage. 
+tinyfecVPN uses Forward Error Correction(Reed-Solomon code) to reduce packet loss rate, at the cost of additional bandwidth usage. 
 
-Assume your local network to your server is lossy. Just establish a VPN connection to your server with tinyFecVPN, access your server via this VPN connection, then your connection quality will be significantly improved. With well-tuned parameters , you can easily reduce  IP or UDP/ICMP packet-loss-rate to less than 0.01% . Besides reducing packet-loss-rate, tinyFecVPN can also significantly improve your TCP latency and TCP single-thread download speed.
+Assume your local network to your server is lossy. Just establish a VPN connection to your server with tinyfecVPN, access your server via this VPN connection, then your connection quality will be significantly improved. With well-tuned parameters , you can easily reduce  IP or UDP/ICMP packet-loss-rate to less than 0.01% . Besides reducing packet-loss-rate, tinyfecVPN can also significantly improve your TCP latency and TCP single-thread download speed.
 
-TinyFecVPN uses same lib as [UDPspeeder](https://github.com/wangyu-/UDPspeeder), supports all FEC features of UDPspeeder. TinyFecVPN works at VPN mode,while UDPspeeder works at UDP tunnel mode.
+tinyfecVPN uses same lib as [UDPspeeder](https://github.com/wangyu-/UDPspeeder), supports all FEC features of UDPspeeder. tinyfecVPN works at VPN mode,while UDPspeeder works at UDP tunnel mode.
 
 [简体中文](/doc/README.zh-cn.md)(内容更丰富)
 
@@ -29,13 +29,13 @@ Tested on a link with 100ms roundtrip and 10% packet loss at both direction. You
 # Supported Platforms
 Linux host (including desktop Linux,<del>Android phone/tablet</del>, OpenWRT router, or Raspberry PI).Binaries for `amd64` `x86` `mips_be` `mips_le` `arm` are provided.
 
-For Windows and MacOS, You can run TinyFecVPN inside [this](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20171108.0/lede-17.01.2-x86_virtual_machine_image.zip) 7.5mb virtual machine image.
+For Windows and MacOS, You can run tinyfecVPN inside [this](https://github.com/wangyu-/udp2raw-tunnel/releases/download/20171108.0/lede-17.01.2-x86_virtual_machine_image.zip) 7.5mb virtual machine image.
 
 Need root or at least CAP_NET_ADMIN permission to run, for creating tun device.
 
 # How doest it work
 
-TinyFecVPN uses FEC(Forward Error Correction) to reduce packet loss rate, at the cost of additional bandwidth usage. The algorithm for FEC is called Reed-Solomon.
+tinyfecVPN uses FEC(Forward Error Correction) to reduce packet loss rate, at the cost of additional bandwidth usage. The algorithm for FEC is called Reed-Solomon.
 
 ![](/images/FEC.PNG)
 
@@ -58,7 +58,7 @@ Check wikipedia for more info, https://en.wikipedia.org/wiki/Reed–Solomon_erro
 
 ### Installing
 
-Download binary release from https://github.com/wangyu-/tinyFecVPN/releases
+Download binary release from https://github.com/wangyu-/tinyfecVPN/releases
 
 ### Running
 
@@ -82,7 +82,7 @@ Now, use `10.22.22.1:7777` to connect to your service,all traffic will be improv
 
 ##### Note2
 
-You can use udp2raw with tinyFecVPN together to get better speed on some ISP with UDP QoS(UDP throttling).
+You can use udp2raw with tinyfecVPN together to get better speed on some ISP with UDP QoS(UDP throttling).
 
 udp2raw's repo：
 
@@ -92,9 +92,9 @@ https://github.com/wangyu-/udp2raw-tunnel
 
 ### Usage
 ```
-tinyFecVPN
+tinyfecVPN
 git version: b03df1b586    build date: Oct 31 2017 19:46:50
-repository: https://github.com/wangyu-/tinyFecVPN/
+repository: https://github.com/wangyu-/tinyfecVPN/
 
 usage:
     run as client: ./this_program -c -r server_ip:server_port  [options]
@@ -154,7 +154,7 @@ https://github.com/wangyu-/UDPspeeder
 
 Specify a tun device name to use. Example: `--tun-dev tun100`.
 
-If not set,tinyFecVPN will randomly chose a name,such as `tun987`.
+If not set,tinyfecVPN will randomly chose a name,such as `tun987`.
 
 ##### `--sub-net`
 
@@ -166,7 +166,7 @@ The last number of option should be zero, for exmaple `10.10.10.123` is invalild
 
 Only works at client side.
 
-TinyFecVPN server only handles one client at same time,the connection of a new client will kick old client,after being kicked,old client will just exit by default.
+tinyfecVPN server only handles one client at same time,the connection of a new client will kick old client,after being kicked,old client will just exit by default.
 
 If `--keep-reconnect` is enabled , the client will try to get connection back after being kicked.
 
@@ -194,6 +194,6 @@ Note: the performance is mainly limited by the RS code lib.
 
 # Other
 
-As a VPN software may contradict with local regulations, I had to introduce an intended restriction in the pre-released binaries: you can only use tinyFecVPN to access your own server.
+As a VPN software may contradict with local regulations, I had to introduce an intended restriction in the pre-released binaries: you can only use tinyfecVPN to access your own server.
 
-You can easily get rid of this restriction by compiling the source code by yourself(there is a macro for it). This restriction exits only at server side, only the server side binary needs to be re-compiled.
+You can easily get rid of this restriction by compiling the source code by yourself(there is a macro for it). This restriction exits only at server side, only the server side binary needs to be compiled.
