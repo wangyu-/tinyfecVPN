@@ -80,6 +80,8 @@ Now, use `10.22.22.1:7777` to connect to your service,all traffic will be improv
 
 `-k` enables simple XOR encryption
 
+To create tun device, you need root or cap_net_admin permission. Its suggested to run tinyfecVPN as non-root, check [this link](https://github.com/wangyu-/tinyfecVPN/wiki/run-tinyfecVPN-as-non-root) for more info.
+
 ##### Note2
 
 You can use udp2raw with tinyfecVPN together to get better speed on some ISP with UDP QoS(UDP throttling).
