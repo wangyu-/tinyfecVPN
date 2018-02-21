@@ -494,7 +494,13 @@ int tun_dev_client_event_loop()
 			}
 			else if(events[idx].data.u64==(u64_t)tun_fd)
 			{
-				len=read(tun_fd,data,max_data_len);
+				len=read(tun_fd,data,max_data_len+1);
+
+				if(len==max_data_len+1)
+				{
+					mylog(log_warn,"huge packet, data_len > %d,dropped\n",max_data_len);
+					continue;
+				}
 
 				if(len<0)
 				{
@@ -515,7 +521,13 @@ int tun_dev_client_event_loop()
 				fd64_t fd64=events[idx].data.u64;
 				int fd=fd_manager.to_fd(fd64);
 
-				len=recv(fd,data,max_data_len,0);
+				len=recv(fd,data,max_data_len+1,0);
+
+				if(len==max_data_len+1)
+				{
+					mylog(log_warn,"huge packet, data_len > %d,dropped\n",max_data_len);
+					continue;
+				}
 
 				if(len<0)
 				{
@@ -768,12 +780,18 @@ int tun_dev_server_event_loop()
 			{
 				struct sockaddr_in udp_new_addr_in={0};
 				socklen_t udp_new_addr_len = sizeof(sockaddr_in);
-				if ((len = recvfrom(local_listen_fd, data, max_data_len, 0,
+				if ((len = recvfrom(local_listen_fd, data, max_data_len+1, 0,
 						(struct sockaddr *) &udp_new_addr_in, &udp_new_addr_len)) < 0) {
 					mylog(log_error,"recv_from error,this shouldnt happen,err=%s,but we can try to continue\n",strerror(errno));
 					continue;
 					//myexit(1);
 				};
+
+				if(len==max_data_len+1)
+				{
+					mylog(log_warn,"huge packet, data_len > %d,dropped\n",max_data_len);
+					continue;
+				}
 
 				if(de_cook(data,len)<0)
 				{
@@ -856,7 +874,14 @@ int tun_dev_server_event_loop()
 			}
 			else if(events[idx].data.u64==(u64_t)tun_fd)
 			{
-				len=read(tun_fd,data,max_data_len);
+				len=read(tun_fd,data,max_data_len+1);
+
+				if(len==max_data_len+1)
+				{
+					mylog(log_warn,"huge packet, data_len > %d,dropped\n",max_data_len);
+					continue;
+				}
+
 				if(len<0)
 				{
 					mylog(log_warn,"read from tun_fd return %d,errno=%s\n",len,strerror(errno));
