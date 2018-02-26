@@ -10,6 +10,8 @@ Assume your local network to your server is lossy. Just establish a VPN connecti
 
 tinyfecVPN uses same lib as [UDPspeeder](https://github.com/wangyu-/UDPspeeder), supports all FEC features of UDPspeeder. tinyfecVPN works at VPN mode,while UDPspeeder works at UDP tunnel mode.
 
+[tinyfecVPN wiki](https://github.com/wangyu-/tinyfecVPN/wiki)
+
 [简体中文](/doc/README.zh-cn.md)(内容更丰富)
 
 ##### Note
