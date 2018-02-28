@@ -82,6 +82,6 @@ nolimit_cross:
 nolimit_cross2:
 	make cross2 OPT=-DNOLIMIT
 nolimit_cross3:
-	make cross2 OPT=-DNOLIMIT
+	make cross3 OPT=-DNOLIMIT
 nolimit_release:
 	make release OPT=-DNOLIMIT
