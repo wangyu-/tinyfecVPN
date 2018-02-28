@@ -75,6 +75,10 @@ clean:
 git_version:
 	    echo "const char * const gitversion = \"$(shell git rev-parse HEAD)\";" > git_version.h
 	
+
+# targets without restrictions:
+nolimit:
+	make OPT=-DNOLIMIT
 nolimit_all:
 	make OPT=-DNOLIMIT
 nolimit_cross:
