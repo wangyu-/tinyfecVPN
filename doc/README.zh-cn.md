@@ -209,5 +209,5 @@ https://github.com/wangyu-/tinyfecVPN/wiki
 
 ![image](/images/restriction.PNG)
 
-如果你需要去掉这个限制，可以自己编译（只需要自己编译server端，因为限制只存在于server端）。
+如果你需要去掉这个限制，可以自己编译(makefile里有相应的target)。 只需要自己编译server端，因为限制只存在于server端。
 
