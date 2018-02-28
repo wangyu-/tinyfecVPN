@@ -21,6 +21,7 @@ TAR=${NAME}_binaries.tar.gz `echo ${TARGETS}|sed -r 's/([^ ]+)/tinyvpn_\1/g'` ve
 all:git_version
 	rm -f ${NAME}
 	${cc_local}   -o ${NAME}      ${INCLUDE}  ${SOURCES} ${FLAGS} -lrt -ggdb -static -O3
+
 debug: git_version
 	rm -f ${NAME}
 	${cc_local}   -o ${NAME}          -I. ${SOURCES} ${FLAGS} -lrt -Wformat-nonliteral -D MY_DEBUG 
@@ -74,3 +75,13 @@ clean:
 git_version:
 	    echo "const char * const gitversion = \"$(shell git rev-parse HEAD)\";" > git_version.h
 	
+nolimit_all:
+	make OPT=-DNOLIMIT
+nolimit_cross:
+	make cross OPT=-DNOLIMIT
+nolimit_cross2:
+	make cross2 OPT=-DNOLIMIT
+nolimit_cross3:
+	make cross2 OPT=-DNOLIMIT
+nolimit_release:
+	make release OPT=-DNOLIMIT

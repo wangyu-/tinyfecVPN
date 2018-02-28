@@ -129,7 +129,7 @@ int from_fec_to_normal2(conn_info_t & conn_info,dest_t &dest,char * data,int len
 	for(int i=0;i<out_n;i++)
 	{
 
-#ifndef NORES
+#ifndef NOLIMIT
 		if(client_or_server==server_mode)
 		{
 			char * tmp_data=out_arr[i];
