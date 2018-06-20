@@ -82,6 +82,8 @@ https://github.com/wangyu-/tinyfecVPN/releases
 
 `-k` 指定一个字符串，开启简单的异或加密
 
+目前一个server只能支持一个client，如果需要同时运行多个client，需要启动多个server。
+
 ##### 提示
 
 对于某些运营商，tinyfecVPN跟udp2raw配合可以达到更好的速度，udp2raw负责把UDP伪装成TCP，来绕过运营商的UDP限速。
