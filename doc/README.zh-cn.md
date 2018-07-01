@@ -213,4 +213,4 @@ https://github.com/wangyu-/tinyfecVPN/wiki
 
 如果你需要去掉这个限制，可以自己编译(makefile里有相应的target)。 只需要自己编译server端，因为限制只存在于server端。
 
-(自己编译请用` git clone --recursive`而不是仅仅`git clone`，否则submodule不会被正常clone)
+(自己编译请用` git clone --recursive`而不是仅`git clone`，否则submodule不会被正常clone)
