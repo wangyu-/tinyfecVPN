@@ -203,3 +203,5 @@ Note: the performance is mainly limited by the RS code lib.
 As a VPN software may contradict with local regulations, I had to introduce an intended restriction in the pre-released binaries: you can only use tinyfecVPN to access your own server.
 
 You can easily get rid of this restriction by compiling the source code by yourself (take a look at the makefile). This restriction exits only at server side, only the server side binary needs to be compiled by yourself.
+
+(If you want to compile by yourself, use `git clone --recursive` instead of `git clone`, otherwise the submodule wont be cloned)
