@@ -174,7 +174,7 @@ Only works at client side.
 
 tinyfecVPN server only handles one client at same time,the connection of a new client will kick old client,after being kicked,old client will just exit by default.
 
-If `--keep-reconnect` is enabled , the client will try to get connection back after being kicked.
+If `--keep-reconnect` is enabled , client will try to get connection back after lost connection or being kicked.
 
 # Performance Test(throughput)
 
