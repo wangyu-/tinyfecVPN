@@ -49,7 +49,8 @@ static void print_help()
 	printf("                                          default value: 0. do not use if you dont know what it means.\n");
 	printf("    --random-drop         <number>        simulate packet loss, unit: 0.01%%. default value: 0\n");
 	printf("    --disable-obscure     <number>        disable obscure, to save a bit bandwidth and cpu\n");
-//	printf("    --disable-xor         <number>        disable xor\n");
+	printf("    --disable-checksum    <number>        disable checksum to save a bit bandwdith and cpu\n");
+	printf("    --disable-xor         <number>        disable xor encryption to save a bit cpu\n");
 
 	printf("developer options:\n");
 	printf("    --tun-mtu             <number >       mtu of the tun interface,most time you shouldnt change this\n");

@@ -134,9 +134,11 @@ int from_fec_to_normal2(conn_info_t & conn_info,dest_t &dest,char * data,int len
 		{
 			char * tmp_data=out_arr[i];
 			int tmp_len=out_len[i];
-			if(tmp_len>=20)
+			iphdr *  iph;
+			iph = (struct iphdr *) tmp_data;
+			if(tmp_len>=int(sizeof(iphdr))&&iph->version==4)
 			{
-				u32_t dest_ip=htonl(read_u32(tmp_data+16));
+				u32_t dest_ip=iph->daddr;
 				//printf("%s\n",my_ntoa(dest_ip));
 				if(  ( ntohl(sub_net_uint32)&0xFFFFFF00 ) !=  ( ntohl (dest_ip) &0xFFFFFF00) )
 				{
@@ -160,25 +162,29 @@ int do_mssfix(char * s,int len)
 	{
 		return 0;
 	}
-	if(len<20)
+
+	if(len<int(sizeof(iphdr)))
 	{
 		mylog(log_debug,"packet from tun len=%d <20\n",len);
 		return -1;
 	}
 	iphdr *  iph;
 	iph = (struct iphdr *) s;
+	if(iph->version!=4)
+	{
+		//mylog(log_trace,"not ipv4");
+		return 0;
+	}
+
 	if(iph->protocol!=IPPROTO_TCP)
 	{
 		//mylog(log_trace,"not tcp");
 		return 0;
 	}
 
-    if (!(iph->ihl > 0 && iph->ihl <=60)) {
-    	mylog(log_debug,"iph ihl error ihl= %u\n",(u32_t)iph->ihl);
-        return -1;
-    }
     int ip_len=ntohs(iph->tot_len);
     int ip_hdr_len=iph->ihl*4;
+
     if(len<ip_hdr_len)
     {
     	mylog(log_debug,"len<ip_hdr_len,%d %d\n",len,ip_hdr_len);
@@ -300,6 +306,7 @@ int do_mssfix(char * s,int len)
     	}
     	else
     	{
+
     		if(ptr+1>=option_end)
     		{
     			mylog(log_debug,"invaild option ptr+1==option_end\n");
@@ -307,8 +314,13 @@ int do_mssfix(char * s,int len)
     		}
     		else
     		{
-    			//omit check
-    			ptr+=*(ptr+1);
+    			int len=(unsigned char)*(ptr+1);
+    			if(len<=1)
+    			{
+    				mylog(log_debug,"invaild option len %d\n",len);
+    				return -1;
+    			}
+    			ptr+=len;
     		}
     	}
     }
