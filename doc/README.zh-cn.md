@@ -8,6 +8,7 @@
 
 tinyfecVPN使用了和UDPSpeeder相同的lib，功能和UDPspeeder类似，只不过tinyfecVPN工作方式是VPN，UDPspeeder工作方式是UDP tunnel. 
 
+tinyfecVPN是无状态的点对点VPN, 收到包即连接建立成功；即使VPN断线重连，上层承载的连接不掉线。
 
 ##### 提示
 
