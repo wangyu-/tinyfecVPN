@@ -1,3 +1,4 @@
 [submodule "UDPspeeder"]
 	path = UDPspeeder
 	url = https://github.com/wangyu-/UDPspeeder.git
+	branch = tmp_branch
