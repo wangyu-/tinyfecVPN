@@ -15,10 +15,13 @@
 #include <netinet/ip.h>    //Provides declarations for ip header
 #include <netinet/if_ether.h>
 
+#include <linux/if.h>
+#include <linux/if_tun.h>
+
 
 my_time_t last_keep_alive_time=0;
 
-int keep_alive_interval=1000;//1000ms
+int keep_alive_interval=3000;//3000ms
 
 int get_tun_fd(char * dev_name)
 {
@@ -130,7 +133,7 @@ int from_fec_to_normal2(conn_info_t & conn_info,dest_t &dest,char * data,int len
 	{
 
 #ifndef NOLIMIT
-		if(client_or_server==server_mode)
+		if(program_mode==server_mode)
 		{
 			char * tmp_data=out_arr[i];
 			int tmp_len=out_len[i];
@@ -144,7 +147,7 @@ int from_fec_to_normal2(conn_info_t & conn_info,dest_t &dest,char * data,int len
 				{
 					string sub=my_ntoa(dest_ip);
 					string dst=my_ntoa( htonl( ntohl (sub_net_uint32) &0xFFFFFF00)   );
-					mylog(log_warn,"[restriction]packet's dest ip [%s] not in subnet [%s],dropped\n", sub.c_str(), dst.c_str());
+					mylog(log_warn,"[restriction]packet's dest ip [%s] not in subnet [%s],dropped, maybe you need to compile an un-restricted server\n", sub.c_str(), dst.c_str());
 					continue;
 				}
 			}
@@ -279,9 +282,9 @@ int do_mssfix(char * s,int len)
     		}
     		int mss= read_u16(ptr+2);//uint8_t(ptr[2])*256+uint8_t(ptr[3]);
     		int new_mss=mss;
-    		if(new_mss>g_fec_mtu-40-10) //minus extra 10 for safe
+    		if(new_mss>::mssfix-40-10) //minus extra 10 for safe
     		{
-    			new_mss=g_fec_mtu-40-10;
+    			new_mss=::mssfix-40-10;
     		}
     		write_u16(ptr+2,(unsigned short)new_mss);
 
@@ -356,7 +359,7 @@ int tun_dev_client_event_loop()
 	tun_fd=get_tun_fd(tun_dev);
 	assert(tun_fd>0);
 
-	assert(new_connected_socket(remote_fd,remote_ip_uint32,remote_port)==0);
+	assert(new_connected_socket2(remote_fd,remote_addr)==0);
 	remote_fd64=fd_manager.create(remote_fd);
 
 	assert(set_if(tun_dev,htonl((ntohl(sub_net_uint32)&0xFFFFFF00)|2),htonl((ntohl(sub_net_uint32)&0xFFFFFF00 )|1),tun_mtu)==0);
@@ -641,7 +644,7 @@ int tun_dev_server_event_loop()
 	tun_fd=get_tun_fd(tun_dev);
 	assert(tun_fd>0);
 
-	assert(new_listen_socket(local_listen_fd,local_ip_uint32,local_port)==0);
+	assert(new_listen_socket2(local_listen_fd,local_addr)==0);
 	assert(set_if(tun_dev,htonl((ntohl(sub_net_uint32)&0xFFFFFF00)|1),htonl((ntohl(sub_net_uint32)&0xFFFFFF00 )|2),tun_mtu)==0);
 
 	epoll_fd = epoll_create1(0);
@@ -719,11 +722,10 @@ int tun_dev_server_event_loop()
 
 	dest_t udp_dest;
 	udp_dest.cook=1;
-	udp_dest.type=type_fd_ip_port;
+	udp_dest.type=type_fd_addr;
 
-	udp_dest.inner.fd_ip_port.fd=local_listen_fd;
-	udp_dest.inner.fd_ip_port.ip_port.ip=0;
-	udp_dest.inner.fd_ip_port.ip_port.port=0;
+	udp_dest.inner.fd_addr.fd=local_listen_fd;
+	udp_dest.inner.fd_addr.addr.clear();
 
 	dest_t tun_dest;
 	tun_dest.type=type_write_fd;
@@ -755,16 +757,16 @@ int tun_dev_server_event_loop()
 				uint64_t value;
 				read(conn_info.timer.get_timer_fd(), &value, 8);
 
-				if(udp_dest.inner.fd64_ip_port.ip_port.to_u64()==0)
+				if(udp_dest.inner.fd_addr.addr.is_vaild()==0)
 				{
 					continue;
 				}
-				conn_info.stat.report_as_server(udp_dest.inner.fd_ip_port.ip_port);
+				conn_info.stat.report_as_server(udp_dest.inner.fd_addr.addr);
 				do_keep_alive(udp_dest);
 			}
 			else if(events[idx].data.u64==conn_info.fec_encode_manager.get_timer_fd64())
 			{
-				assert(udp_dest.inner.fd64_ip_port.ip_port.to_u64()!=0);
+				assert(udp_dest.inner.fd_addr.addr.is_vaild()!=0);
 				mylog(log_trace,"events[idx].data.u64 == conn_info.fec_encode_manager.get_timer_fd64()\n");
 				uint64_t fd64=events[idx].data.u64;
 				//mylog(log_info,"timer!!!\n");
@@ -790,14 +792,20 @@ int tun_dev_server_event_loop()
 			}
 			else if(events[idx].data.u64==(u64_t)local_listen_fd)
 			{
-				struct sockaddr_in udp_new_addr_in={0};
-				socklen_t udp_new_addr_len = sizeof(sockaddr_in);
+				//struct sockaddr_in udp_new_addr_in={0};
+				//socklen_t udp_new_addr_len = sizeof(sockaddr_in);
+				address_t::storage_t udp_new_addr_in={0};
+				socklen_t udp_new_addr_len = sizeof(address_t::storage_t);
+
 				if ((len = recvfrom(local_listen_fd, data, max_data_len+1, 0,
 						(struct sockaddr *) &udp_new_addr_in, &udp_new_addr_len)) < 0) {
 					mylog(log_error,"recv_from error,this shouldnt happen,err=%s,but we can try to continue\n",strerror(errno));
 					continue;
 					//myexit(1);
 				};
+
+				address_t new_addr;
+				new_addr.from_sockaddr((struct sockaddr *) &udp_new_addr_in,udp_new_addr_len);
 
 				if(len==max_data_len+1)
 				{
@@ -819,7 +827,7 @@ int tun_dev_server_event_loop()
 					continue;
 				}
 
-				if((udp_dest.inner.fd_ip_port.ip_port.ip==udp_new_addr_in.sin_addr.s_addr) && (udp_dest.inner.fd_ip_port.ip_port.port==ntohs(udp_new_addr_in.sin_port)))
+				if(udp_dest.inner.fd_addr.addr==new_addr)
 				{
 					if(header==header_keep_alive)
 					{
@@ -843,18 +851,18 @@ int tun_dev_server_event_loop()
 
 					if(header==header_new_connect)
 					{
-						mylog(log_info,"new connection from %s:%d \n", inet_ntoa(udp_new_addr_in.sin_addr),
-												ntohs(udp_new_addr_in.sin_port));
-						udp_dest.inner.fd_ip_port.ip_port.ip=udp_new_addr_in.sin_addr.s_addr;
-						udp_dest.inner.fd_ip_port.ip_port.port=ntohs(udp_new_addr_in.sin_port);
+						mylog(log_info,"new connection from %s\n", new_addr.get_str());
+						udp_dest.inner.fd_addr.addr=new_addr;
+						//udp_dest.inner.fd_ip_port.ip_port.ip=udp_new_addr_in.sin_addr.s_addr;
+						//udp_dest.inner.fd_ip_port.ip_port.port=ntohs(udp_new_addr_in.sin_port);
 						conn_info.fec_decode_manager.clear();
-						conn_info.fec_encode_manager.clear();
+						conn_info.fec_encode_manager.clear_data();
 						memset(&conn_info.stat,0,sizeof(conn_info.stat));
 
 					}
 					else if(header==header_normal)
 					{
-						mylog(log_debug,"rejected connection from %s:%d\n", inet_ntoa(udp_new_addr_in.sin_addr),ntohs(udp_new_addr_in.sin_port));
+						mylog(log_debug,"rejected connection from %s\n", new_addr.get_str());
 
 
 						len=1;
@@ -863,11 +871,10 @@ int tun_dev_server_event_loop()
 
 
 						dest_t tmp_dest;
-						tmp_dest.type=type_fd_ip_port;
+						tmp_dest.type=type_fd_addr;
 
-						tmp_dest.inner.fd_ip_port.fd=local_listen_fd;
-						tmp_dest.inner.fd_ip_port.ip_port.ip=udp_new_addr_in.sin_addr.s_addr;
-						tmp_dest.inner.fd_ip_port.ip_port.port=ntohs(udp_new_addr_in.sin_port);
+						tmp_dest.inner.fd_addr.fd=local_listen_fd;
+						tmp_dest.inner.fd_addr.addr=new_addr;
 
 						delay_manager.add(0,tmp_dest,data,len);;
 						continue;
@@ -878,8 +885,7 @@ int tun_dev_server_event_loop()
 					}
 				}
 
-				mylog(log_trace,"Received packet from %s:%d,len: %d\n", inet_ntoa(udp_new_addr_in.sin_addr),
-						ntohs(udp_new_addr_in.sin_port),len);
+				mylog(log_trace,"Received packet from %s,len: %d\n", new_addr.get_str(),len);
 
 				from_fec_to_normal2(conn_info,tun_dest,data,len);
 
@@ -904,7 +910,7 @@ int tun_dev_server_event_loop()
 
 				mylog(log_trace,"Received packet from tun,len: %d\n",len);
 
-				if(udp_dest.inner.fd64_ip_port.ip_port.to_u64()==0)
+				if(udp_dest.inner.fd_addr.addr.is_vaild()==0)
 				{
 					mylog(log_debug,"received packet from tun,but there is no client yet,dropped packet\n");
 					continue;

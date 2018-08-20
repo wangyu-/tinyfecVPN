@@ -40,7 +40,7 @@ static void print_help()
 
 
 	printf("advanced options:\n");
-	printf("    --mtu                 <number>        mtu. for mode 0, the program will split packet to segment smaller than mtu_value.\n");
+	printf("    --mtu                 <number>        mtu for fec. for mode 0, the program will split packet to segment smaller than mtu.\n");
 	printf("                                          for mode 1, no packet will be split, the program just check if the mtu is exceed.\n");
 	printf("                                          default value: 1250\n");
 	printf("    -j,--jitter           <number>        simulated jitter. randomly delay first packet for 0~<number> ms, default value: 0.\n");
@@ -53,8 +53,8 @@ static void print_help()
 	printf("    --disable-xor         <number>        disable xor encryption to save a bit cpu\n");
 
 	printf("developer options:\n");
-	printf("    --tun-mtu             <number >       mtu of the tun interface,most time you shouldnt change this\n");
-	printf("    --disable-mssfix      <number >       disable mssfix for tcp connection\n");
+	printf("    --tun-mtu             <number>        mtu of the tun interface,most time you shouldnt change this\n");
+	printf("    --mssfix              <number>        do mssfix for tcp connection, use 0 to disable. default value: 1250\n");
 	printf("    -i,--interval         imin:imax       similiar to -i above, but scatter randomly between imin and imax\n");
 	printf("    --fifo                <string>        use a fifo(named pipe) for sending commands to the running program, so that you\n");
 	printf("                                          can change fec encode parameters dynamically, check readme.md in repository for\n");
