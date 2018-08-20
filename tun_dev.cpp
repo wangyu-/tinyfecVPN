@@ -149,7 +149,7 @@ int from_fec_to_normal2(conn_info_t & conn_info,dest_t &dest,char * data,int len
 
 	return 0;
 }
-int do_mssfix(char * s,int len)
+int do_mssfix(char * s,int len)//currently only for ipv4
 {
 	if(mssfix==0)
 	{

@@ -2,6 +2,7 @@
 
 int tun_dev_server_event_loop()
 {
+	/*
 	char data[buf_len];
 	int len;
 	int i,j,k,ret;
@@ -311,7 +312,7 @@ int tun_dev_server_event_loop()
 		}
 		delay_manager.check();
 	}
-
+*/
 
 	return 0;
 }

@@ -77,10 +77,42 @@ static void print_help()
 	//printf("common options,these options must be same on both side\n");
 }
 
+void sigpipe_cb(struct ev_loop *l, ev_signal *w, int revents)
+{
+	mylog(log_info, "got sigpipe, ignored");
+}
+
+void sigterm_cb(struct ev_loop *l, ev_signal *w, int revents)
+{
+	mylog(log_info, "got sigterm, exit");
+	myexit(0);
+}
+
+void sigint_cb(struct ev_loop *l, ev_signal *w, int revents)
+{
+	mylog(log_info, "got sigint, exit");
+	myexit(0);
+}
 
 int main(int argc, char *argv[])
 {
 	working_mode=tun_dev_mode;
+	struct ev_loop* loop=ev_default_loop(0);
+#if !defined(__MINGW32__)
+    ev_signal signal_watcher_sigpipe;
+    ev_signal_init(&signal_watcher_sigpipe, sigpipe_cb, SIGPIPE);
+    ev_signal_start(loop, &signal_watcher_sigpipe);
+#else
+    enable_log_color=0;
+#endif
+
+    ev_signal signal_watcher_sigterm;
+    ev_signal_init(&signal_watcher_sigterm, sigterm_cb, SIGTERM);
+    ev_signal_start(loop, &signal_watcher_sigterm);
+
+    ev_signal signal_watcher_sigint;
+    ev_signal_init(&signal_watcher_sigint, sigint_cb, SIGINT);
+    ev_signal_start(loop, &signal_watcher_sigint);
 
 	assert(sizeof(u64_t)==8);
 	assert(sizeof(i64_t)==8);
