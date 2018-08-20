@@ -1,9 +1,9 @@
 #include "tun_dev.h"
 
-int got_feed_back=0;
+static int got_feed_back=0;
 
-dest_t udp_dest;
-dest_t tun_dest;
+static dest_t udp_dest;
+static dest_t tun_dest;
 
 
 static void remote_cb(struct ev_loop *loop, struct ev_io *watcher, int revents)
@@ -56,7 +56,7 @@ static void remote_cb(struct ev_loop *loop, struct ev_io *watcher, int revents)
 	{
 		if(keep_reconnect==0)
 		{
-			mylog(log_fatal,"server restarted or switched to handle another client,exited\n");
+			mylog(log_fatal,"server restarted or switched to handle another client,exited. maybe you need --keep-reconnect\n");
 			myexit(-1);
 		}
 		else
@@ -121,6 +121,8 @@ static void tun_fd_cb(struct ev_loop *loop, struct ev_io *watcher, int revents)
 static void delay_manager_cb(struct ev_loop *loop, struct ev_timer *watcher, int revents)
 {
 	assert(!(revents&EV_ERROR));
+
+	//do nothing
 }
 
 static void fec_encode_cb(struct ev_loop *loop, struct ev_timer *watcher, int revents)
@@ -197,8 +199,8 @@ static void prepare_cb(struct ev_loop *loop, struct ev_prepare *watcher, int rev
 
 int tun_dev_client_event_loop()
 {
-	char data[buf_len];
-	int len;
+	//char data[buf_len];
+	//int len;
 	int i,j,k,ret;
 	int tun_fd;
 
