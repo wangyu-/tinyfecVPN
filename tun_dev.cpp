@@ -30,12 +30,18 @@ int get_tun_fd(char * dev_name)
 		mylog(log_fatal,"open /dev/net/tun failed");
 		myexit(-1);
 	}
+
+	if (persist_tun == 1) {
+		if (ioctl(tun_fd, TUNSETPERSIST, 1) != 0) {
+			mylog(log_warn,"failed to set tun persistent");
+		}
+	}
 	return tun_fd;
 }
 
 int set_tun(char *if_name,u32_t local_ip,u32_t remote_ip,int mtu)
 {
-	if(manual_tun) return 0;
+	if(manual_set_tun) return 0;
 
 	//printf("i m here1\n");
 	struct ifreq ifr;
@@ -59,7 +65,6 @@ int set_tun(char *if_name,u32_t local_ip,u32_t remote_ip,int mtu)
 
     ifr.ifr_mtu=mtu;
     assert(ioctl(sockfd, SIOCSIFMTU, &ifr)==0);//set mtu
-
 
     assert(ioctl(sockfd, SIOCGIFFLAGS, &ifr)==0);
    // ifr.ifr_flags |= ( IFF_UP|IFF_POINTOPOINT|IFF_RUNNING|IFF_NOARP|IFF_MULTICAST );
