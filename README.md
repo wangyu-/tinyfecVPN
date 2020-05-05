@@ -35,7 +35,7 @@ For Windows and MacOS, You can run tinyfecVPN inside [this](https://github.com/w
 
 Need root or at least CAP_NET_ADMIN permission to run, for creating tun device.
 
-# How doest it work
+# How does it work
 
 tinyfecVPN uses FEC(Forward Error Correction) to reduce packet loss rate, at the cost of additional bandwidth usage. The algorithm for FEC is called Reed-Solomon.
 
