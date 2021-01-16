@@ -18,6 +18,8 @@ TARGETS=amd64 arm mips24kc_be x86  mips24kc_le
 
 TAR=${NAME}_binaries.tar.gz `echo ${TARGETS}|sed -r 's/([^ ]+)/tinyvpn_\1/g'` version.txt
 
+export STAGING_DIR=/tmp/    #just for supress warning of staging_dir not define
+
 all:git_version
 	rm -f ${NAME}
 	${cc_local}   -o ${NAME}      ${INCLUDE}  ${SOURCES} ${FLAGS} -lrt -ggdb -static -O3
