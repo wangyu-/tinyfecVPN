@@ -73,6 +73,9 @@ static void print_help()
     printf("    --delay-capacity      <number>        max number of delayed packets, 0 means unlimited, default: 0\n");
 	printf("    --disable-fec         <number>        completely disable fec, turn the program into a normal udp tunnel\n");
 	printf("    --sock-buf            <number>        buf size for socket, >=10 and <=10240, unit: kbyte, default: 1024\n");
+	printf("    --out-addr            ip:port         force all output packets of '-r' end to go through this address, port 0 for random port.\n");
+	printf("    --out-interface       <string>        force all output packets of '-r' end to go through this interface.\n");
+
 	printf("log and help options:\n");
 	printf("    --log-level           <number>        0: never    1: fatal   2: error   3: warn \n");
 	printf("                                          4: info (default)      5: debug   6: trace\n");

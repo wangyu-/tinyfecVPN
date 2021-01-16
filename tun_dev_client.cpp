@@ -213,7 +213,7 @@ int tun_dev_client_event_loop()
 	tun_fd=get_tun_fd(tun_dev);
 	assert(tun_fd>0);
 
-	assert(new_connected_socket2(remote_fd,remote_addr)==0);
+	assert(new_connected_socket2(remote_fd,remote_addr,out_addr,out_interface)==0);
 	remote_fd64=fd_manager.create(remote_fd);
 
 	assert(set_tun(tun_dev,htonl((ntohl(sub_net_uint32)&0xFFFFFF00)|2),htonl((ntohl(sub_net_uint32)&0xFFFFFF00 )|1),tun_mtu)==0);
