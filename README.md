@@ -12,7 +12,7 @@ tinyfecVPN uses same lib as [UDPspeeder](https://github.com/wangyu-/UDPspeeder),
 
 [tinyfecVPN wiki](https://github.com/wangyu-/tinyfecVPN/wiki)
 
-[简体中文](/doc/README.zh-cn.md)(内容更丰富)
+[简体中文](/doc/README.zh-cn.md)
 
 ##### Note
 UDPspeeder's repo:
