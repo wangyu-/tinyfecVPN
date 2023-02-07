@@ -22,7 +22,7 @@ export STAGING_DIR=/tmp/    #just for supress warning of staging_dir not define
 
 all:git_version
 	rm -f ${NAME}
-	${cc_local}   -o ${NAME}      ${INCLUDE}  ${SOURCES} ${FLAGS} -lrt -ggdb -static -O3
+	${cc_local}   -o ${NAME}      ${INCLUDE}  ${SOURCES} ${FLAGS} -lrt -ggdb -static -O2
 
 debug: git_version
 	rm -f ${NAME}
