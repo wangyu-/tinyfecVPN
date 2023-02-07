@@ -114,7 +114,7 @@ int from_fec_to_normal2(conn_info_t &conn_info, dest_t &dest, char *data, int le
     from_fec_to_normal(conn_info, data, len, out_n, out_arr, out_len, out_delay);
 
     for (int i = 0; i < out_n; i++) {
-#ifndef NOLIMIT
+#if 0
         if (program_mode == server_mode) {
             char *tmp_data = out_arr[i];
             int tmp_len = out_len[i];
