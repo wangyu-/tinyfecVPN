@@ -67,8 +67,7 @@ static void local_listen_cb(struct ev_loop *loop, struct ev_io *watcher, int rev
             // udp_dest.inner.fd_ip_port.ip_port.port=ntohs(udp_new_addr_in.sin_port);
             conn_info.fec_decode_manager.clear();
             conn_info.fec_encode_manager.clear_data();
-            memset(&conn_info.stat, 0, sizeof(conn_info.stat));
-
+            conn_info.stat.clear();
         } else if (header == header_normal) {
             mylog(log_debug, "rejected connection from %s\n", new_addr.get_str());
 
